@@ -62,14 +62,16 @@ const samplePortfolios = [
 // Supabase 클라이언트 초기화 (환경 변수가 있을 때만)
 let supabase: ReturnType<typeof createClient> | null = null
 try {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://temp.supabase.co'
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'temp_service_key'
+  
   if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
-    supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL,
-      process.env.SUPABASE_SERVICE_ROLE_KEY
-    )
+    supabase = createClient(supabaseUrl, supabaseKey)
+  } else {
+    console.log('Supabase 환경 변수가 없습니다. 샘플 데이터를 사용합니다.')
   }
 } catch (error) {
-  console.log('Supabase 환경 변수가 없습니다. 샘플 데이터를 사용합니다.')
+  console.log('Supabase 초기화 실패. 샘플 데이터를 사용합니다.')
 }
 
 // GET - 포트폴리오 목록 조회
