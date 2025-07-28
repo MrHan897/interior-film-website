@@ -20,9 +20,8 @@ const nextConfig: NextConfig = {
     removeConsole: process.env.NODE_ENV === 'production',
   },
   serverExternalPackages: [],
-  async rewrites() {
-    return [];
-  },
+  trailingSlash: false,
+  skipTrailingSlashRedirect: false,
 };
 
 export default nextConfig;
