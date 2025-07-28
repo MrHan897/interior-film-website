@@ -1,0 +1,458 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* 스크롤 애니메이션 */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gradient-x {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  33% {
+    transform: translateY(-20px) translateX(10px);
+  }
+  66% {
+    transform: translateY(-10px) translateX(-15px);
+  }
+}
+
+@keyframes particle-drift {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) scale(1);
+  }
+  25% {
+    transform: translateY(-30px) translateX(20px) scale(1.1);
+  }
+  50% {
+    transform: translateY(-15px) translateX(-25px) scale(0.9);
+  }
+  75% {
+    transform: translateY(-40px) translateX(15px) scale(1.05);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 애니메이션 클래스 */
+.animate-fade-in {
+  animation: fade-in 0.8s ease-out forwards;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out forwards;
+}
+
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 3s ease infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.6s ease-out forwards;
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 0.8s ease-out forwards;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.8s ease-out forwards;
+}
+
+/* 지연 클래스 */
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-700 { animation-delay: 700ms; }
+.delay-1000 { animation-delay: 1000ms; }
+.delay-1300 { animation-delay: 1300ms; }
+
+/* 스크롤 애니메이션 감지 클래스 */
+.scroll-animate {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease-out;
+}
+
+.scroll-animate.animated {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 반응형 타이틀 스타일 */
+@media (max-width: 768px) {
+  .responsive-title {
+    line-height: 1.2;
+  }
+  
+  .responsive-title span {
+    display: block;
+  }
+}
+
+/* 플로팅 버튼 애니메이션 */
+@keyframes slideInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.33);
+  }
+  40%, 50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.33);
+  }
+}
+
+@keyframes pulse-dot {
+  0% {
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0.8);
+  }
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) -.4s infinite;
+}
+
+/* React Big Calendar 커스텀 스타일 - 한샘 스타일 적용 */
+.rbc-calendar {
+  font-family: inherit;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* 달력 날짜 숫자 스타일 개선 */
+.rbc-date-cell {
+  color: #1f2937 !important; /* 더 진한 회색으로 변경 */
+  font-weight: 600 !important; /* 더 굵게 */
+  font-size: 14px !important; /* 크기 명시 */
+}
+
+.rbc-date-cell > a {
+  color: #1f2937 !important; /* 링크 색상도 더 진한 회색 */
+  font-weight: 600 !important; /* 더 굵게 */
+  font-size: 14px !important; /* 크기 명시 */
+  text-decoration: none !important;
+}
+
+/* 날짜 숫자가 더 잘 보이도록 */
+.rbc-button-link {
+  display: block !important; /* 숨겨진 링크 다시 표시 */
+}
+
+/* 오늘 날짜 스타일 */
+.rbc-today {
+  background-color: #dbeafe !important; /* 연한 파란색 배경 */
+}
+
+.rbc-today .rbc-date-cell > a {
+  color: #1d4ed8 !important; /* 파란색 텍스트 */
+  font-weight: 600;
+}
+
+/* 주말(토요일, 일요일) 스타일 */
+.rbc-date-cell.rbc-off-range-bg {
+  background-color: #f9fafb; /* 연한 회색 배경 */
+}
+
+/* 주말 및 공휴일 스타일 - dayPropGetter로 적용 */
+.holiday-day .rbc-date-cell > a {
+  color: #dc2626 !important; /* 빨간색 텍스트 */
+  font-weight: 600 !important;
+}
+
+.saturday-day .rbc-date-cell > a {
+  color: #2563eb !important; /* 파란색 텍스트 */
+  font-weight: 500 !important;
+}
+
+.sunday-day .rbc-date-cell > a {
+  color: #dc2626 !important; /* 빨간색 텍스트 */
+  font-weight: 500 !important;
+}
+
+/* nth-child 방식으로도 백업 스타일 제공 */
+.rbc-month-view .rbc-date-cell:nth-child(7n-1) > a {
+  color: #2563eb !important; /* 토요일 파란색 */
+}
+
+.rbc-month-view .rbc-date-cell:nth-child(7n) > a {
+  color: #dc2626 !important; /* 일요일 빨간색 */
+}
+
+/* 헤더 요일 스타일 - 한샘 스타일 */
+.rbc-header {
+  color: #1f2937 !important;
+  font-weight: 700 !important;
+  background: linear-gradient(to bottom, #f8fafc, #f1f5f9) !important;
+  border-bottom: 2px solid #e2e8f0 !important;
+  padding: 12px 8px !important;
+  font-size: 14px !important;
+}
+
+/* 토요일 헤더 */
+.rbc-header:nth-child(7) {
+  color: #2563eb !important; /* 파란색 */
+}
+
+/* 일요일 헤더 */
+.rbc-header:nth-child(1) {
+  color: #dc2626 !important; /* 빨간색 */
+}
+
+/* 월 표시 (July 2025) 색상 개선 */
+.rbc-toolbar-label {
+  color: #1f2937 !important; /* 진한 회색으로 변경 */
+  font-weight: 700 !important; /* 더 굵게 */
+  font-size: 18px !important; /* 크기 증가 */
+}
+
+/* 월 네비게이션 버튼 스타일 - 한샘 스타일 */
+.rbc-btn-group {
+  margin-top: 16px !important;
+  gap: 8px !important;
+  display: flex !important;
+}
+
+.rbc-btn-group button {
+  color: #1f2937 !important;
+  border: 2px solid #e5e7eb !important;
+  background-color: #ffffff !important;
+  font-weight: 600 !important;
+  padding: 8px 16px !important;
+  border-radius: 12px !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+}
+
+.rbc-btn-group button:hover {
+  background-color: #f8fafc !important;
+  color: #3b82f6 !important;
+  border-color: #3b82f6 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.rbc-active {
+  background-color: #3b82f6 !important;
+  color: #ffffff !important;
+  border-color: #3b82f6 !important;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
+}
+
+/* 툴바 레이아웃 조정 */
+.rbc-toolbar {
+  flex-direction: column !important; /* 세로 배치 */
+  align-items: center !important;
+  margin-bottom: 20px !important;
+}
+
+.rbc-toolbar .rbc-toolbar-label {
+  order: 1 !important; /* 월 표시를 위에 */
+  margin-bottom: 10px !important;
+}
+
+.rbc-toolbar .rbc-btn-group {
+  order: 2 !important; /* 네비게이션 버튼을 아래에 */
+}
+
+/* 이벤트 스타일 개선 - 한샘 스타일 */
+.rbc-event {
+  border-radius: 8px !important;
+  padding: 4px 8px !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  border: none !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.2s ease !important;
+}
+
+.rbc-event:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* 현재 월이 아닌 날짜들 (이전/다음 달) */
+.rbc-off-range {
+  color: #9ca3af !important;
+}
+
+.rbc-off-range .rbc-date-cell > a {
+  color: #9ca3af !important;
+}
+
+/* 커스텀 날짜 셀 스타일 */
+.custom-date-cell {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2px;
+  text-align: center;
+}
+
+.custom-date-cell .date-number {
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.custom-date-cell .holiday-name {
+  word-break: keep-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* 공휴일 배경 스타일 */
+.holiday-cell {
+  background-color: #fef2f2 !important;
+  border-radius: 4px;
+}
+
+/* 토요일 배경 스타일 */
+.saturday-cell {
+  background-color: #eff6ff !important;
+  border-radius: 4px;
+}
+
+/* 일요일 배경 스타일 */
+.sunday-cell {
+  background-color: #fef2f2 !important;
+  border-radius: 4px;
+}
+
+/* 날짜 헤더 컨테이너 스타일 개선 */
+.rbc-date-cell {
+  min-height: 36px !important; /* 높이 증가 */
+  padding: 4px !important; /* 패딩 증가 */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* 모든 날짜 숫자 표시 */
+.rbc-button-link {
+  display: block !important; /* 날짜 링크 표시 */
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+/* 현재 월이 아닌 날짜들도 명확히 표시 */
+.rbc-off-range .rbc-button-link {
+  color: #9ca3af !important;
+  display: block !important;
+}
