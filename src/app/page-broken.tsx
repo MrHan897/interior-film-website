@@ -1,16 +1,20 @@
 export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <h1 className="text-2xl font-bold text-gray-900">
-              🏠 인테리어 필름 전문
-            </h1>
+          <div className="flex justify-between items-center py-6 md:justify-start md:space-x-10">
+            <div className="flex justify-start lg:w-0 lg:flex-1">
+              <h1 className="text-2xl font-bold text-gray-900">
+                🏠 인테리어 필름 전문
+              </h1>
+            </div>
           </div>
         </div>
       </header>
 
+      {/* Hero Section */}
       <section className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="text-center">
@@ -23,13 +27,13 @@ export default function Home() {
             <div className="space-x-4">
               <a 
                 href="/booking" 
-                className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition inline-block"
+                className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition"
               >
                 온라인 예약
               </a>
               <a 
                 href="/admin/schedule" 
-                className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition inline-block"
+                className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition"
               >
                 관리자
               </a>
@@ -38,6 +42,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Features */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
@@ -74,6 +79,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Quick Links */}
       <section className="bg-gray-100 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
@@ -108,11 +114,12 @@ export default function Home() {
               <div className="text-3xl mb-3">🤖</div>
               <h3 className="text-xl font-semibold mb-2">Task Master AI</h3>
               <p className="text-gray-600">AI 작업 관리</p>
-            </a>
+            </div>
           </div>
         </div>
       </section>
 
+      {/* Footer */}
       <footer className="bg-gray-900 text-white py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p>&copy; 2024 인테리어 필름 전문. All rights reserved.</p>
