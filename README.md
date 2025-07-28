@@ -95,11 +95,14 @@ npm run dev
 
 상세한 배포 가이드는 [DEPLOYMENT-GUIDE.md](./DEPLOYMENT-GUIDE.md)를 참고하세요.
 
-### 빠른 배포 (Vercel)
-1. GitHub에 코드 푸시
-2. [Vercel](https://vercel.com)에서 프로젝트 임포트
-3. 환경변수 설정
-4. 자동 배포 완료
+### 빠른 배포 (GitHub + Vercel 연동)
+1. **GitHub 저장소 생성**: `interior-film-website`
+2. **로컬 코드 푸시**: `git push origin main`
+3. **Vercel 프로젝트 임포트**: GitHub 저장소 선택
+4. **환경변수 설정**: Supabase 키 추가
+5. **자동 배포 완료**: URL 생성됨
+
+상세 가이드: [github-deploy-guide.md](./github-deploy-guide.md)
 
 ## 🔧 환경변수
 
