@@ -1,0 +1,22 @@
+VERCEL 환경변수 설정 목록
+================================
+
+배포 시 다음 환경변수들을 설정하세요:
+
+1. NEXT_PUBLIC_SUPABASE_URL
+   값: (Supabase 프로젝트 URL)
+   예시: https://your-project-id.supabase.co
+
+2. NEXT_PUBLIC_SUPABASE_ANON_KEY  
+   값: (Supabase 공개 키)
+   예시: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+3. SUPABASE_SERVICE_ROLE_KEY
+   값: (Supabase 서비스 역할 키)
+   예시: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+4. NODE_ENV
+   값: production
+
+================================
+업로드 후 Environment Variables 섹션에서 이 값들을 입력하세요.
