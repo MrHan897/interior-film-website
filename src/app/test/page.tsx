@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 export default function TestPage() {
   return (
     <div style={{ 
@@ -32,7 +34,7 @@ export default function TestPage() {
       }}>
         <h2>🔗 테스트할 페이지들</h2>
         <ul>
-          <li><a href="/">메인 페이지</a></li>
+          <li><Link href="/">메인 페이지</Link></li>
           <li><a href="/booking">예약 페이지</a></li>
           <li><a href="/admin/schedule">관리자 일정</a></li>
           <li><a href="/api/health">/api/health (헬스체크)</a></li>

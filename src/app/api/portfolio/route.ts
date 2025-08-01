@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { Portfolio, ApiResponse, PortfolioFormData } from '@/types'
 
 // 샘플 포트폴리오 데이터
-const samplePortfolios = [
+const samplePortfolios: Portfolio[] = [
   {
     id: '1',
     title: '모던 아파트 거실 리모델링',
@@ -68,17 +69,17 @@ try {
   if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
     supabase = createClient(supabaseUrl, supabaseKey)
   } else {
-    console.log('Supabase 환경 변수가 없습니다. 샘플 데이터를 사용합니다.')
+    console.warn('Supabase 환경 변수가 없습니다. 샘플 데이터를 사용합니다.')
   }
 } catch (error) {
-  console.log('Supabase 초기화 실패. 샘플 데이터를 사용합니다.')
+  console.warn('Supabase 초기화 실패. 샘플 데이터를 사용합니다.')
 }
 
 // GET - 포트폴리오 목록 조회
-export async function GET() {
+export async function GET(): Promise<NextResponse<Portfolio[] | ApiResponse>> {
   // Supabase가 설정되지 않은 경우 샘플 데이터 반환
   if (!supabase) {
-    console.log('portfolio 테이블이 없습니다. 샘플 데이터를 반환합니다.')
+    console.warn('portfolio 테이블이 없습니다. 샘플 데이터를 반환합니다.')
     return NextResponse.json(samplePortfolios)
   }
 
@@ -90,20 +91,20 @@ export async function GET() {
 
     if (error) {
       console.error('Supabase error details:', error)
-      console.log('portfolio 테이블이 없습니다. 샘플 데이터를 반환합니다.')
+      console.warn('portfolio 테이블이 없습니다. 샘플 데이터를 반환합니다.')
       return NextResponse.json(samplePortfolios)
     }
 
     return NextResponse.json(data)
   } catch (error) {
     console.error('Portfolio fetch error:', error)
-    console.log('portfolio 테이블이 없습니다. 샘플 데이터를 반환합니다.')
+    console.warn('portfolio 테이블이 없습니다. 샘플 데이터를 반환합니다.')
     return NextResponse.json(samplePortfolios)
   }
 }
 
 // POST - 새 포트폴리오 추가
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest): Promise<NextResponse<Portfolio | ApiResponse>> {
   // Supabase가 설정되지 않은 경우 에러 반환
   if (!supabase) {
     return NextResponse.json({ 
@@ -112,8 +113,16 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const body = await request.json()
+    const body: PortfolioFormData = await request.json()
     const { title, category, description, image_url, tags } = body
+    
+    // 입력 유효성 검사
+    if (!title || !category || !description || !image_url) {
+      return NextResponse.json({ 
+        success: false,
+        error: 'Required fields are missing' 
+      }, { status: 400 })
+    }
 
     const { data, error } = await supabase
       .from('portfolio')
@@ -131,12 +140,22 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       console.error('Supabase error:', error)
-      return NextResponse.json({ error: 'Database error' }, { status: 500 })
+      return NextResponse.json({ 
+        success: false,
+        error: 'Database error' 
+      }, { status: 500 })
     }
 
-    return NextResponse.json(data[0], { status: 201 })
+    return NextResponse.json({
+      success: true,
+      data: data[0],
+      message: 'Portfolio created successfully'
+    }, { status: 201 })
   } catch (error) {
     console.error('Portfolio creation error:', error)
-    return NextResponse.json({ error: 'Failed to create portfolio' }, { status: 500 })
+    return NextResponse.json({ 
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to create portfolio' 
+    }, { status: 500 })
   }
 }

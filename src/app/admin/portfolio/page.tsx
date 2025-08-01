@@ -99,7 +99,7 @@ export default function PortfolioAdmin() {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
       const data = await response.json()
-      console.log('Fetched portfolios:', data) // 디버깅용 로그
+      // 포트폴리오 데이터 로드 완료
       // API 데이터가 있으면 사용하고, 없으면 기본 샘플 데이터 유지
       if (Array.isArray(data) && data.length > 0) {
         setPortfolios(data)

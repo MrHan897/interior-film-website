@@ -53,7 +53,16 @@ export default function FloatingConsultButton() {
       bgColor: 'bg-purple-600 hover:bg-purple-700',
       textColor: 'text-white',
       action: () => {
-        document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
+        const contactElement = document.getElementById('contact')
+        if (contactElement) {
+          // 스크롤 위치를 안전하게 체크하고 이동
+          const rect = contactElement.getBoundingClientRect()
+          const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight
+          
+          if (!isVisible) {
+            contactElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }
+        }
         setIsOpen(false)
       }
     }

@@ -56,9 +56,9 @@ export default function SalesChart({ bookings, period }: SalesChartProps) {
   // 기간별 매출 데이터 생성
   const generateSalesData = () => {
     const now = new Date()
-    let labels: string[] = []
-    let salesData: number[] = []
-    let bookingCounts: number[] = []
+    const labels: string[] = []
+    const salesData: number[] = []
+    const bookingCounts: number[] = []
     
     switch (period) {
       case 'daily':

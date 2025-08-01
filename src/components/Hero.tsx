@@ -2,29 +2,37 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useCallback, memo } from 'react'
 
-export default function Hero() {
+const Hero = memo(function Hero() {
   const heroRef = useRef<HTMLElement>(null)
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('animate-fade-in-up')
-          }
-        })
-      },
-      { threshold: 0.1 }
-    )
+  const handleIntersection = useCallback((entries: IntersectionObserverEntry[]) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('animate-fade-in-up')
+      }
+    })
+  }, [])
 
-    if (heroRef.current) {
-      observer.observe(heroRef.current)
+  useEffect(() => {
+    const observer = new IntersectionObserver(handleIntersection, { 
+      threshold: 0.1,
+      rootMargin: '50px'
+    })
+
+    const currentRef = heroRef.current
+    if (currentRef) {
+      observer.observe(currentRef)
     }
 
-    return () => observer.disconnect()
-  }, [])
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef)
+      }
+      observer.disconnect()
+    }
+  }, [handleIntersection])
 
   return (
     <section 
@@ -49,15 +57,133 @@ export default function Hero() {
           width={384}
           height={384}
           className="object-contain opacity-5 blur-sm"
+          priority={false}
+          loading="lazy"
+          placeholder="blur"
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
         />
       </div>
 
-      {/* 움직이는 3D 파티클 */}
+      {/* 3D 인테리어 도구 백그라운드 */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
         {/* 대형 배경 오브 */}
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute top-3/4 right-1/4 w-80 h-80 bg-gradient-to-br from-pink-400/20 to-blue-600/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-gradient-to-br from-indigo-400/20 to-cyan-600/20 rounded-full blur-3xl animate-pulse delay-2000"></div>
+        
+        {/* 3D 시공 도구들 - 은은하게 표현 */}
+        {/* 헤라 (스퀴지) */}
+        <div 
+          className="absolute top-16 left-20 opacity-20"
+          style={{ 
+            animation: 'float 8s ease-in-out infinite',
+            transform: 'perspective(1000px) rotateX(30deg) rotateY(-20deg)'
+          }}
+        >
+          <div className="w-24 h-6 bg-gradient-to-r from-gray-400 to-gray-300 rounded-lg shadow-lg"></div>
+          <div className="w-4 h-12 bg-gradient-to-b from-amber-500 to-amber-600 rounded-full mx-auto -mt-2"></div>
+        </div>
+
+        {/* 커터 나이프 */}
+        <div 
+          className="absolute top-1/3 right-16 opacity-15"
+          style={{ 
+            animation: 'particle-drift 10s ease-in-out infinite 1s',
+            transform: 'perspective(1000px) rotateX(-15deg) rotateY(25deg)'
+          }}
+        >
+          <div className="w-20 h-3 bg-gradient-to-r from-red-500 to-red-600 rounded-full"></div>
+          <div className="w-8 h-1 bg-gradient-to-r from-gray-300 to-gray-100 mx-auto mt-1"></div>
+        </div>
+
+        {/* 측정 도구 (자) */}
+        <div 
+          className="absolute bottom-1/4 left-1/4 opacity-25"
+          style={{ 
+            animation: 'float 12s ease-in-out infinite 2s',
+            transform: 'perspective(1000px) rotateX(45deg) rotateZ(-10deg)'
+          }}
+        >
+          <div className="w-32 h-4 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-sm">
+            <div className="h-full bg-repeating-linear-gradient w-full" style={{
+              backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(0,0,0,0.1) 3px, rgba(0,0,0,0.1) 4px)'
+            }}></div>
+          </div>
+        </div>
+
+        {/* 히트건 */}
+        <div 
+          className="absolute top-2/3 right-1/3 opacity-20"
+          style={{ 
+            animation: 'particle-drift 9s ease-in-out infinite 3s',
+            transform: 'perspective(1000px) rotateX(20deg) rotateY(-30deg)'
+          }}
+        >
+          <div className="w-16 h-6 bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg"></div>
+          <div className="w-3 h-8 bg-gradient-to-b from-gray-600 to-gray-700 rounded-full mx-auto -mt-1"></div>
+          <div className="w-6 h-2 bg-gradient-to-r from-orange-400 to-red-500 rounded-full mx-auto opacity-60 animate-pulse"></div>
+        </div>
+
+        {/* 롤러 */}
+        <div 
+          className="absolute bottom-20 right-20 opacity-30"
+          style={{ 
+            animation: 'float 7s ease-in-out infinite 4s',
+            transform: 'perspective(1000px) rotateX(-25deg) rotateY(15deg)'
+          }}
+        >
+          <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-full"></div>
+          <div className="w-2 h-16 bg-gradient-to-b from-amber-700 to-amber-800 rounded-full mx-auto -mt-2"></div>
+        </div>
+
+        {/* 필름 롤 */}
+        <div 
+          className="absolute top-40 left-1/2 opacity-15"
+          style={{ 
+            animation: 'particle-drift 11s ease-in-out infinite 5s',
+            transform: 'perspective(1000px) rotateX(60deg) rotateY(-45deg)'
+          }}
+        >
+          <div className="w-6 h-20 bg-gradient-to-b from-purple-300 to-purple-400 rounded-full shadow-lg"></div>
+          <div className="w-8 h-2 bg-gradient-to-r from-gray-400 to-gray-500 rounded-full mx-auto -mt-1"></div>
+        </div>
+
+        {/* 스크래퍼 */}
+        <div 
+          className="absolute bottom-1/3 right-1/4 opacity-20"
+          style={{ 
+            animation: 'float 6s ease-in-out infinite 6s',
+            transform: 'perspective(1000px) rotateX(-30deg) rotateY(40deg)'
+          }}
+        >
+          <div className="w-16 h-3 bg-gradient-to-r from-cyan-500 to-cyan-600 rounded-sm"></div>
+          <div className="w-3 h-8 bg-gradient-to-b from-gray-500 to-gray-600 rounded-full mx-auto -mt-1"></div>
+        </div>
+
+        {/* 필름 샘플 */}
+        <div 
+          className="absolute top-1/4 right-1/3 opacity-10"
+          style={{ 
+            animation: 'particle-drift 13s ease-in-out infinite 7s',
+            transform: 'perspective(1000px) rotateX(15deg) rotateY(-35deg)'
+          }}
+        >
+          <div className="w-10 h-14 bg-gradient-to-br from-slate-300 to-slate-400 rounded-md shadow-md relative">
+            <div className="absolute inset-1 bg-gradient-to-br from-indigo-100 to-indigo-200 rounded-sm"></div>
+          </div>
+        </div>
+
+        {/* 더블 사이드 테이프 */}
+        <div 
+          className="absolute bottom-40 left-1/3 opacity-15"
+          style={{ 
+            animation: 'float 9s ease-in-out infinite 8s',
+            transform: 'perspective(1000px) rotateX(50deg) rotateY(-20deg)'
+          }}
+        >
+          <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-orange-500 rounded-full"></div>
+          <div className="w-1 h-4 bg-gradient-to-b from-gray-400 to-gray-500 rounded-full mx-auto -mt-1"></div>
+        </div>
         
         {/* 움직이는 파티클들 */}
         <div 
@@ -153,4 +279,6 @@ export default function Hero() {
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/20 to-transparent"></div>
     </section>
   )
-}
+})
+
+export default Hero

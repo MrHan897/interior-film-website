@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 export default function Emergency() {
   return (
     <html>
@@ -22,7 +24,7 @@ export default function Emergency() {
           <h2>📱 테스트 URL</h2>
           <p>다음 URL들을 차례로 테스트해보세요:</p>
           <ul>
-            <li><a href="/">/</a> - 메인 페이지</li>
+            <li><Link href="/">/</Link> - 메인 페이지</li>
             <li><a href="/test">/test</a> - 테스트 페이지</li>
             <li><a href="/api/health">/api/health</a> - API 헬스체크</li>
             <li><a href="/booking">/booking</a> - 예약 페이지</li>

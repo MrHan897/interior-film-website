@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback, memo } from 'react'
 import Image from 'next/image'
 
 interface Portfolio {
@@ -71,62 +71,92 @@ const defaultSampleData: Portfolio[] = [
   }
 ]
 
-export default function Portfolio() {
+const Portfolio = memo(function Portfolio() {
   const [portfolios, setPortfolios] = useState<Portfolio[]>(defaultSampleData)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const sectionRef = useRef<HTMLElement>(null)
   const cardsRef = useRef<(HTMLDivElement | null)[]>([])
+  const hasFetched = useRef(false)
+
+  const fetchPortfolios = useCallback(async () => {
+    if (loading || hasFetched.current) return // 이미 로딩 중이거나 가져온 적이 있으면 중복 호출 방지
+    
+    hasFetched.current = true
+    
+    setLoading(true)
+    setError(null)
+    
+    try {
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 5000)
+      
+      const response = await fetch('/api/portfolio', {
+        signal: controller.signal,
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
+      
+      clearTimeout(timeoutId)
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      
+      const data = await response.json()
+      
+      if (Array.isArray(data) && data.length > 0) {
+        setPortfolios(data)
+      }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+      console.error('Failed to fetch portfolios:', errorMessage)
+      setError(errorMessage)
+    } finally {
+      setLoading(false)
+    }
+  }, [])
 
   useEffect(() => {
     fetchPortfolios()
   }, [])
 
-  const fetchPortfolios = async () => {
-    try {
-      const response = await fetch('/api/portfolio')
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+  const handleIntersection = useCallback((entries: IntersectionObserverEntry[]) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('animated')
       }
-      const data = await response.json()
-      console.log('Fetched portfolios:', data) // 디버깅용 로그
-      // API 데이터가 있으면 사용하고, 없으면 기본 샘플 데이터 유지
-      if (Array.isArray(data) && data.length > 0) {
-        setPortfolios(data)
-      }
-      // 기본 샘플 데이터는 이미 초기값으로 설정되어 있음
-    } catch (error) {
-      console.error('Failed to fetch portfolios:', error)
-      // 에러 발생 시에도 기본 샘플 데이터 유지
-    } finally {
-      setLoading(false)
-    }
-  }
+    })
+  }, [])
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('animated')
-          }
-        })
-      },
-      { threshold: 0.1 }
-    )
+    const observer = new IntersectionObserver(handleIntersection, { 
+      threshold: 0.1,
+      rootMargin: '50px'
+    })
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
+    const currentSection = sectionRef.current
+    const currentCards = cardsRef.current
+
+    if (currentSection) {
+      observer.observe(currentSection)
     }
 
-    cardsRef.current.forEach((card, index) => {
+    currentCards.forEach((card, index) => {
       if (card) {
         card.style.animationDelay = `${index * 150}ms`
         observer.observe(card)
       }
     })
 
-    return () => observer.disconnect()
-  }, [])
+    return () => {
+      if (currentSection) observer.unobserve(currentSection)
+      currentCards.forEach(card => card && observer.unobserve(card))
+      observer.disconnect()
+    }
+  }, [handleIntersection, portfolios.length])
 
   return (
     <section id="portfolio" className="py-24 bg-gray-50">
@@ -146,7 +176,23 @@ export default function Portfolio() {
         
         {loading ? (
           <div className="flex justify-center items-center h-64">
-            <div className="text-gray-500">포트폴리오를 불러오는 중...</div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <div className="ml-3 text-gray-500">포트폴리오를 불러오는 중...</div>
+          </div>
+        ) : error ? (
+          <div className="flex justify-center items-center h-64">
+            <div className="text-center">
+              <div className="text-red-500 mb-2">포트폴리오를 불러오는 데 실패했습니다.</div>
+              <button 
+                onClick={() => {
+                  hasFetched.current = false
+                  fetchPortfolios()
+                }}
+                className="text-blue-600 hover:text-blue-800 underline"
+              >
+                다시 시도
+              </button>
+            </div>
           </div>
         ) : (
           <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -163,6 +209,9 @@ export default function Portfolio() {
                     width={400}
                     height={300}
                     className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    loading="lazy"
+                    placeholder="blur"
+                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
                   />
                 </div>
                 <div className="p-6">
@@ -201,4 +250,6 @@ export default function Portfolio() {
       </div>
     </section>
   )
-}
+})
+
+export default Portfolio

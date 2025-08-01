@@ -1,5 +1,15 @@
-import { useState, useCallback, useEffect } from 'react';
-import { Task } from '../utils/taskUtils';
+import { useState, useCallback } from 'react';
+
+interface Task {
+  id: string;
+  title: string;
+  description?: string;
+  status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
+  priority: 'low' | 'medium' | 'high';
+  category?: string;
+  created_at: string;
+  updated_at?: string;
+}
 
 interface FilterState {
   status: string;

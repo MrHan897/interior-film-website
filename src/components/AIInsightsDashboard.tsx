@@ -67,9 +67,9 @@ export default function AIInsightsDashboard({ className = '', userId }: AIInsigh
 
   useEffect(() => {
     fetchInsights();
-  }, [selectedTab, timeframe, userId]);
+  }, [selectedTab, timeframe, userId, fetchInsights]);
 
-  const fetchInsights = async () => {
+  const fetchInsights = useCallback(async () => {
     try {
       setLoading(true);
       const params = new URLSearchParams({
@@ -89,7 +89,7 @@ export default function AIInsightsDashboard({ className = '', userId }: AIInsigh
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedTab, timeframe, userId]);
 
   const getScoreColor = (score: number) => {
     if (score >= 80) return 'text-green-600 bg-green-50';
