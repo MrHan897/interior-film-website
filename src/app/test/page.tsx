@@ -35,7 +35,6 @@ export default function TestPage() {
           <li><a href="/">메인 페이지</a></li>
           <li><a href="/booking">예약 페이지</a></li>
           <li><a href="/admin/schedule">관리자 일정</a></li>
-          <li><a href="/admin/task-master">Task Master AI</a></li>
           <li><a href="/api/health">/api/health (헬스체크)</a></li>
         </ul>
       </div>

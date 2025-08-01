@@ -251,13 +251,6 @@ export default function PortfolioAdmin() {
               <Link href="/admin/schedule" className="text-blue-600 hover:text-blue-500 mr-4">
                 ← 관리자 메인
               </Link>
-              <div className="flex items-center space-x-4">
-                <Link href="/admin/task-master" className="text-blue-600 hover:text-blue-500 flex items-center space-x-1">
-                  <span>⚡</span>
-                  <span>Task Master</span>
-                </Link>
-                <div className="h-6 border-l border-gray-300" />
-              </div>
               <h1 className="text-2xl font-bold text-gray-900">포트폴리오 관리</h1>
             </div>
             <button

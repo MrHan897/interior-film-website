@@ -22,7 +22,6 @@ export async function GET() {
         '/': 'available',
         '/booking': 'available',
         '/admin/schedule': 'available',
-        '/admin/task-master': 'available',
         '/admin/portfolio': 'available'
       }
     };
