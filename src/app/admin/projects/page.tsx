@@ -375,7 +375,14 @@ const ProjectModal = ({
                   value={currentData.customerName}
                   onChange={(e) => handleInputChange('customerName', e.target.value)}
                   disabled={!isEditable}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
+                    !isEditable 
+                      ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                      : mode === 'create' 
+                        ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                        : 'bg-white border-gray-300 text-gray-900'
+                  }`}
+                  placeholder={mode === 'create' ? '고객명을 입력하세요' : ''}
                 />
               </div>
               <div>
@@ -385,7 +392,14 @@ const ProjectModal = ({
                   value={currentData.phone}
                   onChange={(e) => handleInputChange('phone', e.target.value)}
                   disabled={!isEditable}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
+                    !isEditable 
+                      ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                      : mode === 'create' 
+                        ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                        : 'bg-white border-gray-300 text-gray-900'
+                  }`}
+                  placeholder={mode === 'create' ? '010-0000-0000' : ''}
                 />
               </div>
               <div className="md:col-span-2">
@@ -395,7 +409,14 @@ const ProjectModal = ({
                   value={currentData?.address || ''}
                   onChange={(e) => handleInputChange('address', e.target.value)}
                   disabled={!isEditable}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
+                    !isEditable 
+                      ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                      : mode === 'create' 
+                        ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                        : 'bg-white border-gray-300 text-gray-900'
+                  }`}
+                  placeholder={mode === 'create' ? '시공 주소를 입력하세요' : ''}
                 />
               </div>
               <div className="md:col-span-2">
@@ -405,7 +426,14 @@ const ProjectModal = ({
                   value={currentData?.service || ''}
                   onChange={(e) => handleInputChange('service', e.target.value)}
                   disabled={!isEditable}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
+                    !isEditable 
+                      ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                      : mode === 'create' 
+                        ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                        : 'bg-white border-gray-300 text-gray-900'
+                  }`}
+                  placeholder={mode === 'create' ? '시공 서비스를 입력하세요 (예: 아파트 거실 필름 시공)' : ''}
                 />
               </div>
             </div>
@@ -422,7 +450,13 @@ const ProjectModal = ({
                   value={currentData?.scheduledDate || ''}
                   onChange={(e) => handleInputChange('scheduledDate', e.target.value)}
                   disabled={!isEditable}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
+                    !isEditable 
+                      ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                      : mode === 'create' 
+                        ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                        : 'bg-white border-gray-300 text-gray-900'
+                  }`}
                 />
               </div>
               <div>
@@ -432,8 +466,14 @@ const ProjectModal = ({
                   value={currentData?.workerAssigned || ''}
                   onChange={(e) => handleInputChange('workerAssigned', e.target.value)}
                   disabled={!isEditable}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
-                  placeholder="담당 시공팀"
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
+                    !isEditable 
+                      ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                      : mode === 'create' 
+                        ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                        : 'bg-white border-gray-300 text-gray-900'
+                  }`}
+                  placeholder={mode === 'create' ? '담당 시공팀을 입력하세요 (예: 시공팀 A)' : '담당 시공팀'}
                 />
               </div>
               <div>
@@ -442,7 +482,13 @@ const ProjectModal = ({
                   value={currentData?.priority || 'normal'}
                   onChange={(e) => handleInputChange('priority', e.target.value)}
                   disabled={!isEditable}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
+                    !isEditable 
+                      ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                      : mode === 'create' 
+                        ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                        : 'bg-white border-gray-300 text-gray-900'
+                  }`}
                 >
                   <option value="low">낮음</option>
                   <option value="normal">보통</option>
@@ -458,7 +504,13 @@ const ProjectModal = ({
                   value={currentData?.progressPercentage || 0}
                   onChange={(e) => handleInputChange('progressPercentage', parseInt(e.target.value) || 0)}
                   disabled={!isEditable}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
+                    !isEditable 
+                      ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                      : mode === 'create' 
+                        ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                        : 'bg-white border-gray-300 text-gray-900'
+                  }`}
                 />
               </div>
             </div>
@@ -502,7 +554,13 @@ const ProjectModal = ({
               onChange={(e) => handleInputChange('notes', e.target.value)}
               disabled={!isEditable}
               rows={3}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
+                !isEditable 
+                  ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                  : mode === 'create' 
+                    ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                    : 'bg-white border-gray-300 text-gray-900'
+              }`}
               placeholder="프로젝트 특이사항이나 고객 요청사항을 입력하세요"
             />
           </section>
@@ -548,6 +606,174 @@ const ProjectModal = ({
   )
 }
 
+const ProgressUpdateModal = ({ 
+  project, 
+  isOpen, 
+  onClose, 
+  onSubmit 
+}: { 
+  project: Project | null
+  isOpen: boolean
+  onClose: () => void
+  onSubmit: (progress: number) => void
+}) => {
+  const [newProgress, setNewProgress] = useState(0)
+  
+  useEffect(() => {
+    if (project) {
+      setNewProgress(project.progressPercentage)
+    }
+  }, [project])
+  
+  if (!isOpen || !project) return null
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    onSubmit(newProgress)
+  }
+
+  const adjustProgress = (amount: number) => {
+    const adjusted = Math.max(0, Math.min(100, newProgress + amount))
+    setNewProgress(adjusted)
+  }
+
+  const getStatusPreview = (progress: number) => {
+    if (progress >= 100) return { label: '완료', color: 'text-emerald-600' }
+    if (progress >= 75) return { label: '검수중', color: 'text-purple-600' }
+    if (progress >= 25) return { label: '진행중', color: 'text-amber-600' }
+    return { label: '예정', color: 'text-blue-600' }
+  }
+
+  const statusPreview = getStatusPreview(newProgress)
+
+  return (
+    <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl">
+        {/* 모달 헤더 */}
+        <div className="p-6 border-b border-gray-200">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold text-gray-900">진행률 업데이트</h2>
+            <button
+              onClick={onClose}
+              className="w-8 h-8 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-full transition-colors"
+            >
+              ×
+            </button>
+          </div>
+          <p className="text-sm text-gray-600 mt-1">{project.customerName}님 - {project.service}</p>
+        </div>
+
+        {/* 모달 컨텐츠 */}
+        <form onSubmit={handleSubmit} className="p-6">
+          <div className="space-y-6">
+            {/* 현재 진행률 */}
+            <div className="text-center">
+              <p className="text-sm text-gray-600 mb-2">현재 진행률</p>
+              <div className="text-4xl font-bold text-gray-900 mb-1">{newProgress}%</div>
+              <div className={`text-sm font-medium ${statusPreview.color}`}>
+                → {statusPreview.label}
+              </div>
+            </div>
+
+            {/* 진행률 바 */}
+            <div className="space-y-3">
+              <div className="w-full bg-gray-200 rounded-full h-4">
+                <div 
+                  className="bg-indigo-500 h-4 rounded-full transition-all duration-300"
+                  style={{ width: `${newProgress}%` }}
+                />
+              </div>
+              
+              {/* 빠른 조정 버튼들 */}
+              <div className="flex justify-center space-x-2">
+                <button
+                  type="button"
+                  onClick={() => adjustProgress(-25)}
+                  className="px-3 py-1 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors text-sm font-medium"
+                >
+                  -25%
+                </button>
+                <button
+                  type="button"
+                  onClick={() => adjustProgress(-10)}
+                  className="px-3 py-1 bg-orange-100 text-orange-600 rounded-lg hover:bg-orange-200 transition-colors text-sm font-medium"
+                >
+                  -10%
+                </button>
+                <button
+                  type="button"
+                  onClick={() => adjustProgress(10)}
+                  className="px-3 py-1 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition-colors text-sm font-medium"
+                >
+                  +10%
+                </button>
+                <button
+                  type="button"
+                  onClick={() => adjustProgress(25)}
+                  className="px-3 py-1 bg-emerald-100 text-emerald-600 rounded-lg hover:bg-emerald-200 transition-colors text-sm font-medium"
+                >
+                  +25%
+                </button>
+              </div>
+            </div>
+
+            {/* 정확한 값 입력 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">정확한 진행률 입력</label>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={newProgress}
+                onChange={(e) => setNewProgress(parseInt(e.target.value))}
+                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+              />
+              <div className="flex justify-between text-xs text-gray-500 mt-1">
+                <span>0%</span>
+                <span>25%</span>
+                <span>50%</span>
+                <span>75%</span>
+                <span>100%</span>
+              </div>
+            </div>
+
+            {/* 숫자 입력 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">직접 입력</label>
+              <input
+                type="number"
+                min="0"
+                max="100"
+                value={newProgress}
+                onChange={(e) => setNewProgress(Math.max(0, Math.min(100, parseInt(e.target.value) || 0)))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                placeholder="0-100"
+              />
+            </div>
+          </div>
+
+          {/* 액션 버튼 */}
+          <div className="flex items-center justify-end space-x-3 mt-6 pt-6 border-t border-gray-200">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              취소
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+            >
+              업데이트
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  )
+}
+
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>(sampleProjects)
   const [filteredProjects, setFilteredProjects] = useState<Project[]>(sampleProjects)
@@ -555,6 +781,8 @@ export default function ProjectsPage() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
   const [modalOpen, setModalOpen] = useState(false)
   const [modalMode, setModalMode] = useState<'view' | 'edit' | 'create'>('view')
+  const [progressModalOpen, setProgressModalOpen] = useState(false)
+  const [selectedProjectForProgress, setSelectedProjectForProgress] = useState<Project | null>(null)
 
   const handleSearch = (term: string) => {
     setSearchTerm(term)
@@ -601,23 +829,29 @@ export default function ProjectsPage() {
   }
 
   const handleUpdateProgress = (project: Project) => {
-    // 진행률 업데이트 로직
-    let newProgress = project.progressPercentage + 25
-    let newStatus = project.status
+    setSelectedProjectForProgress(project)
+    setProgressModalOpen(true)
+  }
+
+  const handleProgressSubmit = (newProgress: number) => {
+    if (!selectedProjectForProgress) return
+    
+    let newStatus = selectedProjectForProgress.status
     
     // 진행률에 따른 상태 자동 변경
     if (newProgress >= 100) {
-      newProgress = 100
       newStatus = 'completed'
     } else if (newProgress >= 75) {
       newStatus = 'quality_check'
     } else if (newProgress >= 25) {
       newStatus = 'in_progress'
+    } else {
+      newStatus = 'scheduled'
     }
     
     // 프로젝트 목록 업데이트
     const updatedProjects = projects.map(p => 
-      p.id === project.id 
+      p.id === selectedProjectForProgress.id 
         ? { ...p, progressPercentage: newProgress, status: newStatus as Project['status'] }
         : p
     )
@@ -630,12 +864,15 @@ export default function ProjectsPage() {
     
     // 상태별 메시지
     const statusMessages = {
+      scheduled: '시공 예정입니다',
       in_progress: '시공이 진행 중입니다',
       quality_check: '품질 검사 단계입니다', 
       completed: '프로젝트가 완료되었습니다'
     }
     
-    alert(`${project.customerName}님의 프로젝트 진행률이 ${newProgress}%로 업데이트되었습니다.\n${statusMessages[newStatus as keyof typeof statusMessages] || ''}`)
+    setProgressModalOpen(false)
+    setSelectedProjectForProgress(null)
+    alert(`${selectedProjectForProgress.customerName}님의 프로젝트 진행률이 ${newProgress}%로 업데이트되었습니다.\n${statusMessages[newStatus as keyof typeof statusMessages] || ''}`)
   }
 
   const handleContactCustomer = (project: Project) => {
@@ -809,6 +1046,17 @@ export default function ProjectsPage() {
           isOpen={modalOpen}
           onClose={() => setModalOpen(false)}
           mode={modalMode}
+        />
+
+        {/* 진행률 업데이트 모달 */}
+        <ProgressUpdateModal
+          project={selectedProjectForProgress}
+          isOpen={progressModalOpen}
+          onClose={() => {
+            setProgressModalOpen(false)
+            setSelectedProjectForProgress(null)
+          }}
+          onSubmit={handleProgressSubmit}
         />
       </div>
     </AdminLayout>

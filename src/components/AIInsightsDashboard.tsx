@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   ChartBarIcon,
   BoltIcon,
@@ -11,6 +11,20 @@ import {
   ArrowTrendingUpIcon,
   CalendarDaysIcon
 } from '@heroicons/react/24/outline';
+
+// Utility functions
+const formatPercentage = (value: number) => {
+  return `${Math.round(value)}%`;
+};
+
+const getPriorityColor = (priority: string) => {
+  switch (priority) {
+    case 'high': return 'text-red-600 bg-red-50 border-red-200';
+    case 'medium': return 'text-yellow-600 bg-yellow-50 border-yellow-200';
+    case 'low': return 'text-green-600 bg-green-50 border-green-200';
+    default: return 'text-gray-600 bg-gray-50 border-gray-200';
+  }
+};
 
 interface AIInsight {
   type: string;
@@ -65,10 +79,6 @@ export default function AIInsightsDashboard({ className = '', userId }: AIInsigh
   const [selectedTab, setSelectedTab] = useState<'productivity' | 'optimization' | 'predictions' | 'recommendations'>('productivity');
   const [timeframe, setTimeframe] = useState('7');
 
-  useEffect(() => {
-    fetchInsights();
-  }, [selectedTab, timeframe, userId, fetchInsights]);
-
   const fetchInsights = useCallback(async () => {
     try {
       setLoading(true);
@@ -91,24 +101,16 @@ export default function AIInsightsDashboard({ className = '', userId }: AIInsigh
     }
   }, [selectedTab, timeframe, userId]);
 
+  useEffect(() => {
+    fetchInsights();
+  }, [selectedTab, timeframe, userId, fetchInsights]);
+
   const getScoreColor = (score: number) => {
     if (score >= 80) return 'text-green-600 bg-green-50';
     if (score >= 60) return 'text-yellow-600 bg-yellow-50';
     return 'text-red-600 bg-red-50';
   };
 
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'high': return 'text-red-600 bg-red-50 border-red-200';
-      case 'medium': return 'text-yellow-600 bg-yellow-50 border-yellow-200';
-      case 'low': return 'text-green-600 bg-green-50 border-green-200';
-      default: return 'text-gray-600 bg-gray-50 border-gray-200';
-    }
-  };
-
-  const formatPercentage = (value: number) => {
-    return `${Math.round(value)}%`;
-  };
 
   if (loading) {
     return (

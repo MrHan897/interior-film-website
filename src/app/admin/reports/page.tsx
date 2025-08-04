@@ -281,7 +281,7 @@ const QuickInsights = ({ data }: { data: ReportData }) => {
       <h3 className="text-lg font-semibold text-gray-900 mb-4">인사이트</h3>
       <div className="space-y-3">
         {insights.map((insight, index) => (
-          <div key={index} className={`p-4 rounded-lg border ${typeColors[insight.type]}`}>
+          <div key={index} className={`p-4 rounded-lg border ${typeColors[insight.type as keyof typeof typeColors]}`}>
             <div className="flex items-start space-x-3">
               <insight.icon className="w-5 h-5 mt-0.5 flex-shrink-0" />
               <p className="text-sm leading-relaxed">{insight.message}</p>

@@ -423,7 +423,7 @@ const CustomerModal = ({
                       min="1"
                       max="5"
                       value={currentData.rating || ''}
-                      onChange={(e) => handleInputChange('rating', parseInt(e.target.value) || undefined)}
+                      onChange={(e) => handleInputChange('rating', e.target.value ? parseInt(e.target.value) : undefined)}
                       disabled={!isEditable}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                       placeholder="1-5점"
@@ -541,7 +541,7 @@ const CustomerModal = ({
 }
 
 export default function CustomersPage() {
-  const [customers] = useState<Customer[]>(sampleCustomers)
+  const [customers, setCustomers] = useState<Customer[]>(sampleCustomers)
   const [filteredCustomers, setFilteredCustomers] = useState<Customer[]>(sampleCustomers)
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState<string>('all')
