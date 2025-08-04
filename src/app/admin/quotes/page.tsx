@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import AdminLayout from '@/components/admin/AdminLayout'
 import { 
   PlusIcon,
@@ -209,9 +209,25 @@ const QuoteModal = ({
   onClose: () => void
   mode: 'view' | 'edit' | 'create'
 }) => {
+  const [editData, setEditData] = useState<Quote | null>(null)
+  
+  const isEditable = mode === 'edit' || mode === 'create'
+  
+  // 편집 모드일 때 데이터 초기화
+  useEffect(() => {
+    if (isEditable && quote) {
+      setEditData(quote)
+    }
+  }, [isEditable, quote])
+  
+  const handleInputChange = (field: keyof Quote, value: string | number) => {
+    if (!isEditable || !editData) return
+    setEditData({ ...editData, [field]: value })
+  }
+  
   if (!isOpen) return null
 
-  const isEditable = mode === 'edit' || mode === 'create'
+  const currentData = isEditable ? (editData || quote) : quote
 
   return (
     <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 p-4">
@@ -243,7 +259,8 @@ const QuoteModal = ({
                     <label className="block text-sm font-medium text-gray-700 mb-1">고객명</label>
                     <input
                       type="text"
-                      value={quote.customerName}
+                      value={currentData?.customerName || ''}
+                      onChange={(e) => handleInputChange('customerName', e.target.value)}
                       disabled={!isEditable}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                     />
@@ -252,7 +269,8 @@ const QuoteModal = ({
                     <label className="block text-sm font-medium text-gray-700 mb-1">연락처</label>
                     <input
                       type="text"
-                      value={quote.phone}
+                      value={currentData?.phone || ''}
+                      onChange={(e) => handleInputChange('phone', e.target.value)}
                       disabled={!isEditable}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                     />

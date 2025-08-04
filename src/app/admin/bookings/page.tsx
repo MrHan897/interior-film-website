@@ -1,22 +1,18 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import AdminLayout from '@/components/admin/AdminLayout'
 import { 
   CalendarDaysIcon,
   ClockIcon,
   UserIcon,
-  PhoneIcon,
   MapPinIcon,
   WrenchScrewdriverIcon,
   EyeIcon,
   PencilIcon,
   CheckCircleIcon,
-  XCircleIcon,
   MagnifyingGlassIcon,
-  FunnelIcon,
-  PlusIcon,
-  ChevronRightIcon
+  PlusIcon
 } from '@heroicons/react/24/outline'
 
 interface Booking {
@@ -249,10 +245,26 @@ const BookingModal = ({
   onClose: () => void
   mode: 'view' | 'edit'
 }) => {
+  const [editData, setEditData] = useState<Booking | null>(null)
+  
+  const isEditable = mode === 'edit'
+  
+  // 편집 모드일 때 데이터 초기화
+  useEffect(() => {
+    if (isEditable && booking) {
+      setEditData(booking)
+    }
+  }, [isEditable, booking])
+  
+  const handleInputChange = (field: keyof Booking, value: string | number) => {
+    if (!isEditable || !editData) return
+    setEditData({ ...editData, [field]: value })
+  }
+  
   if (!isOpen || !booking) return null
 
-  const isEditable = mode === 'edit'
   const status = statusConfig[booking.status]
+  const currentData = isEditable ? (editData || booking) : booking
 
   return (
     <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 p-4">
@@ -287,7 +299,8 @@ const BookingModal = ({
                 <label className="block text-sm font-medium text-gray-700 mb-1">고객명</label>
                 <input
                   type="text"
-                  value={booking.customerName}
+                  value={currentData.customerName}
+                  onChange={(e) => handleInputChange('customerName', e.target.value)}
                   disabled={!isEditable}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                 />
@@ -296,7 +309,8 @@ const BookingModal = ({
                 <label className="block text-sm font-medium text-gray-700 mb-1">연락처</label>
                 <input
                   type="text"
-                  value={booking.phone}
+                  value={currentData.phone}
+                  onChange={(e) => handleInputChange('phone', e.target.value)}
                   disabled={!isEditable}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                 />
@@ -305,7 +319,8 @@ const BookingModal = ({
                 <label className="block text-sm font-medium text-gray-700 mb-1">주소</label>
                 <input
                   type="text"
-                  value={booking.address}
+                  value={currentData.address}
+                  onChange={(e) => handleInputChange('address', e.target.value)}
                   disabled={!isEditable}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                 />
@@ -321,7 +336,8 @@ const BookingModal = ({
                 <label className="block text-sm font-medium text-gray-700 mb-1">서비스</label>
                 <input
                   type="text"
-                  value={booking.service}
+                  value={currentData.service}
+                  onChange={(e) => handleInputChange('service', e.target.value)}
                   disabled={!isEditable}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                 />
@@ -330,7 +346,8 @@ const BookingModal = ({
                 <label className="block text-sm font-medium text-gray-700 mb-1">예약 날짜</label>
                 <input
                   type="date"
-                  value={booking.scheduledDate}
+                  value={currentData.scheduledDate}
+                  onChange={(e) => handleInputChange('scheduledDate', e.target.value)}
                   disabled={!isEditable}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                 />
@@ -339,7 +356,8 @@ const BookingModal = ({
                 <label className="block text-sm font-medium text-gray-700 mb-1">예약 시간</label>
                 <input
                   type="time"
-                  value={booking.scheduledTime}
+                  value={currentData.scheduledTime}
+                  onChange={(e) => handleInputChange('scheduledTime', e.target.value)}
                   disabled={!isEditable}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                 />
@@ -348,7 +366,8 @@ const BookingModal = ({
                 <label className="block text-sm font-medium text-gray-700 mb-1">소요시간 (분)</label>
                 <input
                   type="number"
-                  value={booking.duration}
+                  value={currentData.duration}
+                  onChange={(e) => handleInputChange('duration', parseInt(e.target.value))}
                   disabled={!isEditable}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                 />
@@ -357,7 +376,8 @@ const BookingModal = ({
                 <label className="block text-sm font-medium text-gray-700 mb-1">담당 시공팀</label>
                 <input
                   type="text"
-                  value={booking.worker || ''}
+                  value={currentData.worker || ''}
+                  onChange={(e) => handleInputChange('worker', e.target.value)}
                   disabled={!isEditable}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                   placeholder="담당 시공팀을 입력하세요"
@@ -373,7 +393,7 @@ const BookingModal = ({
               <div className="flex items-center justify-between">
                 <span className="text-lg font-medium text-gray-900">총 견적 금액</span>
                 <span className="text-2xl font-bold text-indigo-600">
-                  {(booking.totalAmount / 10000).toFixed(0)}만원
+                  {(currentData.totalAmount / 10000).toFixed(0)}만원
                 </span>
               </div>
             </div>
@@ -383,7 +403,8 @@ const BookingModal = ({
           <section>
             <label className="block text-sm font-medium text-gray-700 mb-1">메모</label>
             <textarea
-              value={booking.notes || ''}
+              value={currentData.notes || ''}
+              onChange={(e) => handleInputChange('notes', e.target.value)}
               disabled={!isEditable}
               rows={3}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"

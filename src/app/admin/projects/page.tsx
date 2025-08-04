@@ -1,17 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import AdminLayout from '@/components/admin/AdminLayout'
 import { 
   WrenchScrewdriverIcon,
   CalendarDaysIcon,
   UserIcon,
   MapPinIcon,
-  ClockIcon,
   PhoneIcon,
   CameraIcon,
-  ChatBubbleLeftIcon,
-  ChevronRightIcon,
   PlusIcon,
   MagnifyingGlassIcon,
   EyeIcon,
@@ -319,10 +316,26 @@ const ProjectModal = ({
   onClose: () => void
   mode: 'view' | 'edit'
 }) => {
+  const [editData, setEditData] = useState<Project | null>(null)
+  
+  const isEditable = mode === 'edit'
+  
+  // 편집 모드일 때 데이터 초기화
+  useEffect(() => {
+    if (isEditable && project) {
+      setEditData(project)
+    }
+  }, [isEditable, project])
+  
+  const handleInputChange = (field: keyof Project, value: string | number) => {
+    if (!isEditable || !editData) return
+    setEditData({ ...editData, [field]: value })
+  }
+  
   if (!isOpen || !project) return null
 
-  const isEditable = mode === 'edit'
   const status = statusConfig[project.status]
+  const currentData = isEditable ? (editData || project) : project
 
   return (
     <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 p-4">
@@ -357,7 +370,8 @@ const ProjectModal = ({
                 <label className="block text-sm font-medium text-gray-700 mb-1">고객명</label>
                 <input
                   type="text"
-                  value={project.customerName}
+                  value={currentData.customerName}
+                  onChange={(e) => handleInputChange('customerName', e.target.value)}
                   disabled={!isEditable}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                 />
@@ -366,7 +380,8 @@ const ProjectModal = ({
                 <label className="block text-sm font-medium text-gray-700 mb-1">연락처</label>
                 <input
                   type="text"
-                  value={project.phone}
+                  value={currentData.phone}
+                  onChange={(e) => handleInputChange('phone', e.target.value)}
                   disabled={!isEditable}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                 />
