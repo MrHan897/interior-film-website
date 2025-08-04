@@ -279,7 +279,8 @@ const QuoteModal = ({
                     <label className="block text-sm font-medium text-gray-700 mb-1">주소</label>
                     <input
                       type="text"
-                      value={quote.address}
+                      value={currentData?.address || ''}
+                      onChange={(e) => handleInputChange('address', e.target.value)}
                       disabled={!isEditable}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                     />
@@ -294,7 +295,8 @@ const QuoteModal = ({
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">건물 유형</label>
                     <select
-                      value={quote.buildingType}
+                      value={currentData?.buildingType || ''}
+                      onChange={(e) => handleInputChange('buildingType', e.target.value)}
                       disabled={!isEditable}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                     >
@@ -308,7 +310,8 @@ const QuoteModal = ({
                     <label className="block text-sm font-medium text-gray-700 mb-1">시공 면적 (㎡)</label>
                     <input
                       type="number"
-                      value={quote.areaSize}
+                      value={currentData?.areaSize || 0}
+                      onChange={(e) => handleInputChange('areaSize', parseInt(e.target.value) || 0)}
                       disabled={!isEditable}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                     />
@@ -317,7 +320,8 @@ const QuoteModal = ({
                     <label className="block text-sm font-medium text-gray-700 mb-1">필름 종류</label>
                     <input
                       type="text"
-                      value={quote.filmType}
+                      value={currentData?.filmType || ''}
+                      onChange={(e) => handleInputChange('filmType', e.target.value)}
                       disabled={!isEditable}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                     />
@@ -325,7 +329,8 @@ const QuoteModal = ({
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">시공 난이도</label>
                     <select
-                      value={quote.difficulty}
+                      value={currentData?.difficulty || 'normal'}
+                      onChange={(e) => handleInputChange('difficulty', e.target.value)}
                       disabled={!isEditable}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                     >
@@ -346,7 +351,8 @@ const QuoteModal = ({
                       <label className="block text-sm font-medium text-gray-700 mb-1">재료비</label>
                       <input
                         type="number"
-                        value={quote.materialCost}
+                        value={currentData?.materialCost || 0}
+                        onChange={(e) => handleInputChange('materialCost', parseInt(e.target.value) || 0)}
                         disabled={!isEditable}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                       />
@@ -355,7 +361,8 @@ const QuoteModal = ({
                       <label className="block text-sm font-medium text-gray-700 mb-1">인건비</label>
                       <input
                         type="number"
-                        value={quote.laborCost}
+                        value={currentData?.laborCost || 0}
+                        onChange={(e) => handleInputChange('laborCost', parseInt(e.target.value) || 0)}
                         disabled={!isEditable}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                       />
@@ -364,7 +371,8 @@ const QuoteModal = ({
                       <label className="block text-sm font-medium text-gray-700 mb-1">추가비용</label>
                       <input
                         type="number"
-                        value={quote.additionalFees}
+                        value={currentData?.additionalFees || 0}
+                        onChange={(e) => handleInputChange('additionalFees', parseInt(e.target.value) || 0)}
                         disabled={!isEditable}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                       />
@@ -385,7 +393,8 @@ const QuoteModal = ({
               <section>
                 <label className="block text-sm font-medium text-gray-700 mb-1">메모</label>
                 <textarea
-                  value={quote.notes || ''}
+                  value={currentData?.notes || ''}
+                  onChange={(e) => handleInputChange('notes', e.target.value)}
                   disabled={!isEditable}
                   rows={3}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
