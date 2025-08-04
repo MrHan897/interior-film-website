@@ -295,19 +295,93 @@ const QuickInsights = ({ data }: { data: ReportData }) => {
 
 export default function ReportsPage() {
   const [selectedPeriod, setSelectedPeriod] = useState('this-month')
-  const [reportData] = useState<ReportData>(sampleReportData)
-  const [serviceStats] = useState<ServiceStats[]>(sampleServiceStats)
-  const [monthlyTrends] = useState<MonthlyTrend[]>(sampleMonthlyTrends)
+  const [reportData, setReportData] = useState<ReportData>(sampleReportData)
+  const [serviceStats, setServiceStats] = useState<ServiceStats[]>(sampleServiceStats)
+  const [monthlyTrends, setMonthlyTrends] = useState<MonthlyTrend[]>(sampleMonthlyTrends)
 
   const handlePeriodChange = (period: string) => {
     setSelectedPeriod(period)
-    // 실제 구현에서는 여기서 API 호출하여 데이터 업데이트
-    console.log('기간 변경:', period)
+    
+    // 기간별 데이터 시뮬레이션
+    const periodMultipliers = {
+      'this-month': 1.0,
+      'last-month': 0.85,
+      'last-3-months': 2.8,
+      'last-6-months': 5.2,
+      'this-year': 12.5,
+      'last-year': 10.8
+    }
+    
+    const multiplier = periodMultipliers[period as keyof typeof periodMultipliers] || 1.0
+    
+    // 보고서 데이터 업데이트
+    setReportData({
+      period: getPeriodLabel(period),
+      revenue: Math.round(sampleReportData.revenue * multiplier),
+      bookings: Math.round(sampleReportData.bookings * multiplier),
+      customers: Math.round(sampleReportData.customers * multiplier),
+      avgOrderValue: Math.round(sampleReportData.avgOrderValue * (0.8 + multiplier * 0.1)),
+      completion_rate: Math.min(99.9, sampleReportData.completion_rate + (multiplier - 1) * 2)
+    })
+    
+    // 서비스별 통계 업데이트
+    setServiceStats(sampleServiceStats.map(stat => ({
+      ...stat,
+      revenue: Math.round(stat.revenue * multiplier),
+      count: Math.round(stat.count * multiplier)
+    })))
+    
+    // 성공 메시지
+    setTimeout(() => {
+      alert(`${getPeriodLabel(period)} 데이터로 업데이트되었습니다.`)
+    }, 300)
+  }
+  
+  const getPeriodLabel = (period: string) => {
+    const labels = {
+      'this-month': '이번 달',
+      'last-month': '지난 달', 
+      'last-3-months': '최근 3개월',
+      'last-6-months': '최근 6개월',
+      'this-year': '올해',
+      'last-year': '작년'
+    }
+    return labels[period as keyof typeof labels] || '이번 달'
   }
 
   const handleExportReport = () => {
-    console.log('보고서 내보내기')
-    // 실제 구현에서는 PDF 생성 또는 Excel 다운로드
+    // 보고서 내보내기 옵션 선택
+    const exportFormat = confirm(
+      `${reportData.period} 보고서를 내보내시겠습니까?\n\n` +
+      `매출: ${(reportData.revenue / 10000).toFixed(0)}만원\n` +
+      `예약: ${reportData.bookings}건\n` +
+      `신규고객: ${reportData.customers}명\n\n` +
+      `확인 = CSV 다운로드 / 취소 = 인쇄하기`
+    )
+    
+    if (exportFormat) {
+      // CSV 다운로드 시뮬레이션
+      const csvContent = [
+        ' 항목,값',
+        `기간,${reportData.period}`,
+        `매출,${reportData.revenue}`,
+        `예약건수,${reportData.bookings}`,
+        `신규고객,${reportData.customers}`,
+        `평균결제,${reportData.avgOrderValue}`,
+        `완료율,${reportData.completion_rate}%`
+      ].join('\n')
+      
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+      const link = document.createElement('a')
+      link.href = URL.createObjectURL(blob)
+      link.download = `매출보고서_${reportData.period}_${new Date().toISOString().split('T')[0]}.csv`
+      link.click()
+      
+      alert('CSV 파일이 다운로드되었습니다.')
+    } else {
+      // 인쇄하기
+      window.print()
+    }
   }
 
   return (

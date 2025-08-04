@@ -540,7 +540,7 @@ const ProjectModal = ({
 }
 
 export default function ProjectsPage() {
-  const [projects] = useState<Project[]>(sampleProjects)
+  const [projects, setProjects] = useState<Project[]>(sampleProjects)
   const [filteredProjects, setFilteredProjects] = useState<Project[]>(sampleProjects)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
@@ -573,11 +573,110 @@ export default function ProjectsPage() {
   }
 
   const handleUpdateProgress = (project: Project) => {
-    console.log('프로젝트 진행률 업데이트:', project.id)
+    // 진행률 업데이트 로직
+    let newProgress = project.progressPercentage + 25
+    let newStatus = project.status
+    
+    // 진행률에 따른 상태 자동 변경
+    if (newProgress >= 100) {
+      newProgress = 100
+      newStatus = 'completed'
+    } else if (newProgress >= 75) {
+      newStatus = 'quality_check'
+    } else if (newProgress >= 25) {
+      newStatus = 'in_progress'
+    }
+    
+    // 프로젝트 목록 업데이트
+    const updatedProjects = projects.map(p => 
+      p.id === project.id 
+        ? { ...p, progressPercentage: newProgress, status: newStatus as Project['status'] }
+        : p
+    )
+    setProjects(updatedProjects)
+    setFilteredProjects(updatedProjects.filter(p => 
+      searchTerm === '' || 
+      p.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      p.service.toLowerCase().includes(searchTerm.toLowerCase())
+    ))
+    
+    // 상태별 메시지
+    const statusMessages = {
+      in_progress: '시공이 진행 중입니다',
+      quality_check: '품질 검사 단계입니다', 
+      completed: '프로젝트가 완료되었습니다'
+    }
+    
+    alert(`${project.customerName}님의 프로젝트 진행률이 ${newProgress}%로 업데이트되었습니다.\n${statusMessages[newStatus as keyof typeof statusMessages] || ''}`)
   }
 
   const handleContactCustomer = (project: Project) => {
-    console.log('고객 연락:', project.customerName, project.phone)
+    // 연락 방법 선택을 위한 커스텀 다이얼로그
+    const showContactOptions = () => {
+      const modal = document.createElement('div')
+      modal.className = 'fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50'
+      modal.innerHTML = `
+        <div class="bg-white rounded-2xl p-6 max-w-sm w-full mx-4 shadow-2xl">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">${project.customerName}님께 연락하기</h3>
+          <p class="text-sm text-gray-600 mb-2">연락처: ${project.phone}</p>
+          <p class="text-sm text-gray-600 mb-6">프로젝트: ${project.service}</p>
+          <div class="space-y-3">
+            <button id="kakao-btn" class="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors">
+              <span>💬</span>
+              <span>카카오톡 1:1 상담</span>
+            </button>
+            <button id="phone-btn" class="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+              <span>📞</span>
+              <span>전화걸기</span>
+            </button>
+            <button id="sms-btn" class="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors">
+              <span>💬</span>
+              <span>문자보내기</span>
+            </button>
+            <button id="cancel-btn" class="w-full px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors">
+              취소
+            </button>
+          </div>
+        </div>
+      `
+      
+      document.body.appendChild(modal)
+      
+      // 카카오톡 버튼
+      modal.querySelector('#kakao-btn')?.addEventListener('click', () => {
+        window.open('https://open.kakao.com/o/sUR8xKPe', '_blank')
+        document.body.removeChild(modal)
+      })
+      
+      // 전화 버튼
+      modal.querySelector('#phone-btn')?.addEventListener('click', () => {
+        window.location.href = `tel:${project.phone}`
+        document.body.removeChild(modal)
+      })
+      
+      // 문자 버튼
+      modal.querySelector('#sms-btn')?.addEventListener('click', () => {
+        const message = encodeURIComponent(
+          `안녕하세요 ${project.customerName}님, 꾸미다필름 ${project.service} 시공 관련하여 연락드립니다.`
+        )
+        window.location.href = `sms:${project.phone}?body=${message}`
+        document.body.removeChild(modal)
+      })
+      
+      // 취소 버튼
+      modal.querySelector('#cancel-btn')?.addEventListener('click', () => {
+        document.body.removeChild(modal)
+      })
+      
+      // 모달 외부 클릭 시 닫기
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          document.body.removeChild(modal)
+        }
+      })
+    }
+    
+    showContactOptions()
   }
 
   // 상태별로 프로젝트 그룹화

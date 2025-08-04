@@ -423,7 +423,7 @@ const QuoteModal = ({
 }
 
 export default function QuotesPage() {
-  const [quotes] = useState<Quote[]>(sampleQuotes)
+  const [quotes, setQuotes] = useState<Quote[]>(sampleQuotes)
   const [filteredQuotes, setFilteredQuotes] = useState<Quote[]>(sampleQuotes)
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState<string>('all')
@@ -472,8 +472,26 @@ export default function QuotesPage() {
   }
 
   const handleDeleteQuote = (quote: Quote) => {
-    if (confirm(`${quote.customerName}님의 견적을 삭제하시겠습니까?`)) {
-      console.log('견적 삭제:', quote.id)
+    if (confirm(`${quote.customerName}님의 견적을 완전히 삭제하시겠습니까?\n\n견적금액: ${(quote.totalAmount / 10000).toFixed(0)}만원\n이 작업은 되돌릴 수 없습니다.`)) {
+      // 견적 목록에서 제거
+      const updatedQuotes = quotes.filter(q => q.id !== quote.id)
+      setQuotes(updatedQuotes)
+      
+      // 필터링된 목록도 업데이트  
+      const filteredUpdated = updatedQuotes.filter(q => {
+        const matchesSearch = searchTerm === '' || 
+          q.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          q.phone.includes(searchTerm) ||
+          q.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          q.filmType.toLowerCase().includes(searchTerm.toLowerCase())
+        
+        const matchesStatus = statusFilter === 'all' || q.status === statusFilter
+        
+        return matchesSearch && matchesStatus
+      })
+      setFilteredQuotes(filteredUpdated)
+      
+      alert(`${quote.customerName}님의 견적이 삭제되었습니다.`)
     }
   }
 

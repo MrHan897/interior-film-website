@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import AdminLayout from '@/components/admin/AdminLayout'
 import { 
   UsersIcon,
@@ -246,7 +246,13 @@ const CustomerCard = ({
           <PhoneIcon className="w-4 h-4" />
           <span>연락하기</span>
         </button>
-        <button className="px-3 py-2 bg-gray-200 text-gray-700 text-sm rounded-lg hover:bg-gray-300 transition-colors">
+        <button 
+          onClick={() => {
+            // 예약관리 페이지로 이동하면서 고객 정보 전달
+            window.location.href = `/admin/bookings?customer=${encodeURIComponent(customer.name)}&phone=${encodeURIComponent(customer.phone)}&address=${encodeURIComponent(customer.address)}&action=create`
+          }}
+          className="px-3 py-2 bg-gray-200 text-gray-700 text-sm rounded-lg hover:bg-gray-300 transition-colors"
+        >
           새 예약
         </button>
       </div>
@@ -272,9 +278,42 @@ const CustomerModal = ({
   onClose: () => void
   mode: 'view' | 'edit' | 'create'
 }) => {
+  const [editData, setEditData] = useState<Customer | null>(null)
+  
+  const isEditable = mode === 'edit' || mode === 'create'
+  
+  // 편집 모드일 때 데이터 초기화
+  useEffect(() => {
+    if (isEditable && customer) {
+      setEditData(customer)
+    } else if (mode === 'create') {
+      setEditData({
+        id: '',
+        name: '',
+        phone: '',
+        email: '',
+        address: '',
+        buildingType: 'apartment',
+        totalReservations: 0,
+        totalSpent: 0,
+        lastService: '',
+        lastServiceDate: '',
+        customerSince: new Date().toISOString().split('T')[0],
+        status: 'active',
+        rating: undefined,
+        notes: ''
+      })
+    }
+  }, [isEditable, customer, mode])
+  
+  const handleInputChange = (field: keyof Customer, value: string | number) => {
+    if (!isEditable || !editData) return
+    setEditData({ ...editData, [field]: value })
+  }
+  
   if (!isOpen) return null
 
-  const isEditable = mode === 'edit' || mode === 'create'
+  const currentData = isEditable ? (editData || customer) : customer
 
   return (
     <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 p-4">
@@ -296,7 +335,7 @@ const CustomerModal = ({
 
         {/* 모달 컨텐츠 */}
         <div className="p-6 space-y-6 overflow-y-auto max-h-[calc(90vh-200px)]">
-          {customer && (
+          {currentData && (
             <>
               {/* 기본 정보 */}
               <section>
@@ -306,7 +345,8 @@ const CustomerModal = ({
                     <label className="block text-sm font-medium text-gray-700 mb-1">고객명</label>
                     <input
                       type="text"
-                      value={customer.name}
+                      value={currentData.name}
+                      onChange={(e) => handleInputChange('name', e.target.value)}
                       disabled={!isEditable}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                     />
@@ -315,7 +355,8 @@ const CustomerModal = ({
                     <label className="block text-sm font-medium text-gray-700 mb-1">연락처</label>
                     <input
                       type="text"
-                      value={customer.phone}
+                      value={currentData.phone}
+                      onChange={(e) => handleInputChange('phone', e.target.value)}
                       disabled={!isEditable}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                     />
@@ -324,7 +365,8 @@ const CustomerModal = ({
                     <label className="block text-sm font-medium text-gray-700 mb-1">이메일</label>
                     <input
                       type="email"
-                      value={customer.email || ''}
+                      value={currentData.email || ''}
+                      onChange={(e) => handleInputChange('email', e.target.value)}
                       disabled={!isEditable}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                       placeholder="이메일 주소"
@@ -333,7 +375,8 @@ const CustomerModal = ({
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">건물 유형</label>
                     <select
-                      value={customer.buildingType}
+                      value={currentData.buildingType}
+                      onChange={(e) => handleInputChange('buildingType', e.target.value as Customer['buildingType'])}
                       disabled={!isEditable}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                     >
@@ -347,7 +390,8 @@ const CustomerModal = ({
                     <label className="block text-sm font-medium text-gray-700 mb-1">주소</label>
                     <input
                       type="text"
-                      value={customer.address}
+                      value={currentData.address}
+                      onChange={(e) => handleInputChange('address', e.target.value)}
                       disabled={!isEditable}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                     />
@@ -362,7 +406,8 @@ const CustomerModal = ({
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">상태</label>
                     <select
-                      value={customer.status}
+                      value={currentData.status}
+                      onChange={(e) => handleInputChange('status', e.target.value as Customer['status'])}
                       disabled={!isEditable}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                     >
@@ -377,7 +422,8 @@ const CustomerModal = ({
                       type="number"
                       min="1"
                       max="5"
-                      value={customer.rating || ''}
+                      value={currentData.rating || ''}
+                      onChange={(e) => handleInputChange('rating', parseInt(e.target.value) || undefined)}
                       disabled={!isEditable}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                       placeholder="1-5점"
@@ -392,19 +438,19 @@ const CustomerModal = ({
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="bg-blue-50 p-4 rounded-lg">
                     <div className="text-sm font-medium text-blue-700 mb-1">총 예약</div>
-                    <div className="text-2xl font-bold text-blue-900">{customer.totalReservations}회</div>
+                    <div className="text-2xl font-bold text-blue-900">{currentData.totalReservations}회</div>
                   </div>
                   <div className="bg-emerald-50 p-4 rounded-lg">
                     <div className="text-sm font-medium text-emerald-700 mb-1">총 결제</div>
                     <div className="text-2xl font-bold text-emerald-900">
-                      {(customer.totalSpent / 10000).toFixed(0)}만원
+                      {(currentData.totalSpent / 10000).toFixed(0)}만원
                     </div>
                   </div>
                   <div className="bg-purple-50 p-4 rounded-lg">
                     <div className="text-sm font-medium text-purple-700 mb-1">평균 결제</div>
                     <div className="text-2xl font-bold text-purple-900">
-                      {customer.totalReservations > 0 
-                        ? (customer.totalSpent / customer.totalReservations / 10000).toFixed(0)
+                      {currentData.totalReservations > 0 
+                        ? (currentData.totalSpent / currentData.totalReservations / 10000).toFixed(0)
                         : '0'}만원
                     </div>
                   </div>
@@ -420,7 +466,8 @@ const CustomerModal = ({
                       <label className="block text-sm font-medium text-gray-700 mb-1">서비스 내용</label>
                       <input
                         type="text"
-                        value={customer.lastService}
+                        value={currentData.lastService}
+                        onChange={(e) => handleInputChange('lastService', e.target.value)}
                         disabled={!isEditable}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                       />
@@ -429,7 +476,8 @@ const CustomerModal = ({
                       <label className="block text-sm font-medium text-gray-700 mb-1">서비스 날짜</label>
                       <input
                         type="date"
-                        value={customer.lastServiceDate}
+                        value={currentData.lastServiceDate}
+                        onChange={(e) => handleInputChange('lastServiceDate', e.target.value)}
                         disabled={!isEditable}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                       />
@@ -442,7 +490,8 @@ const CustomerModal = ({
               <section>
                 <label className="block text-sm font-medium text-gray-700 mb-1">메모</label>
                 <textarea
-                  value={customer.notes || ''}
+                  value={currentData.notes || ''}
+                  onChange={(e) => handleInputChange('notes', e.target.value)}
                   disabled={!isEditable}
                   rows={4}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
@@ -468,7 +517,19 @@ const CustomerModal = ({
               </button>
             )}
             {mode === 'view' && (
-              <button className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors">
+              <button 
+                onClick={() => {
+                  onClose()
+                  // 연락하기 기능 재사용
+                  setTimeout(() => {
+                    if (customer) {
+                      const event = new CustomEvent('contactCustomer', { detail: customer })
+                      window.dispatchEvent(event)
+                    }
+                  }, 100)
+                }}
+                className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
+              >
                 연락하기
               </button>
             )}
@@ -498,8 +559,8 @@ export default function CustomersPage() {
     applyFilters(searchTerm, status)
   }
 
-  const applyFilters = (search: string, status: string) => {
-    let filtered = customers
+  const applyFilters = (search: string, status: string, customerList = customers) => {
+    let filtered = customerList
 
     if (search) {
       filtered = filtered.filter(customer =>
@@ -530,13 +591,84 @@ export default function CustomersPage() {
   }
 
   const handleDeleteCustomer = (customer: Customer) => {
-    if (confirm(`${customer.name}님의 정보를 삭제하시겠습니까?`)) {
-      console.log('고객 삭제:', customer.id)
+    if (confirm(`${customer.name}님의 고객 정보를 완전히 삭제하시겠습니까?\n\n이 작업은 되돌릴 수 없습니다.`)) {
+      // 고객 목록에서 제거
+      const updatedCustomers = customers.filter(c => c.id !== customer.id)
+      setCustomers(updatedCustomers)
+      
+      // 필터링된 목록도 업데이트
+      applyFilters(searchTerm, statusFilter, updatedCustomers)
+      
+      alert(`${customer.name}님의 정보가 삭제되었습니다.`)
     }
   }
 
   const handleContactCustomer = (customer: Customer) => {
-    console.log('고객 연락:', customer.name, customer.phone)
+    // 연락 방법 선택을 위한 커스텀 다이얼로그
+    const showContactOptions = () => {
+      const modal = document.createElement('div')
+      modal.className = 'fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50'
+      modal.innerHTML = `
+        <div class="bg-white rounded-2xl p-6 max-w-sm w-full mx-4 shadow-2xl">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">${customer.name}님께 연락하기</h3>
+          <p class="text-sm text-gray-600 mb-6">연락처: ${customer.phone}</p>
+          <div class="space-y-3">
+            <button id="kakao-btn" class="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors">
+              <span>💬</span>
+              <span>카카오톡 1:1 상담</span>
+            </button>
+            <button id="phone-btn" class="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+              <span>📞</span>
+              <span>전화걸기</span>
+            </button>
+            <button id="sms-btn" class="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors">
+              <span>💬</span>
+              <span>문자보내기</span>
+            </button>
+            <button id="cancel-btn" class="w-full px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors">
+              취소
+            </button>
+          </div>
+        </div>
+      `
+      
+      document.body.appendChild(modal)
+      
+      // 카카오톡 버튼
+      modal.querySelector('#kakao-btn')?.addEventListener('click', () => {
+        window.open('https://open.kakao.com/o/sUR8xKPe', '_blank')
+        document.body.removeChild(modal)
+      })
+      
+      // 전화 버튼
+      modal.querySelector('#phone-btn')?.addEventListener('click', () => {
+        window.location.href = `tel:${customer.phone}`
+        document.body.removeChild(modal)
+      })
+      
+      // 문자 버튼
+      modal.querySelector('#sms-btn')?.addEventListener('click', () => {
+        const message = encodeURIComponent(
+          `안녕하세요 ${customer.name}님, 꾸미다필름 인테리어 필름 시공 관련하여 연락드립니다.`
+        )
+        window.location.href = `sms:${customer.phone}?body=${message}`
+        document.body.removeChild(modal)
+      })
+      
+      // 취소 버튼
+      modal.querySelector('#cancel-btn')?.addEventListener('click', () => {
+        document.body.removeChild(modal)
+      })
+      
+      // 모달 외부 클릭 시 닫기
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          document.body.removeChild(modal)
+        }
+      })
+    }
+    
+    showContactOptions()
   }
 
   const handleCreateCustomer = () => {
@@ -557,6 +689,15 @@ export default function CustomersPage() {
     setModalMode('create')
     setModalOpen(true)
   }
+
+  // 연락하기 이벤트 리스너
+  useEffect(() => {
+    const handleContactEvent = (e: any) => {
+      handleContactCustomer(e.detail)
+    }
+    window.addEventListener('contactCustomer', handleContactEvent)
+    return () => window.removeEventListener('contactCustomer', handleContactEvent)
+  }, [])
 
   const statusCounts = {
     all: customers.length,

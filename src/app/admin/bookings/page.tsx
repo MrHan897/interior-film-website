@@ -243,11 +243,11 @@ const BookingModal = ({
   booking: Booking | null
   isOpen: boolean
   onClose: () => void
-  mode: 'view' | 'edit'
+  mode: 'view' | 'edit' | 'create'
 }) => {
   const [editData, setEditData] = useState<Booking | null>(null)
   
-  const isEditable = mode === 'edit'
+  const isEditable = mode === 'edit' || mode === 'create'
   
   // 편집 모드일 때 데이터 초기화
   useEffect(() => {
@@ -274,7 +274,7 @@ const BookingModal = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <h2 className="text-xl font-bold text-gray-900">
-                {mode === 'edit' ? '예약 수정' : '예약 상세'}
+                {mode === 'create' ? '새 예약 등록' : mode === 'edit' ? '예약 수정' : '예약 상세'}
               </h2>
               <span className={`px-2 py-1 rounded-full text-xs font-medium ${status.color}`}>
                 {status.label}
@@ -424,7 +424,7 @@ const BookingModal = ({
             </button>
             {isEditable && (
               <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
-                수정 완료
+                {mode === 'create' ? '예약 등록' : '수정 완료'}
               </button>
             )}
           </div>
@@ -435,13 +435,13 @@ const BookingModal = ({
 }
 
 export default function BookingsPage() {
-  const [bookings] = useState<Booking[]>(sampleBookings)
+  const [bookings, setBookings] = useState<Booking[]>(sampleBookings)
   const [filteredBookings, setFilteredBookings] = useState<Booking[]>(sampleBookings)
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState<string>('all')
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null)
   const [modalOpen, setModalOpen] = useState(false)
-  const [modalMode, setModalMode] = useState<'view' | 'edit'>('view')
+  const [modalMode, setModalMode] = useState<'view' | 'edit' | 'create'>('view')
 
   const handleSearch = (term: string) => {
     setSearchTerm(term)
@@ -453,8 +453,8 @@ export default function BookingsPage() {
     applyFilters(searchTerm, status)
   }
 
-  const applyFilters = (search: string, status: string) => {
-    let filtered = bookings
+  const applyFilters = (search: string, status: string, bookingList = bookings) => {
+    let filtered = bookingList
 
     if (search) {
       filtered = filtered.filter(booking =>
@@ -485,8 +485,25 @@ export default function BookingsPage() {
   }
 
   const handleUpdateStatus = (booking: Booking, newStatus: string) => {
-    console.log(`상태 변경: ${booking.id} -> ${newStatus}`)
-    // 실제 구현에서는 API 호출로 상태 업데이트
+    // 상태 업데이트 - 실시간 반영
+    const updatedBookings = bookings.map(b => 
+      b.id === booking.id 
+        ? { ...b, status: newStatus as Booking['status'] }
+        : b
+    )
+    setBookings(updatedBookings)
+    
+    // 필터링된 목록도 업데이트
+    applyFilters(searchTerm, statusFilter, updatedBookings)
+    
+    // 성공 알림
+    const statusLabels = {
+      confirmed: '예약 확정',
+      in_progress: '시공 시작', 
+      completed: '완료 처리'
+    }
+    const statusLabel = statusLabels[newStatus as keyof typeof statusLabels] || '상태 변경'
+    alert(`${booking.customerName}님의 예약이 "${statusLabel}"로 변경되었습니다.`)
   }
 
   const statusCounts = {
@@ -509,7 +526,28 @@ export default function BookingsPage() {
                 <h1 className="text-2xl font-bold text-gray-900">예약관리</h1>
                 <p className="text-sm text-gray-600">고객 예약 현황 및 진행 상태 관리</p>
               </div>
-              <button className="flex items-center space-x-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+              <button 
+                onClick={() => {
+                  const newBooking: Booking = {
+                    id: 'new',
+                    customerName: '',
+                    phone: '',
+                    address: '',
+                    service: '',
+                    scheduledDate: new Date().toISOString().split('T')[0],
+                    scheduledTime: '09:00',
+                    duration: 240,
+                    status: 'quote_requested',
+                    priority: 'normal',
+                    createdAt: new Date().toISOString().split('T')[0],
+                    totalAmount: 0
+                  }
+                  setSelectedBooking(newBooking)
+                  setModalMode('create')
+                  setModalOpen(true)
+                }}
+                className="flex items-center space-x-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+              >
                 <PlusIcon className="w-4 h-4" />
                 <span>새 예약</span>
               </button>

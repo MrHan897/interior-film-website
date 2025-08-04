@@ -456,3 +456,149 @@ body {
   color: #9ca3af !important;
   display: block !important;
 }
+
+/* 클릭 피드백 효과 - 모든 버튼과 클릭 가능한 요소들에 적용 */
+@keyframes click-ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes click-bounce {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* 모든 버튼과 클릭 가능한 요소들에 기본 클릭 효과 */
+button, 
+[role="button"], 
+.cursor-pointer,
+a,
+input[type="submit"],
+input[type="button"] {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 활성화된 상태 (클릭 시) */
+button:active:not(:disabled), 
+[role="button"]:active,
+.cursor-pointer:active,
+a:active,
+input[type="submit"]:active,
+input[type="button"]:active {
+  animation: click-bounce 0.15s ease-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 클릭 시 리플 효과 */
+.click-ripple::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  transform: translate(-50%, -50%);
+  animation: click-ripple 0.6s linear;
+}
+
+/* 다크 배경 버튼용 리플 효과 */
+.dark-ripple::after {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* 특별한 버튼 호버 효과 강화 */
+button:hover:not(:disabled),
+[role="button"]:hover,
+.cursor-pointer:hover,
+a:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* 비활성화된 버튼은 효과 제외 */
+button:disabled,
+input:disabled {
+  transform: none !important;
+  animation: none !important;
+  box-shadow: none !important;
+}
+
+/* 클릭 성공 표시 효과 */
+@keyframes success-ping {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.click-success {
+  animation: success-ping 0.3s ease-out;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.3);
+}
+
+/* 모바일 터치 피드백 강화 */
+@media (hover: none) and (pointer: coarse) {
+  button:active:not(:disabled), 
+  [role="button"]:active,
+  .cursor-pointer:active,
+  a:active {
+    transform: scale(0.97);
+    transition: transform 0.1s ease-out;
+  }
+}
+
+/* 특별한 액션 버튼들 강화 효과 */
+.bg-indigo-600:active,
+.bg-emerald-600:active,
+.bg-red-600:active,
+.bg-blue-600:active,
+.bg-amber-600:active {
+  transform: scale(0.96) translateY(1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 카드 클릭 효과 */
+.card-clickable:active {
+  transform: scale(0.98);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 로딩 상태 표시 */
+@keyframes loading-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.loading-pulse {
+  animation: loading-pulse 1.5s ease-in-out infinite;
+  pointer-events: none;
+}

@@ -85,23 +85,213 @@ export default function MorePage() {
   })
 
   const handleLogout = () => {
-    console.log('로그아웃 처리')
-    // 실제 구현에서는 로그아웃 로직 추가
+    if (confirm('로그아웃 하시겠습니까?')) {
+      alert('로그아웃되었습니다.')
+      window.location.href = '/'
+    }
   }
 
   const handleSettings = () => {
-    console.log('설정 페이지로 이동')
-    // 설정 페이지 구현 후 연결
+    const settingsModal = document.createElement('div')
+    settingsModal.className = 'fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50'
+    settingsModal.innerHTML = `
+      <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4 shadow-2xl">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">시스템 설정</h3>
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-gray-700">언어 설정</span>
+            <select class="px-3 py-1 border rounded-lg text-sm">
+              <option>한국어</option>
+              <option>English</option>
+            </select>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-gray-700">테마</span>
+            <select class="px-3 py-1 border rounded-lg text-sm">
+              <option>라이트</option>
+              <option>다크</option>
+            </select>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-gray-700">자동 백업</span>
+            <label class="flex items-center">
+              <input type="checkbox" checked class="mr-2" />
+              <span class="text-sm">활성화</span>
+            </label>
+          </div>
+        </div>
+        <div class="mt-6 flex space-x-3">
+          <button id="save-settings" class="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+            저장
+          </button>
+          <button id="cancel-settings" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors">
+            취소
+          </button>
+        </div>
+      </div>
+    `
+    
+    document.body.appendChild(settingsModal)
+    
+    settingsModal.querySelector('#save-settings')?.addEventListener('click', () => {
+      alert('설정이 저장되었습니다.')
+      document.body.removeChild(settingsModal)
+    })
+    
+    settingsModal.querySelector('#cancel-settings')?.addEventListener('click', () => {
+      document.body.removeChild(settingsModal)
+    })
+    
+    settingsModal.addEventListener('click', (e) => {
+      if (e.target === settingsModal) {
+        document.body.removeChild(settingsModal)
+      }
+    })
   }
 
   const handleHelp = () => {
-    console.log('도움말 페이지로 이동')
-    // 도움말 페이지 구현 후 연결
+    const helpModal = document.createElement('div')
+    helpModal.className = 'fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50'
+    helpModal.innerHTML = `
+      <div class="bg-white rounded-2xl p-6 max-w-lg w-full mx-4 shadow-2xl max-h-[80vh] overflow-y-auto">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">도움말 및 지원</h3>
+        
+        <div class="space-y-4">
+          <div class="bg-blue-50 p-4 rounded-lg">
+            <h4 class="font-medium text-blue-900 mb-2">📞 고객지원</h4>
+            <p class="text-sm text-blue-800">전화: 1588-0000</p>
+            <p class="text-sm text-blue-800">이메일: support@interior-film.com</p>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg">
+            <h4 class="font-medium text-yellow-900 mb-2">💬 카카오톡 상담</h4>
+            <button id="kakao-help" class="text-sm text-yellow-800 underline">
+              꾸미다필름 1:1 상담 (24시간)
+            </button>
+          </div>
+          
+          <div class="bg-gray-50 p-4 rounded-lg">
+            <h4 class="font-medium text-gray-900 mb-2">📚 사용법 가이드</h4>
+            <ul class="text-sm text-gray-700 space-y-1">
+              <li>• 예약 관리: 고객 예약 생성 및 상태 변경</li>
+              <li>• 견적 관리: 견적서 작성 및 발송</li>
+              <li>• 고객 관리: 고객 정보 및 연락처 관리</li>
+              <li>• 프로젝트 관리: 시공 진행률 및 일정 관리</li>
+            </ul>
+          </div>
+          
+          <div class="bg-emerald-50 p-4 rounded-lg">
+            <h4 class="font-medium text-emerald-900 mb-2">🔧 시스템 정보</h4>
+            <p class="text-sm text-emerald-800">버전: v1.0.0</p>
+            <p class="text-sm text-emerald-800">최종 업데이트: 2024-01-25</p>
+          </div>
+        </div>
+        
+        <div class="mt-6">
+          <button id="close-help" class="w-full px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors">
+            닫기
+          </button>
+        </div>
+      </div>
+    `
+    
+    document.body.appendChild(helpModal)
+    
+    helpModal.querySelector('#kakao-help')?.addEventListener('click', () => {
+      window.open('https://open.kakao.com/o/sUR8xKPe', '_blank')
+    })
+    
+    helpModal.querySelector('#close-help')?.addEventListener('click', () => {
+      document.body.removeChild(helpModal)
+    })
+    
+    helpModal.addEventListener('click', (e) => {
+      if (e.target === helpModal) {
+        document.body.removeChild(helpModal)
+      }
+    })
   }
 
   const handleNotifications = () => {
-    console.log('알림 설정')
-    // 알림 설정 페이지 구현 후 연결
+    const notificationModal = document.createElement('div')
+    notificationModal.className = 'fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50'
+    notificationModal.innerHTML = `
+      <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4 shadow-2xl">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">알림 설정</h3>
+        
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-900">새 예약 알림</p>
+              <p class="text-xs text-gray-600">새로운 예약이 등록될 때</p>
+            </div>
+            <label class="flex items-center">
+              <input type="checkbox" checked class="mr-2" />
+              <span class="text-sm">활성화</span>
+            </label>
+          </div>
+          
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-900">시공 완료 알림</p>
+              <p class="text-xs text-gray-600">프로젝트가 완료될 때</p>
+            </div>
+            <label class="flex items-center">
+              <input type="checkbox" checked class="mr-2" />
+              <span class="text-sm">활성화</span>
+            </label>
+          </div>
+          
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-900">결제 완료 알림</p>
+              <p class="text-xs text-gray-600">고객 결제가 완료될 때</p>
+            </div>
+            <label class="flex items-center">
+              <input type="checkbox" class="mr-2" />
+              <span class="text-sm">활성화</span>
+            </label>
+          </div>
+          
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-900">일정 리마인더</p>
+              <p class="text-xs text-gray-600">시공 예정일 하루 전</p>
+            </div>
+            <label class="flex items-center">
+              <input type="checkbox" checked class="mr-2" />
+              <span class="text-sm">활성화</span>
+            </label>
+          </div>
+        </div>
+        
+        <div class="mt-6 flex space-x-3">
+          <button id="save-notifications" class="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+            저장
+          </button>
+          <button id="cancel-notifications" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors">
+            취소
+          </button>
+        </div>
+      </div>
+    `
+    
+    document.body.appendChild(notificationModal)
+    
+    notificationModal.querySelector('#save-notifications')?.addEventListener('click', () => {
+      alert('알림 설정이 저장되었습니다.')
+      document.body.removeChild(notificationModal)
+    })
+    
+    notificationModal.querySelector('#cancel-notifications')?.addEventListener('click', () => {
+      document.body.removeChild(notificationModal)
+    })
+    
+    notificationModal.addEventListener('click', (e) => {
+      if (e.target === notificationModal) {
+        document.body.removeChild(notificationModal)
+      }
+    })
   }
 
   const menuItems: MenuItem[] = [

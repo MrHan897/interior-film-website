@@ -282,26 +282,28 @@ export default function AdminDashboard() {
   const handleQuickAction = (action: string) => {
     switch (action) {
       case 'new-quote':
-        // 새 견적 모달 열기
-        console.log('새 견적 등록 모달 열기')
+        // 견적관리 페이지로 이동하면서 새 견적 모달 열기
+        window.location.href = '/admin/quotes?action=create'
         break
       case 'new-booking':
-        // 새 예약 모달 열기
-        console.log('예약 일정 추가 모달 열기')
+        // 예약관리 페이지로 이동하면서 새 예약 모달 열기
+        window.location.href = '/admin/bookings?action=create'
         break
       case 'complete-project':
-        // 시공 완료 모달 열기
-        console.log('시공 완료 처리 모달 열기')
+        // 프로젝트관리 페이지로 이동
+        window.location.href = '/admin/projects'
         break
     }
   }
 
   const handleScheduleClick = (item: TodayScheduleItem) => {
-    console.log('일정 상세 보기:', item)
+    // 예약 상세보기 - 예약관리 페이지로 이동
+    window.location.href = `/admin/bookings?view=${item.id}`
   }
 
   const handleQuoteClick = (quote: RecentQuote) => {
-    console.log('견적 상세 보기:', quote)
+    // 견적 상세보기 - 견적관리 페이지로 이동
+    window.location.href = `/admin/quotes?view=${quote.id}`
   }
 
   return (
