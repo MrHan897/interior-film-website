@@ -554,16 +554,13 @@ export default function SchedulePage() {
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768)
-      // 모바일에서는 기본적으로 주 뷰로 설정
-      if (window.innerWidth < 768 && view === 'month') {
-        setView('week')
-      }
+      // 모바일에서도 모든 뷰 타입 허용 (사용자 선택 존중)
     }
     
     checkMobile()
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
-  }, [view])
+  }, [])
 
   // 새 이벤트 추가
   const handleAddEvent = (eventData: Omit<ScheduleEvent, 'id'>) => {

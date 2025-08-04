@@ -314,11 +314,11 @@ const ProjectModal = ({
   project: Project | null
   isOpen: boolean
   onClose: () => void
-  mode: 'view' | 'edit'
+  mode: 'view' | 'edit' | 'create'
 }) => {
   const [editData, setEditData] = useState<Project | null>(null)
   
-  const isEditable = mode === 'edit'
+  const isEditable = mode === 'edit' || mode === 'create'
   
   // 편집 모드일 때 데이터 초기화
   useEffect(() => {
@@ -345,11 +345,13 @@ const ProjectModal = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <h2 className="text-xl font-bold text-gray-900">
-                {mode === 'edit' ? '프로젝트 수정' : '프로젝트 상세'}
+                {mode === 'create' ? '새 프로젝트 등록' : mode === 'edit' ? '프로젝트 수정' : '프로젝트 상세'}
               </h2>
-              <span className={`px-3 py-1 rounded-full text-sm font-medium ${status.textColor} ${status.bgColor}`}>
-                {status.label}
-              </span>
+              {mode !== 'create' && (
+                <span className={`px-3 py-1 rounded-full text-sm font-medium ${status.textColor} ${status.bgColor}`}>
+                  {status.label}
+                </span>
+              )}
             </div>
             <button
               onClick={onClose}
@@ -524,7 +526,7 @@ const ProjectModal = ({
             </button>
             {isEditable && (
               <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
-                수정 완료
+                {mode === 'create' ? '프로젝트 등록' : '수정 완료'}
               </button>
             )}
             {mode === 'view' && (
@@ -545,7 +547,7 @@ export default function ProjectsPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
   const [modalOpen, setModalOpen] = useState(false)
-  const [modalMode, setModalMode] = useState<'view' | 'edit'>('view')
+  const [modalMode, setModalMode] = useState<'view' | 'edit' | 'create'>('view')
 
   const handleSearch = (term: string) => {
     setSearchTerm(term)
@@ -569,6 +571,25 @@ export default function ProjectsPage() {
   const handleEditProject = (project: Project) => {
     setSelectedProject(project)
     setModalMode('edit')
+    setModalOpen(true)
+  }
+
+  const handleCreateProject = () => {
+    const newProject: Project = {
+      id: 'new',
+      customerName: '',
+      phone: '',
+      address: '',
+      service: '',
+      scheduledDate: new Date().toISOString().split('T')[0],
+      priority: 'normal',
+      status: 'scheduled',
+      progressPercentage: 0,
+      totalAmount: 0,
+      createdAt: new Date().toISOString().split('T')[0]
+    }
+    setSelectedProject(newProject)
+    setModalMode('create')
     setModalOpen(true)
   }
 
@@ -698,7 +719,10 @@ export default function ProjectsPage() {
                 <h1 className="text-2xl font-bold text-gray-900">시공관리</h1>
                 <p className="text-sm text-gray-600">프로젝트 진행 상황 및 시공팀 관리</p>
               </div>
-              <button className="flex items-center space-x-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+              <button 
+                onClick={handleCreateProject}
+                className="flex items-center space-x-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+              >
                 <PlusIcon className="w-4 h-4" />
                 <span>새 프로젝트</span>
               </button>

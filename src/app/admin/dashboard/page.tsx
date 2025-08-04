@@ -59,7 +59,8 @@ const StatsCard = ({
   icon: Icon, 
   color, 
   format = 'number',
-  trend
+  trend,
+  onClick
 }: {
   title: string
   value: number
@@ -67,6 +68,7 @@ const StatsCard = ({
   color: 'primary' | 'success' | 'warning' | 'secondary'
   format?: 'number' | 'currency'
   trend?: string
+  onClick?: () => void
 }) => {
   const colorClasses = {
     primary: 'bg-indigo-500',
@@ -82,20 +84,35 @@ const StatsCard = ({
     return val.toString()
   }
 
+  const CardContent = (
+    <div className="flex items-center justify-between">
+      <div className="space-y-2">
+        <p className="text-sm text-gray-600 font-medium">{title}</p>
+        <p className="text-3xl font-bold text-gray-900">{formatValue(value)}</p>
+        {trend && (
+          <p className="text-sm text-emerald-600 font-medium">+{trend}</p>
+        )}
+      </div>
+      <div className={`w-12 h-12 rounded-2xl ${colorClasses[color]} flex items-center justify-center`}>
+        <Icon className="w-6 h-6 text-white" />
+      </div>
+    </div>
+  )
+
+  if (onClick) {
+    return (
+      <button
+        onClick={onClick}
+        className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md hover:scale-[1.02] transition-all duration-200 w-full text-left"
+      >
+        {CardContent}
+      </button>
+    )
+  }
+
   return (
     <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200">
-      <div className="flex items-center justify-between">
-        <div className="space-y-2">
-          <p className="text-sm text-gray-600 font-medium">{title}</p>
-          <p className="text-3xl font-bold text-gray-900">{formatValue(value)}</p>
-          {trend && (
-            <p className="text-sm text-emerald-600 font-medium">+{trend}</p>
-          )}
-        </div>
-        <div className={`w-12 h-12 rounded-2xl ${colorClasses[color]} flex items-center justify-center`}>
-          <Icon className="w-6 h-6 text-white" />
-        </div>
-      </div>
+      {CardContent}
     </div>
   )
 }
@@ -306,6 +323,67 @@ export default function AdminDashboard() {
     window.location.href = `/admin/quotes?view=${quote.id}`
   }
 
+  // 통계 카드 클릭 핸들러
+  const handleStatsClick = (type: string) => {
+    switch (type) {
+      case 'today-bookings':
+        // 오늘 예약 - 예약관리 페이지에서 오늘 날짜 필터
+        window.location.href = '/admin/bookings?filter=today'
+        break
+      case 'ongoing-projects':
+        // 진행중 시공 - 프로젝트관리 페이지에서 진행중 필터
+        window.location.href = '/admin/projects?filter=in_progress'
+        break
+      case 'pending-quotes':
+        // 대기 견적 - 견적관리 페이지에서 대기 상태 필터
+        window.location.href = '/admin/quotes?filter=quote_requested'
+        break
+      case 'monthly-revenue':
+        // 월 매출 - 리포트 페이지로 이동
+        window.location.href = '/admin/reports?period=month'
+        break
+    }
+  }
+
+  // 전체보기 핸들러
+  const handleViewAll = (type: string) => {
+    switch (type) {
+      case 'schedule':
+        // 일정관리 페이지로 이동
+        window.location.href = '/admin/schedule'
+        break
+      case 'quotes':
+        // 견적관리 페이지로 이동
+        window.location.href = '/admin/quotes'
+        break
+    }
+  }
+
+  // 미확인 버튼 핸들러 (내보내기 버튼으로 추정)
+  const handleExport = () => {
+    // 대시보드 데이터를 CSV로 내보내기
+    const dashboardData = [
+      ['구분', '수량', '상태'],
+      ['오늘 예약', stats.todayBookings, '활성'],
+      ['진행중 시공', stats.ongoingProjects, '진행중'],
+      ['대기 견적', stats.pendingQuotes, '대기'],
+      ['월 매출', `${(stats.monthlyRevenue / 10000).toFixed(0)}만원`, '완료']
+    ]
+    
+    const csvContent = dashboardData.map(row => row.join(',')).join('\n')
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const link = document.createElement('a')
+    const url = URL.createObjectURL(blob)
+    link.setAttribute('href', url)
+    link.setAttribute('download', `대시보드_통계_${new Date().toISOString().split('T')[0]}.csv`)
+    link.style.visibility = 'hidden'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    
+    alert('대시보드 통계 데이터가 CSV 파일로 다운로드되었습니다.')
+  }
+
   return (
     <AdminLayout>
       <div className="bg-gray-50 min-h-screen">
@@ -318,7 +396,11 @@ export default function AdminDashboard() {
                 <p className="text-sm text-gray-600">인테리어 필름 시공 예약관리 시스템</p>
               </div>
               <div className="flex items-center space-x-4">
-                <button className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
+                <button 
+                  onClick={handleExport}
+                  className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                  title="대시보드 데이터 내보내기"
+                >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5v-5z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 19h16" />
@@ -340,18 +422,21 @@ export default function AdminDashboard() {
               icon={CalendarDaysIcon}
               color="primary"
               trend="2"
+              onClick={() => handleStatsClick('today-bookings')}
             />
             <StatsCard
               title="진행중 시공"
               value={stats.ongoingProjects}
               icon={WrenchScrewdriverIcon}
               color="warning"
+              onClick={() => handleStatsClick('ongoing-projects')}
             />
             <StatsCard
               title="대기 견적"
               value={stats.pendingQuotes}
               icon={ClockIcon}
               color="secondary"
+              onClick={() => handleStatsClick('pending-quotes')}
             />
             <StatsCard
               title="월 매출"
@@ -359,6 +444,7 @@ export default function AdminDashboard() {
               icon={CurrencyDollarIcon}
               color="success"
               format="currency"
+              onClick={() => handleStatsClick('monthly-revenue')}
             />
           </div>
         </section>
@@ -390,7 +476,10 @@ export default function AdminDashboard() {
           <section>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold text-gray-900">오늘 일정</h2>
-              <button className="text-indigo-600 hover:text-indigo-700 font-medium text-sm">
+              <button 
+                onClick={() => handleViewAll('schedule')}
+                className="text-indigo-600 hover:text-indigo-700 font-medium text-sm transition-colors"
+              >
                 전체보기
               </button>
             </div>
@@ -415,7 +504,10 @@ export default function AdminDashboard() {
           <section>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold text-gray-900">최근 견적</h2>
-              <button className="text-indigo-600 hover:text-indigo-700 font-medium text-sm">
+              <button 
+                onClick={() => handleViewAll('quotes')}
+                className="text-indigo-600 hover:text-indigo-700 font-medium text-sm transition-colors"
+              >
                 전체보기
               </button>
             </div>

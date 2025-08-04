@@ -1,0 +1,84 @@
+
+> interior-film-website@0.1.0 dev
+> next dev --turbopack
+
+   ▲ Next.js 15.4.1 (Turbopack)
+   - Local:        http://localhost:3002
+   - Network:      http://10.255.255.254:3002
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Compiled middleware in 156ms
+ ✓ Ready in 1426ms
+ ○ Compiling / ...
+ ✓ Compiled / in 3.1s
+ GET / 200 in 3539ms
+ GET / 200 in 226ms
+ ○ Compiling /favicon.ico ...
+ ✓ Compiled /favicon.ico in 902ms
+ GET /favicon.ico?favicon.45db1c09.ico 200 in 1112ms
+Supabase error details: {
+  message: 'Invalid API key',
+  hint: 'Double check your Supabase `anon` or `service_role` API key.'
+}
+portfolio 테이블이 없습니다. 샘플 데이터를 반환합니다.
+ GET /api/portfolio 200 in 1566ms
+ ○ Compiling /admin/schedule ...
+ ✓ Compiled /admin/schedule in 648ms
+ GET /admin/schedule 200 in 689ms
+ ✓ Compiled /admin/dashboard in 336ms
+ GET /admin/dashboard 200 in 388ms
+ ✓ Compiled /admin/quotes in 367ms
+ GET /admin/quotes?action=create 200 in 495ms
+ GET /admin/dashboard 200 in 38ms
+ ✓ Compiled /admin/bookings in 298ms
+ GET /admin/bookings?action=create 200 in 396ms
+ GET /admin/dashboard 200 in 33ms
+ GET /admin/bookings?view=1 200 in 93ms
+ GET /admin/dashboard 200 in 39ms
+ GET / 200 in 146ms
+Supabase error details: {
+  message: 'Invalid API key',
+  hint: 'Double check your Supabase `anon` or `service_role` API key.'
+}
+portfolio 테이블이 없습니다. 샘플 데이터를 반환합니다.
+ GET /api/portfolio 200 in 556ms
+ GET /admin/schedule 200 in 39ms
+ GET /admin/dashboard 200 in 38ms
+ GET /admin/schedule 200 in 36ms
+ GET /admin/dashboard 200 in 35ms
+ ✓ Compiled /admin/projects in 350ms
+ GET /admin/projects 200 in 392ms
+ GET / 200 in 126ms
+Supabase error details: {
+  message: 'Invalid API key',
+  hint: 'Double check your Supabase `anon` or `service_role` API key.'
+}
+portfolio 테이블이 없습니다. 샘플 데이터를 반환합니다.
+ GET /api/portfolio 200 in 581ms
+ GET / 200 in 165ms
+Supabase error details: {
+  message: 'Invalid API key',
+  hint: 'Double check your Supabase `anon` or `service_role` API key.'
+}
+portfolio 테이블이 없습니다. 샘플 데이터를 반환합니다.
+ GET /api/portfolio 200 in 120ms
+ ✓ Compiled in 100ms
+ ✓ Compiled in 90ms
+ ✓ Compiled in 90ms
+ ✓ Compiled in 79ms
+ ✓ Compiled in 74ms
+ ✓ Compiled in 72ms
+ GET / 200 in 43ms
+ GET / 200 in 54ms
+ GET / 200 in 34ms
+ ✓ Compiled in 82ms
+ ✓ Compiled /booking in 394ms
+ GET /booking 200 in 439ms
+ GET /admin/schedule 200 in 148ms
+ ✓ Compiled in 79ms
+ ✓ Compiled in 71ms
+ ✓ Compiled in 86ms
+ ✓ Compiled in 82ms
+ ✓ Compiled in 101ms
+ ✓ Compiled in 144ms
