@@ -392,7 +392,8 @@ const ProjectModal = ({
                 <label className="block text-sm font-medium text-gray-700 mb-1">주소</label>
                 <input
                   type="text"
-                  value={project.address}
+                  value={currentData?.address || ''}
+                  onChange={(e) => handleInputChange('address', e.target.value)}
                   disabled={!isEditable}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                 />
@@ -401,7 +402,8 @@ const ProjectModal = ({
                 <label className="block text-sm font-medium text-gray-700 mb-1">서비스</label>
                 <input
                   type="text"
-                  value={project.service}
+                  value={currentData?.service || ''}
+                  onChange={(e) => handleInputChange('service', e.target.value)}
                   disabled={!isEditable}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                 />
@@ -417,7 +419,8 @@ const ProjectModal = ({
                 <label className="block text-sm font-medium text-gray-700 mb-1">예정일</label>
                 <input
                   type="date"
-                  value={project.scheduledDate}
+                  value={currentData?.scheduledDate || ''}
+                  onChange={(e) => handleInputChange('scheduledDate', e.target.value)}
                   disabled={!isEditable}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                 />
@@ -426,7 +429,8 @@ const ProjectModal = ({
                 <label className="block text-sm font-medium text-gray-700 mb-1">담당 시공팀</label>
                 <input
                   type="text"
-                  value={project.workerAssigned || ''}
+                  value={currentData?.workerAssigned || ''}
+                  onChange={(e) => handleInputChange('workerAssigned', e.target.value)}
                   disabled={!isEditable}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                   placeholder="담당 시공팀"
@@ -435,7 +439,8 @@ const ProjectModal = ({
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">우선순위</label>
                 <select
-                  value={project.priority}
+                  value={currentData?.priority || 'normal'}
+                  onChange={(e) => handleInputChange('priority', e.target.value)}
                   disabled={!isEditable}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                 >
@@ -450,7 +455,8 @@ const ProjectModal = ({
                   type="number"
                   min="0"
                   max="100"
-                  value={project.progressPercentage}
+                  value={currentData?.progressPercentage || 0}
+                  onChange={(e) => handleInputChange('progressPercentage', parseInt(e.target.value) || 0)}
                   disabled={!isEditable}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                 />
@@ -492,7 +498,8 @@ const ProjectModal = ({
           <section>
             <label className="block text-sm font-medium text-gray-700 mb-1">메모</label>
             <textarea
-              value={project.notes || ''}
+              value={currentData?.notes || ''}
+              onChange={(e) => handleInputChange('notes', e.target.value)}
               disabled={!isEditable}
               rows={3}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
