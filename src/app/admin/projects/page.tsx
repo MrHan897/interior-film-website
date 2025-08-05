@@ -30,6 +30,12 @@ interface Project {
   notes?: string
   photos?: string[]
   createdAt: string
+  // 견적 연동 관련 필드 추가
+  quoteId?: string
+  customerEmail?: string
+  projectType?: string
+  location?: string
+  estimatedBudget?: number
 }
 
 const sampleProjects: Project[] = [
@@ -308,33 +314,96 @@ const KanbanColumn = ({
 const ProjectModal = ({ 
   project, 
   isOpen, 
-  onClose, 
+  onClose,
+  onSubmit,
   mode 
 }: { 
   project: Project | null
   isOpen: boolean
   onClose: () => void
+  onSubmit: (projectData: Project) => void
   mode: 'view' | 'edit' | 'create'
 }) => {
   const [editData, setEditData] = useState<Project | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   
   const isEditable = mode === 'edit' || mode === 'create'
   
   // 편집 모드일 때 데이터 초기화
   useEffect(() => {
-    if (isEditable && project) {
-      setEditData(project)
+    if (isEditable) {
+      if (mode === 'create') {
+        // 새 프로젝트 기본값 설정
+        const newProject: Project = {
+          id: '',
+          customerName: '',
+          phone: '',
+          address: '',
+          service: '',
+          scheduledDate: new Date().toISOString().split('T')[0],
+          priority: 'normal',
+          status: 'scheduled',
+          progressPercentage: 0,
+          totalAmount: 0,
+          createdAt: new Date().toISOString().split('T')[0]
+        }
+        setEditData(newProject)
+      } else {
+        setEditData(project)
+      }
     }
-  }, [isEditable, project])
+  }, [isEditable, project, mode])
   
   const handleInputChange = (field: keyof Project, value: string | number) => {
     if (!isEditable || !editData) return
     setEditData({ ...editData, [field]: value })
   }
-  
-  if (!isOpen || !project) return null
 
-  const status = statusConfig[project.status]
+  const handleSubmit = () => {
+    if (!editData) {
+      alert('폼 데이터를 불러올 수 없습니다.')
+      return
+    }
+    
+    if (isSubmitting) return
+
+    // 폼 검증
+    const errors = validateProjectForm(editData)
+    if (errors.length > 0) {
+      alert('다음 항목을 확인해주세요:\n' + errors.join('\n'))
+      return
+    }
+
+    setIsSubmitting(true)
+    try {
+      const submitData = {
+        ...editData,
+        id: mode === 'create' ? Date.now().toString() : editData.id
+      }
+      onSubmit(submitData)
+    } catch (error) {
+      alert('프로젝트 저장 중 오류가 발생했습니다.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const validateProjectForm = (data: Project): string[] => {
+    const errors: string[] = []
+    
+    if (!data.customerName?.trim()) errors.push('• 고객명을 입력해주세요')
+    if (!data.phone?.trim()) errors.push('• 연락처를 입력해주세요')
+    if (!data.address?.trim()) errors.push('• 주소를 입력해주세요')
+    if (!data.service?.trim()) errors.push('• 서비스를 입력해주세요')
+    if (!data.scheduledDate) errors.push('• 예정일을 선택해주세요')
+    if (data.totalAmount <= 0) errors.push('• 프로젝트 금액을 입력해주세요')
+    
+    return errors
+  }
+  
+  if (!isOpen) return null
+
+  const status = project ? statusConfig[project.status] : undefined
   const currentData = isEditable ? (editData || project) : project
 
   return (
@@ -347,7 +416,7 @@ const ProjectModal = ({
               <h2 className="text-xl font-bold text-gray-900">
                 {mode === 'create' ? '새 프로젝트 등록' : mode === 'edit' ? '프로젝트 수정' : '프로젝트 상세'}
               </h2>
-              {mode !== 'create' && (
+              {mode !== 'create' && status && (
                 <span className={`px-3 py-1 rounded-full text-sm font-medium ${status.textColor} ${status.bgColor}`}>
                   {status.label}
                 </span>
@@ -372,7 +441,7 @@ const ProjectModal = ({
                 <label className="block text-sm font-medium text-gray-700 mb-1">고객명</label>
                 <input
                   type="text"
-                  value={currentData.customerName}
+                  value={currentData?.customerName || ''}
                   onChange={(e) => handleInputChange('customerName', e.target.value)}
                   disabled={!isEditable}
                   className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
@@ -389,7 +458,7 @@ const ProjectModal = ({
                 <label className="block text-sm font-medium text-gray-700 mb-1">연락처</label>
                 <input
                   type="text"
-                  value={currentData.phone}
+                  value={currentData?.phone || ''}
                   onChange={(e) => handleInputChange('phone', e.target.value)}
                   disabled={!isEditable}
                   className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
@@ -517,33 +586,53 @@ const ProjectModal = ({
           </section>
 
           {/* 진행률 표시 */}
-          <section>
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">진행률</h3>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-gray-700">현재 진행률</span>
-                <span className="text-lg font-bold text-indigo-600">{project.progressPercentage}%</span>
+          {mode !== 'create' && (
+            <section>
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">진행률</h3>
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-medium text-gray-700">현재 진행률</span>
+                  <span className="text-lg font-bold text-indigo-600">{currentData?.progressPercentage || 0}%</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-3">
+                  <div 
+                    className="bg-indigo-500 h-3 rounded-full transition-all duration-300"
+                    style={{ width: `${currentData?.progressPercentage || 0}%` }}
+                  />
+                </div>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-3">
-                <div 
-                  className="bg-indigo-500 h-3 rounded-full transition-all duration-300"
-                  style={{ width: `${project.progressPercentage}%` }}
-                />
-              </div>
-            </div>
-          </section>
+            </section>
+          )}
 
           {/* 금액 정보 */}
           <section>
             <h3 className="text-lg font-semibold text-gray-900 mb-3">금액 정보</h3>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <div className="flex items-center justify-between">
-                <span className="text-lg font-medium text-gray-900">총 프로젝트 금액</span>
-                <span className="text-2xl font-bold text-indigo-600">
-                  {(project.totalAmount / 10000).toFixed(0)}만원
-                </span>
+            {isEditable ? (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">총 프로젝트 금액 (원)</label>
+                <input
+                  type="number"
+                  min="0"
+                  value={currentData?.totalAmount || 0}
+                  onChange={(e) => handleInputChange('totalAmount', parseInt(e.target.value) || 0)}
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
+                    mode === 'create' 
+                      ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                      : 'bg-white border-gray-300 text-gray-900'
+                  }`}
+                  placeholder={mode === 'create' ? '프로젝트 금액을 입력하세요' : ''}
+                />
               </div>
-            </div>
+            ) : (
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <div className="flex items-center justify-between">
+                  <span className="text-lg font-medium text-gray-900">총 프로젝트 금액</span>
+                  <span className="text-2xl font-bold text-indigo-600">
+                    {((currentData?.totalAmount || 0) / 10000).toFixed(0)}만원
+                  </span>
+                </div>
+              </div>
+            )}
           </section>
 
           {/* 메모 */}
@@ -566,7 +655,7 @@ const ProjectModal = ({
           </section>
 
           {/* 사진 정보 */}
-          {project.photos && project.photos.length > 0 && (
+          {project && project.photos && project.photos.length > 0 && (
             <section>
               <h3 className="text-lg font-semibold text-gray-900 mb-3">시공 사진</h3>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -590,8 +679,18 @@ const ProjectModal = ({
               {mode === 'view' ? '닫기' : '취소'}
             </button>
             {isEditable && (
-              <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
-                {mode === 'create' ? '프로젝트 등록' : '수정 완료'}
+              <button 
+                type="button"
+                onClick={handleSubmit}
+                disabled={isSubmitting}
+                className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isSubmitting 
+                  ? '처리중...' 
+                  : mode === 'create' 
+                    ? '프로젝트 등록' 
+                    : '수정 완료'
+                }
               </button>
             )}
             {mode === 'view' && (
@@ -810,22 +909,39 @@ export default function ProjectsPage() {
   }
 
   const handleCreateProject = () => {
-    const newProject: Project = {
-      id: 'new',
-      customerName: '',
-      phone: '',
-      address: '',
-      service: '',
-      scheduledDate: new Date().toISOString().split('T')[0],
-      priority: 'normal',
-      status: 'scheduled',
-      progressPercentage: 0,
-      totalAmount: 0,
-      createdAt: new Date().toISOString().split('T')[0]
-    }
-    setSelectedProject(newProject)
+    setSelectedProject(null)
     setModalMode('create')
     setModalOpen(true)
+  }
+
+  const handleProjectSubmit = (projectData: Project) => {
+    if (modalMode === 'create') {
+      const newProject = {
+        ...projectData,
+        id: Date.now().toString(),
+        createdAt: new Date().toISOString().split('T')[0]
+      }
+      const updatedProjects = [newProject, ...projects]
+      setProjects(updatedProjects)
+      setFilteredProjects(updatedProjects.filter(p => 
+        searchTerm === '' || 
+        p.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        p.service.toLowerCase().includes(searchTerm.toLowerCase())
+      ))
+      alert(`${projectData.customerName}님의 프로젝트가 성공적으로 등록되었습니다.`)
+    } else if (modalMode === 'edit') {
+      const updatedProjects = projects.map(p => 
+        p.id === projectData.id ? projectData : p
+      )
+      setProjects(updatedProjects)
+      setFilteredProjects(updatedProjects.filter(p => 
+        searchTerm === '' || 
+        p.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        p.service.toLowerCase().includes(searchTerm.toLowerCase())
+      ))
+      alert(`${projectData.customerName}님의 프로젝트 정보가 성공적으로 수정되었습니다.`)
+    }
+    setModalOpen(false)
   }
 
   const handleUpdateProgress = (project: Project) => {
@@ -1045,6 +1161,7 @@ export default function ProjectsPage() {
           project={selectedProject}
           isOpen={modalOpen}
           onClose={() => setModalOpen(false)}
+          onSubmit={handleProjectSubmit}
           mode={modalMode}
         />
 

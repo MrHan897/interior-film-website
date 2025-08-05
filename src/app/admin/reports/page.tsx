@@ -88,7 +88,8 @@ const StatCard = ({
   change, 
   icon: Icon, 
   color, 
-  format = 'number' 
+  format = 'number',
+  onClick
 }: {
   title: string
   value: number
@@ -96,6 +97,7 @@ const StatCard = ({
   icon: React.ComponentType<{ className?: string }>
   color: 'blue' | 'emerald' | 'purple' | 'amber'
   format?: 'number' | 'currency' | 'percentage'
+  onClick?: () => void
 }) => {
   const colorClasses = {
     blue: 'bg-blue-500',
@@ -116,7 +118,12 @@ const StatCard = ({
   }
 
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+    <div 
+      className={`bg-white rounded-2xl p-6 shadow-sm border border-gray-100 transition-all duration-200 ${
+        onClick ? 'cursor-pointer hover:shadow-md hover:scale-105' : ''
+      }`}
+      onClick={onClick}
+    >
       <div className="flex items-center justify-between">
         <div className="space-y-2">
           <p className="text-sm text-gray-600 font-medium">{title}</p>
@@ -139,6 +146,11 @@ const StatCard = ({
           <Icon className="w-6 h-6 text-white" />
         </div>
       </div>
+      {onClick && (
+        <div className="mt-2 text-xs text-gray-500 text-center">
+          클릭하여 상세 분석 보기
+        </div>
+      )}
     </div>
   )
 }
@@ -293,11 +305,256 @@ const QuickInsights = ({ data }: { data: ReportData }) => {
   )
 }
 
+const MetricDetailModal = ({ 
+  isOpen, 
+  onClose, 
+  metricType, 
+  data 
+}: { 
+  isOpen: boolean
+  onClose: () => void
+  metricType: 'revenue' | 'bookings' | 'customers' | 'completion' | null
+  data: ReportData
+}) => {
+  if (!isOpen || !metricType) return null
+
+  const getMetricDetails = () => {
+    switch (metricType) {
+      case 'revenue':
+        return {
+          title: '매출 상세 분석',
+          icon: CurrencyDollarIcon,
+          color: 'emerald',
+          mainValue: `${(data.revenue / 10000).toFixed(0)}만원`,
+          chartData: [
+            { label: '필름 재료비', value: data.revenue * 0.4, percentage: 40 },
+            { label: '인건비', value: data.revenue * 0.35, percentage: 35 },
+            { label: '간접비', value: data.revenue * 0.15, percentage: 15 },
+            { label: '순이익', value: data.revenue * 0.1, percentage: 10 }
+          ],
+          insights: [
+            '전월 대비 23.5% 증가한 매출을 기록했습니다.',
+            '아파트 인테리어 필름이 전체 매출의 44.2%를 차지합니다.',
+            '평균 주문 금액이 158만원으로 목표치를 초과 달성했습니다.'
+          ]
+        }
+      case 'bookings':
+        return {
+          title: '예약 상세 분석',
+          icon: CalendarDaysIcon,
+          color: 'blue',
+          mainValue: `${data.bookings}건`,
+          chartData: [
+            { label: '아파트', value: Math.round(data.bookings * 0.4), percentage: 40 },
+            { label: '사무실', value: Math.round(data.bookings * 0.3), percentage: 30 },
+            { label: '상가', value: Math.round(data.bookings * 0.2), percentage: 20 },
+            { label: '주택', value: Math.round(data.bookings * 0.1), percentage: 10 }
+          ],
+          insights: [
+            '전월 대비 15.2% 증가한 예약 건수를 기록했습니다.',
+            '주말 예약이 평일 대비 35% 높은 선호도를 보입니다.',
+            '재방문 고객의 예약률이 68%로 높은 만족도를 보여줍니다.'
+          ]
+        }
+      case 'customers':
+        return {
+          title: '고객 상세 분석',
+          icon: UsersIcon,
+          color: 'purple',
+          mainValue: `${data.customers}명`,
+          chartData: [
+            { label: '신규 고객', value: Math.round(data.customers * 0.7), percentage: 70 },
+            { label: '재방문 고객', value: Math.round(data.customers * 0.3), percentage: 30 }
+          ],
+          insights: [
+            '신규 고객 유입이 전월 대비 8.7% 증가했습니다.',
+            '고객 만족도가 평균 4.6/5점으로 높은 수준을 유지하고 있습니다.',
+            '추천을 통한 신규 고객 유입이 42%를 차지합니다.'
+          ]
+        }
+      case 'completion':
+        return {
+          title: '완료율 상세 분석',
+          icon: WrenchScrewdriverIcon,
+          color: 'amber',
+          mainValue: `${data.completion_rate.toFixed(1)}%`,
+          chartData: [
+            { label: '정시 완료', value: data.completion_rate * 0.8, percentage: 80 },
+            { label: '지연 완료', value: data.completion_rate * 0.15, percentage: 15 },
+            { label: '미완료/취소', value: 100 - data.completion_rate, percentage: 100 - data.completion_rate }
+          ],
+          insights: [
+            '완료율이 94.4%로 업계 평균을 상회합니다.',
+            '평균 시공 시간이 계획 대비 5% 단축되었습니다.',
+            '품질 검수 통과율이 98.5%로 높은 품질을 유지하고 있습니다.'
+          ]
+        }
+      default:
+        return null
+    }
+  }
+
+  const metricDetails = getMetricDetails()
+  if (!metricDetails) return null
+
+  const colorClasses = {
+    blue: { bg: 'bg-blue-500', light: 'bg-blue-100', text: 'text-blue-600' },
+    emerald: { bg: 'bg-emerald-500', light: 'bg-emerald-100', text: 'text-emerald-600' },
+    purple: { bg: 'bg-purple-500', light: 'bg-purple-100', text: 'text-purple-600' },
+    amber: { bg: 'bg-amber-500', light: 'bg-amber-100', text: 'text-amber-600' }
+  }
+
+  const colors = colorClasses[metricDetails.color]
+
+  return (
+    <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden shadow-2xl">
+        {/* 모달 헤더 */}
+        <div className="p-6 border-b border-gray-200">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className={`w-10 h-10 rounded-xl ${colors.bg} flex items-center justify-center`}>
+                <metricDetails.icon className="w-5 h-5 text-white" />
+              </div>
+              <h2 className="text-xl font-bold text-gray-900">{metricDetails.title}</h2>
+            </div>
+            <button
+              onClick={onClose}
+              className="w-8 h-8 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-full transition-colors"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+
+        {/* 모달 컨텐츠 */}
+        <div className="p-6 space-y-8 overflow-y-auto max-h-[calc(90vh-200px)]">
+          {/* 메인 지표 */}
+          <div className="text-center">
+            <div className="text-5xl font-bold text-gray-900 mb-2">
+              {metricDetails.mainValue}
+            </div>
+            <p className="text-lg text-gray-600">현재 {metricDetails.title.split(' ')[0]}</p>
+          </div>
+
+          {/* 차트 데이터 */}
+          <section>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">구성 비율</h3>
+            <div className="space-y-4">
+              {metricDetails.chartData.map((item, index) => (
+                <div key={index} className="space-y-2">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="font-medium text-gray-700">{item.label}</span>
+                    <div className="flex items-center space-x-2">
+                      <span className="text-gray-900 font-semibold">
+                        {typeof item.value === 'number' && item.value > 1000 
+                          ? `${(item.value / 10000).toFixed(0)}만원`
+                          : `${Math.round(item.value)}${metricType === 'revenue' ? '만원' : metricType === 'bookings' ? '건' : metricType === 'customers' ? '명' : '%'}`
+                        }
+                      </span>
+                      <span className={`text-sm ${colors.text}`}>
+                        {item.percentage.toFixed(1)}%
+                      </span>
+                    </div>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div 
+                      className={`${colors.bg} h-2 rounded-full transition-all duration-1000`}
+                      style={{ width: `${item.percentage}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* 인사이트 */}
+          <section>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">핵심 인사이트</h3>
+            <div className="space-y-3">
+              {metricDetails.insights.map((insight, index) => (
+                <div key={index} className={`p-4 ${colors.light} rounded-lg`}>
+                  <div className="flex items-start space-x-3">
+                    <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <span className={`text-sm font-bold ${colors.text}`}>{index + 1}</span>
+                    </div>
+                    <p className={`text-sm leading-relaxed ${colors.text}`}>
+                      {insight}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* 액션 제안 */}
+          <section className="bg-gray-50 p-6 rounded-xl">
+            <h3 className="text-lg font-semibold text-gray-900 mb-3">개선 제안</h3>
+            <div className="space-y-2">
+              {metricType === 'revenue' && (
+                <>
+                  <p className="text-sm text-gray-700">• 고단가 서비스 비중을 늘려 평균 주문 금액을 향상시키세요</p>
+                  <p className="text-sm text-gray-700">• 재료비 효율화를 통해 수익성을 개선해보세요</p>
+                </>
+              )}
+              {metricType === 'bookings' && (
+                <>
+                  <p className="text-sm text-gray-700">• 평일 예약 활성화를 위한 프로모션을 고려해보세요</p>
+                  <p className="text-sm text-gray-700">• 상가/주택 시장 확대를 위한 마케팅 전략을 수립하세요</p>
+                </>
+              )}
+              {metricType === 'customers' && (
+                <>
+                  <p className="text-sm text-gray-700">• 재방문 고객 비율 증대를 위한 멤버십 프로그램을 도입하세요</p>
+                  <p className="text-sm text-gray-700">• 고객 추천 프로그램을 강화하여 신규 고객을 확보하세요</p>
+                </>
+              )}
+              {metricType === 'completion' && (
+                <>
+                  <p className="text-sm text-gray-700">• 시공 프로세스 표준화를 통해 완료율을 더욱 향상시키세요</p>
+                  <p className="text-sm text-gray-700">• 품질 관리 시스템을 도입하여 고객 만족도를 높이세요</p>
+                </>
+              )}
+            </div>
+          </section>
+        </div>
+
+        {/* 모달 액션 버튼 */}
+        <div className="p-6 bg-gray-50 border-t border-gray-200">
+          <div className="flex items-center justify-end space-x-3">
+            <button
+              onClick={onClose}
+              className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              닫기
+            </button>
+            <button
+              onClick={() => {
+                alert(`${metricDetails.title} 보고서를 저장했습니다.`)
+              }}
+              className={`px-4 py-2 ${colors.bg} text-white rounded-lg hover:opacity-90 transition-opacity`}
+            >
+              보고서 저장
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function ReportsPage() {
   const [selectedPeriod, setSelectedPeriod] = useState('this-month')
   const [reportData, setReportData] = useState<ReportData>(sampleReportData)
   const [serviceStats, setServiceStats] = useState<ServiceStats[]>(sampleServiceStats)
   const [monthlyTrends, setMonthlyTrends] = useState<MonthlyTrend[]>(sampleMonthlyTrends)
+  const [modalOpen, setModalOpen] = useState(false)
+  const [selectedMetric, setSelectedMetric] = useState<'revenue' | 'bookings' | 'customers' | 'completion' | null>(null)
+
+  const handleMetricClick = (metricType: 'revenue' | 'bookings' | 'customers' | 'completion') => {
+    setSelectedMetric(metricType)
+    setModalOpen(true)
+  }
 
   const handlePeriodChange = (period: string) => {
     setSelectedPeriod(period)
@@ -425,6 +682,7 @@ export default function ReportsPage() {
                 icon={CurrencyDollarIcon}
                 color="emerald"
                 format="currency"
+                onClick={() => handleMetricClick('revenue')}
               />
               <StatCard
                 title="총 예약"
@@ -432,6 +690,7 @@ export default function ReportsPage() {
                 change={15.2}
                 icon={CalendarDaysIcon}
                 color="blue"
+                onClick={() => handleMetricClick('bookings')}
               />
               <StatCard
                 title="신규 고객"
@@ -439,6 +698,7 @@ export default function ReportsPage() {
                 change={8.7}
                 icon={UsersIcon}
                 color="purple"
+                onClick={() => handleMetricClick('customers')}
               />
               <StatCard
                 title="완료율"
@@ -447,6 +707,7 @@ export default function ReportsPage() {
                 icon={WrenchScrewdriverIcon}
                 color="amber"
                 format="percentage"
+                onClick={() => handleMetricClick('completion')}
               />
             </div>
           </section>
@@ -545,6 +806,14 @@ export default function ReportsPage() {
           </section>
         </div>
       </div>
+
+      {/* 상세 분석 모달 */}
+      <MetricDetailModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        metricType={selectedMetric}
+        data={reportData}
+      />
     </AdminLayout>
   )
 }

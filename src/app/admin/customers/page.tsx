@@ -270,15 +270,18 @@ const CustomerCard = ({
 const CustomerModal = ({ 
   customer, 
   isOpen, 
-  onClose, 
+  onClose,
+  onSubmit,
   mode 
 }: { 
   customer: Customer | null
   isOpen: boolean
   onClose: () => void
+  onSubmit: (customerData: Customer) => void
   mode: 'view' | 'edit' | 'create'
 }) => {
   const [editData, setEditData] = useState<Customer | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   
   const isEditable = mode === 'edit' || mode === 'create'
   
@@ -309,6 +312,46 @@ const CustomerModal = ({
   const handleInputChange = (field: keyof Customer, value: string | number) => {
     if (!isEditable || !editData) return
     setEditData({ ...editData, [field]: value })
+  }
+
+  const handleSubmit = () => {
+    if (!editData) {
+      alert('폼 데이터를 불러올 수 없습니다.')
+      return
+    }
+    
+    if (isSubmitting) return
+
+    // 폼 검증
+    const errors = validateCustomerForm(editData)
+    if (errors.length > 0) {
+      alert('다음 항목을 확인해주세요:\n' + errors.join('\n'))
+      return
+    }
+
+    setIsSubmitting(true)
+    try {
+      const submitData = {
+        ...editData,
+        id: mode === 'create' ? Date.now().toString() : editData.id
+      }
+      onSubmit(submitData)
+    } catch (error) {
+      alert('고객 정보 저장 중 오류가 발생했습니다.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const validateCustomerForm = (data: Customer): string[] => {
+    const errors: string[] = []
+    
+    if (!data.name?.trim()) errors.push('• 고객명을 입력해주세요')
+    if (!data.phone?.trim()) errors.push('• 연락처를 입력해주세요')
+    if (!data.address?.trim()) errors.push('• 주소를 입력해주세요')
+    if (!data.buildingType) errors.push('• 건물 유형을 선택해주세요')
+    
+    return errors
   }
   
   if (!isOpen) return null
@@ -512,8 +555,18 @@ const CustomerModal = ({
               {mode === 'view' ? '닫기' : '취소'}
             </button>
             {isEditable && (
-              <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
-                {mode === 'create' ? '고객 등록' : '수정 완료'}
+              <button 
+                type="button"
+                onClick={handleSubmit}
+                disabled={isSubmitting}
+                className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isSubmitting 
+                  ? '처리중...' 
+                  : mode === 'create' 
+                    ? '고객 등록' 
+                    : '수정 완료'
+                }
               </button>
             )}
             {mode === 'view' && (
@@ -672,22 +725,35 @@ export default function CustomersPage() {
   }
 
   const handleCreateCustomer = () => {
-    const newCustomer: Customer = {
-      id: 'new',
-      name: '',
-      phone: '',
-      address: '',
-      buildingType: 'apartment',
-      totalReservations: 0,
-      totalSpent: 0,
-      lastService: '',
-      lastServiceDate: '',
-      customerSince: new Date().toISOString().split('T')[0],
-      status: 'active'
-    }
-    setSelectedCustomer(newCustomer)
+    setSelectedCustomer(null)
     setModalMode('create')
     setModalOpen(true)
+  }
+
+  const handleCustomerSubmit = (customerData: Customer) => {
+    if (modalMode === 'create') {
+      const newCustomer = {
+        ...customerData,
+        id: Date.now().toString(),
+        totalReservations: 0,
+        totalSpent: 0,
+        lastService: '',
+        lastServiceDate: '',
+        customerSince: new Date().toISOString().split('T')[0]
+      }
+      const updatedCustomers = [newCustomer, ...customers]
+      setCustomers(updatedCustomers)
+      applyFilters(searchTerm, statusFilter, updatedCustomers)
+      alert(`${customerData.name}님이 성공적으로 등록되었습니다.`)
+    } else if (modalMode === 'edit') {
+      const updatedCustomers = customers.map(c => 
+        c.id === customerData.id ? customerData : c
+      )
+      setCustomers(updatedCustomers)
+      applyFilters(searchTerm, statusFilter, updatedCustomers)
+      alert(`${customerData.name}님의 정보가 성공적으로 수정되었습니다.`)
+    }
+    setModalOpen(false)
   }
 
   // 연락하기 이벤트 리스너
@@ -809,6 +875,7 @@ export default function CustomersPage() {
           customer={selectedCustomer}
           isOpen={modalOpen}
           onClose={() => setModalOpen(false)}
+          onSubmit={handleCustomerSubmit}
           mode={modalMode}
         />
       </div>

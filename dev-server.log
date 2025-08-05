@@ -8,93 +8,235 @@
    - Environments: .env.local
 
  ✓ Starting...
- ✓ Compiled middleware in 141ms
- ✓ Ready in 1065ms
+ ✓ Compiled middleware in 165ms
+ ✓ Ready in 1225ms
  ○ Compiling / ...
- ✓ Compiled / in 2.7s
- GET / 200 in 3123ms
- GET / 200 in 200ms
- ○ Compiling /favicon.ico ...
- ✓ Compiled /favicon.ico in 880ms
- GET /favicon.ico?favicon.45db1c09.ico 200 in 1248ms
+ ✓ Compiled / in 2.8s
+ HEAD / 200 in 3196ms
+ GET / 200 in 136ms
+ ○ Compiling /api/portfolio ...
+ ✓ Compiled /api/portfolio in 679ms
 Supabase error details: {
   message: 'Invalid API key',
   hint: 'Double check your Supabase `anon` or `service_role` API key.'
 }
 portfolio 테이블이 없습니다. 샘플 데이터를 반환합니다.
- GET /api/portfolio 200 in 1627ms
- GET / 200 in 139ms
-Supabase error details: {
-  message: 'Invalid API key',
-  hint: 'Double check your Supabase `anon` or `service_role` API key.'
-}
-portfolio 테이블이 없습니다. 샘플 데이터를 반환합니다.
- GET /api/portfolio 200 in 117ms
+ GET /api/portfolio 200 in 1292ms
  ○ Compiling /admin/schedule ...
- ✓ Compiled /admin/schedule in 662ms
- GET /admin/schedule 200 in 714ms
- ✓ Compiled /admin/dashboard in 334ms
- GET /admin/dashboard 200 in 378ms
- ✓ Compiled /admin/bookings in 398ms
- GET /admin/bookings?filter=today 200 in 541ms
- GET /admin/dashboard 200 in 38ms
- ✓ Compiled /admin/projects in 303ms
- GET /admin/projects?filter=in_progress 200 in 421ms
- GET /admin/dashboard 200 in 34ms
- ✓ Compiled /admin/quotes in 323ms
- GET /admin/quotes?filter=quote_requested 200 in 403ms
- GET /admin/dashboard 200 in 35ms
- ✓ Compiled /admin/reports in 322ms
- GET /admin/reports?period=month 200 in 422ms
- GET /admin/dashboard 200 in 33ms
- GET /admin/bookings?view=1 200 in 84ms
- GET /admin/dashboard 200 in 32ms
- GET /admin/bookings?view=2 200 in 77ms
- GET /admin/dashboard 200 in 31ms
- GET /admin/quotes 200 in 125ms
- GET /admin/dashboard 200 in 36ms
- GET /admin/schedule 200 in 35ms
- GET /admin/projects 200 in 36ms
- ✓ Compiled in 173ms
- ✓ Compiled in 81ms
- GET / 200 in 142ms
-Supabase error details: {
-  message: 'Invalid API key',
-  hint: 'Double check your Supabase `anon` or `service_role` API key.'
-}
-portfolio 테이블이 없습니다. 샘플 데이터를 반환합니다.
- GET /api/portfolio 200 in 599ms
- GET /admin/schedule 200 in 44ms
- GET /admin/dashboard 200 in 37ms
+ ✓ Compiled /admin/schedule in 586ms
+ GET /admin/schedule 200 in 639ms
+ ✓ Compiled /admin/quotes in 485ms
+ GET /admin/quotes 200 in 534ms
+ ✓ Compiled /admin/projects in 403ms
+ GET /admin/projects 200 in 453ms
+ ✓ Compiled /admin/more in 337ms
+ GET /admin/more 200 in 376ms
+ GET /admin/schedule 200 in 41ms
  GET /admin/projects 200 in 35ms
- GET /admin/projects 200 in 127ms
- GET /favicon.ico?favicon.45db1c09.ico 200 in 237ms
- ✓ Compiled in 117ms
+ ✓ Compiled /admin/customers in 430ms
+ GET /admin/customers 200 in 488ms
+ ✓ Compiled in 124ms
+ ✓ Compiled in 109ms
+ ✓ Compiled in 83ms
+ ✓ Compiled in 98ms
+ ✓ Compiled in 95ms
+ ✓ Compiled in 85ms
  ✓ Compiled in 84ms
- ✓ Compiled in 96ms
+ ✓ Compiled in 89ms
  ✓ Compiled in 80ms
+ ✓ Compiled in 102ms
+ ✓ Compiled in 90ms
+ ✓ Compiled /admin/reports in 387ms
+ GET /admin/reports 200 in 434ms
  ✓ Compiled in 86ms
- GET /admin/dashboard 200 in 39ms
- GET /admin/schedule 200 in 38ms
- ✓ Compiled /admin/customers in 370ms
- GET /admin/customers 200 in 408ms
- ✓ Compiled /admin/more in 274ms
- GET /admin/more 200 in 317ms
- GET /admin/reports 200 in 36ms
- GET /admin/more 200 in 39ms
- GET /admin/quotes 200 in 168ms
- GET /admin/schedule 200 in 42ms
- GET /admin/more 200 in 39ms
- GET /admin/quotes 200 in 36ms
- GET /admin/schedule 200 in 35ms
- GET /admin/more 200 in 32ms
+ ✓ Compiled in 85ms
+ ✓ Compiled in 90ms
+ ✓ Compiled in 72ms
+ ✓ Compiled in 77ms
+ ✓ Compiled in 70ms
  GET /admin/quotes 200 in 38ms
- GET /admin/more 200 in 37ms
- GET /admin/dashboard 200 in 33ms
- GET / 200 in 117ms
-Supabase error details: {
-  message: 'Invalid API key',
-  hint: 'Double check your Supabase `anon` or `service_role` API key.'
+ ✓ Compiled in 98ms
+ ✓ Compiled in 78ms
+ ✓ Compiled in 155ms
+ ✓ Compiled /admin/dashboard in 334ms
+ GET /admin/dashboard 200 in 376ms
+ ✓ Compiled in 85ms
+ ✓ Compiled in 77ms
+ ✓ Compiled in 78ms
+ ✓ Compiled in 100ms
+ ✓ Compiled in 91ms
+ ✓ Compiled in 163ms
+ ✓ Compiled in 76ms
+ ✓ Compiled in 137ms
+ GET /admin/quotes?view=3 200 in 389ms
+ GET /admin/dashboard 200 in 130ms
+ ✓ Compiled /admin/bookings in 329ms
+ GET /admin/bookings?view=1 200 in 496ms
+ GET /admin/dashboard 200 in 40ms
+ ✓ Compiled in 75ms
+ GET /admin/quotes 200 in 45ms
+ GET /admin/bookings 200 in 43ms
+ GET /admin/schedule 200 in 41ms
+ GET /admin/projects 200 in 155ms
+ GET /admin/customers 200 in 134ms
+ ✓ Compiled /admin/partners in 384ms
+ GET /admin/partners 200 in 425ms
+ GET /admin/reports 200 in 128ms
+ GET /admin/dashboard 200 in 127ms
+ ✓ Compiled in 85ms
+ ✓ Compiled in 100ms
+ GET /admin/quotes 200 in 49ms
+ GET /admin/bookings 200 in 49ms
+ GET /admin/schedule 200 in 62ms
+ GET /admin/projects 200 in 36ms
+ GET /admin/customers 200 in 50ms
+ GET /admin/partners 200 in 43ms
+ GET /admin/reports 200 in 44ms
+ GET /admin/projects 200 in 45ms
+ ✓ Compiled in 172ms
+ GET /admin/schedule 200 in 38ms
+ GET /admin/bookings 200 in 36ms
+ GET /admin/quotes 200 in 60ms
+ GET /admin/dashboard 200 in 142ms
+ ✓ Compiled in 84ms
+ ✓ Compiled in 83ms
+ ✓ Compiled in 102ms
+ ✓ Compiled in 105ms
+ GET /admin/quotes 200 in 52ms
+ GET /admin/dashboard 200 in 154ms
+ ✓ Compiled in 241ms
+ ✓ Compiled in 128ms
+ ✓ Compiled in 99ms
+ ✓ Compiled in 110ms
+ ✓ Compiled in 161ms
+ ✓ Compiled in 91ms
+ ✓ Compiled in 95ms
+ ✓ Compiled in 77ms
+ ✓ Compiled in 88ms
+ ✓ Compiled middleware in 1ms
+ ⨯ ./src/app/admin/dashboard/page.tsx:1324:1
+Parsing ecmascript source code failed
+[0m [90m 1322 |[39m   )
+ [90m 1323 |[39m }
+[31m[1m>[22m[39m[90m 1324 |[39m }
+ [90m      |[39m [31m[1m^[22m[39m[0m
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/admin/dashboard/page.tsx [Client Component Browser]
+    ./src/app/admin/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/admin/dashboard/page.tsx [Client Component SSR]
+    ./src/app/admin/dashboard/page.tsx [Server Component]
+
+
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 205ms
+ GET /admin/dashboard 500 in 456ms
+ ⨯ ./src/app/admin/dashboard/page.tsx:1324:1
+Parsing ecmascript source code failed
+[0m [90m 1322 |[39m   )
+ [90m 1323 |[39m }
+[31m[1m>[22m[39m[90m 1324 |[39m }
+ [90m      |[39m [31m[1m^[22m[39m[0m
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/admin/dashboard/page.tsx [Client Component Browser]
+    ./src/app/admin/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/admin/dashboard/page.tsx [Client Component SSR]
+    ./src/app/admin/dashboard/page.tsx [Server Component]
+
+
+ GET /admin/dashboard 500 in 88ms
+ ⨯ ./src/app/admin/dashboard/page.tsx:1324:1
+Parsing ecmascript source code failed
+[0m [90m 1322 |[39m   )
+ [90m 1323 |[39m }
+[31m[1m>[22m[39m[90m 1324 |[39m }
+ [90m      |[39m [31m[1m^[22m[39m[0m
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/admin/dashboard/page.tsx [Client Component Browser]
+    ./src/app/admin/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/admin/dashboard/page.tsx [Client Component SSR]
+    ./src/app/admin/dashboard/page.tsx [Server Component]
+
+
+ GET /admin/dashboard 500 in 72ms
+ ✓ Compiled /favicon.ico in 204ms
+ GET /favicon.ico 500 in 227ms
+ ✓ Compiled middleware in 2ms
+ ⨯ ./src/app/admin/dashboard/page.tsx:1324:1
+Parsing ecmascript source code failed
+[0m [90m 1322 |[39m   )
+ [90m 1323 |[39m }
+[31m[1m>[22m[39m[90m 1324 |[39m }
+ [90m      |[39m [31m[1m^[22m[39m[0m
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./src/app/admin/dashboard/page.tsx [Client Component Browser]
+    ./src/app/admin/dashboard/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/admin/dashboard/page.tsx [Client Component SSR]
+    ./src/app/admin/dashboard/page.tsx [Server Component]
+
+
+ ✓ Compiled in 63ms
+ GET /admin/dashboard 500 in 67ms
+ GET /favicon.ico 500 in 44ms
+ ✓ Compiled /admin/dashboard in 16ms
+ GET /admin/dashboard 200 in 487ms
+ GET /favicon.ico?favicon.45db1c09.ico 200 in 290ms
+ ⨯ [Error: ENOENT: no such file or directory, open '/home/ghostf1/interior-film-website/.next/server/app/admin/dashboard/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/home/ghostf1/interior-film-website/.next/server/app/admin/dashboard/page/app-build-manifest.json'
 }
-portfolio 테이블이 없습니다. 샘플 데이터를 반환합니다.
- GET /api/portfolio 200 in 589ms
+ ⨯ [Error: ENOENT: no such file or directory, open '/home/ghostf1/interior-film-website/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/home/ghostf1/interior-film-website/.next/server/pages/_app/build-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open '/home/ghostf1/interior-film-website/.next/server/app/admin/dashboard/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/home/ghostf1/interior-film-website/.next/server/app/admin/dashboard/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/home/ghostf1/interior-film-website/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/home/ghostf1/interior-film-website/.next/server/pages/_app/build-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open '/home/ghostf1/interior-film-website/.next/server/pages/_app/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/home/ghostf1/interior-film-website/.next/server/pages/_app/build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/home/ghostf1/interior-film-website/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/home/ghostf1/interior-film-website/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'
+}

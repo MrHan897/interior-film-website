@@ -71,12 +71,14 @@ export default function Services() {
           </p>
         </div>
         <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
-          <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
+          <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 md:max-w-4xl md:grid-cols-2 lg:max-w-none lg:grid-cols-3">
             {services.map((service, index) => (
               <div 
                 key={service.name} 
                 ref={(el) => { cardsRef.current[index] = el }}
-                className="flex flex-col scroll-animate bg-gray-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white border border-gray-100"
+                className={`flex flex-col scroll-animate bg-gray-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white border border-gray-100 w-full max-w-sm mx-auto ${
+                  index === 2 ? 'md:col-span-2 md:justify-self-center md:max-w-sm lg:col-span-1 lg:justify-self-start' : ''
+                }`}
               >
                 <dt className="flex items-center gap-x-3 text-base font-semibold leading-7 text-gray-900">
                   <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-600 transition-transform duration-300 group-hover:scale-110">

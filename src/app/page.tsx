@@ -9,6 +9,7 @@ import Contact from '@/components/Contact'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import FloatingConsultButton from '@/components/FloatingConsultButton'
+import ScrollToTopButton from '@/components/ScrollToTopButton'
 
 export default function Home() {
   // 페이지 로드 후 스크롤 위치 복원 방지
@@ -35,6 +36,7 @@ export default function Home() {
       </main>
       <Footer />
       <FloatingConsultButton />
+      <ScrollToTopButton />
     </div>
   )
 }

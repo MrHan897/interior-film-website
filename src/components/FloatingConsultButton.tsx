@@ -19,8 +19,8 @@ export default function FloatingConsultButton() {
       bgColor: 'bg-yellow-400 hover:bg-yellow-500',
       textColor: 'text-gray-900',
       action: () => {
-        // 카카오톡 채널 링크 (실제 채널 URL로 변경 필요)
-        window.open('https://pf.kakao.com/_your_channel_id', '_blank')
+        // 관리자 페이지에 설정된 카카오톡 오픈채팅방 링크
+        window.open('https://open.kakao.com/o/sUR8xKPe', '_blank')
       }
     },
     {

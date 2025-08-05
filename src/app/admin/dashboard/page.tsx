@@ -9,7 +9,15 @@ import {
   PlusIcon,
   ChartBarIcon,
   UsersIcon,
-  DocumentTextIcon
+  DocumentTextIcon,
+  ArrowTrendingUpIcon,
+  ArrowTrendingDownIcon,
+  TruckIcon,
+  HomeIcon,
+  ComputerDesktopIcon,
+  DevicePhoneMobileIcon,
+  GlobeAltIcon,
+  EyeIcon
 } from '@heroicons/react/24/outline'
 import AdminLayout from '@/components/admin/AdminLayout'
 
@@ -36,6 +44,24 @@ interface RecentQuote {
   amount: number
   date: string
   status: 'pending' | 'sent' | 'accepted' | 'rejected'
+}
+
+interface TrafficData {
+  currentVisitors: number
+  todayVisitors: number
+  pageViews: number
+  bounceRate: number
+  averageSession: string
+  topPages: { page: string, views: number, percentage: number }[]
+  deviceStats: { desktop: number, mobile: number, tablet: number }
+  referralSources: { source: string, visitors: number, percentage: number }[]
+}
+
+interface VisitorChart {
+  period: string
+  visitors: number
+  pageViews: number
+  uniqueVisitors: number
 }
 
 const colorScheme = {
@@ -233,6 +259,456 @@ const QuoteRow = ({ quote, onClick }: { quote: RecentQuote, onClick: (quote: Rec
   )
 }
 
+// 주간 매출 차트 컴포넌트
+const WeeklyRevenueChart = ({ data }: { data: { day: string, revenue: number, bookings: number }[] }) => {
+  const maxRevenue = Math.max(...data.map(d => d.revenue))
+  
+  return (
+    <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="text-lg font-semibold text-gray-900">주간 매출 현황</h3>
+        <div className="flex items-center space-x-2 text-sm text-emerald-600">
+          <ArrowTrendingUpIcon className="w-4 h-4" />
+          <span>+12.5%</span>
+        </div>
+      </div>
+      <div className="space-y-4">
+        {data.map((item, index) => {
+          const height = maxRevenue > 0 ? (item.revenue / maxRevenue) * 100 : 0
+          return (
+            <div key={index} className="flex items-center space-x-4">
+              <div className="w-10 text-sm text-gray-600 font-medium">
+                {item.day}
+              </div>
+              <div className="flex-1 relative">
+                <div className="h-8 bg-gray-100 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-full transition-all duration-1000 relative"
+                    style={{ width: `${height}%` }}
+                  >
+                    <div className="absolute inset-0 bg-white/20 animate-pulse rounded-full"></div>
+                  </div>
+                </div>
+                <div className="absolute inset-y-0 left-3 flex items-center">
+                  <span className="text-xs font-medium text-white">
+                    {item.bookings}건
+                  </span>
+                </div>
+              </div>
+              <div className="w-20 text-right text-sm font-semibold text-gray-900">
+                {(item.revenue / 10000).toFixed(0)}만원
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+// 월간 성과 개요 컴포넌트
+const MonthlyOverview = ({ data }: { 
+  data: { 
+    completedProjects: number
+    customerSatisfaction: number
+    averageProjectValue: number
+    totalCustomers: number
+  } 
+}) => {
+  return (
+    <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+      <h3 className="text-lg font-semibold text-gray-900 mb-6">월간 성과 개요</h3>
+      <div className="space-y-6">
+        {/* 완료된 프로젝트 */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-medium text-gray-700">완료된 프로젝트</span>
+            <span className="text-sm font-bold text-gray-900">{data.completedProjects}개</span>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-2">
+            <div 
+              className="bg-emerald-500 h-2 rounded-full transition-all duration-1000"
+              style={{ width: `${Math.min((data.completedProjects / 20) * 100, 100)}%` }}
+            />
+          </div>
+          <p className="text-xs text-gray-500">목표: 20개 프로젝트</p>
+        </div>
+
+        {/* 고객 만족도 */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-medium text-gray-700">고객 만족도</span>
+            <span className="text-sm font-bold text-gray-900">{data.customerSatisfaction}%</span>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-2">
+            <div 
+              className="bg-blue-500 h-2 rounded-full transition-all duration-1000"
+              style={{ width: `${data.customerSatisfaction}%` }}
+            />
+          </div>
+          <p className="text-xs text-gray-500">목표: 95% 이상</p>
+        </div>
+
+        {/* 평균 프로젝트 가치 */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-medium text-gray-700">평균 프로젝트 가치</span>
+            <span className="text-sm font-bold text-gray-900">{(data.averageProjectValue / 10000).toFixed(0)}만원</span>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-2">
+            <div 
+              className="bg-amber-500 h-2 rounded-full transition-all duration-1000"
+              style={{ width: `${Math.min((data.averageProjectValue / 3000000) * 100, 100)}%` }}
+            />
+          </div>
+          <p className="text-xs text-gray-500">목표: 300만원</p>
+        </div>
+
+        {/* 누적 고객 수 */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-medium text-gray-700">누적 고객 수</span>
+            <span className="text-sm font-bold text-gray-900">{data.totalCustomers}명</span>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-2">
+            <div 
+              className="bg-purple-500 h-2 rounded-full transition-all duration-1000"
+              style={{ width: `${Math.min((data.totalCustomers / 100) * 100, 100)}%` }}
+            />
+          </div>
+          <p className="text-xs text-gray-500">목표: 100명</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// 서비스 분포 차트 컴포넌트
+const ServiceDistributionChart = ({ 
+  data 
+}: { 
+  data: { service: string, count: number, color: string }[] 
+}) => {
+  const total = data.reduce((sum, item) => sum + item.count, 0)
+  
+  return (
+    <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+      <h3 className="text-lg font-semibold text-gray-900 mb-6">서비스 분포</h3>
+      <div className="space-y-4">
+        {data.map((item, index) => {
+          const percentage = total > 0 ? (item.count / total) * 100 : 0
+          return (
+            <div key={index} className="space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <div 
+                    className="w-3 h-3 rounded-full"
+                    style={{ backgroundColor: item.color }}
+                  />
+                  <span className="text-sm font-medium text-gray-700">{item.service}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm text-gray-600">{item.count}건</span>
+                  <span className="text-sm font-semibold text-gray-900">
+                    {percentage.toFixed(1)}%
+                  </span>
+                </div>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div 
+                  className="h-2 rounded-full transition-all duration-1000"
+                  style={{ 
+                    width: `${percentage}%`,
+                    backgroundColor: item.color
+                  }}
+                />
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+// 실시간 트래픽 모니터 컴포넌트
+const RealTimeTrafficMonitor = ({ data }: { data: TrafficData }) => {
+  const [isLive, setIsLive] = useState(true)
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsLive(prev => !prev) // 실시간 표시를 위한 깜빡임 효과
+    }, 2000)
+    
+    return () => clearInterval(interval)
+  }, [])
+
+  return (
+    <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="text-lg font-semibold text-gray-900">실시간 트래픽</h3>
+        <div className="flex items-center space-x-2">
+          <div className={`w-2 h-2 rounded-full ${isLive ? 'bg-emerald-500' : 'bg-emerald-300'} transition-colors`} />
+          <span className="text-sm text-gray-600">LIVE</span>
+        </div>
+      </div>
+      
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div className="text-center">
+          <div className="flex items-center justify-center mb-2">
+            <EyeIcon className="w-5 h-5 text-emerald-600 mr-1" />
+            <span className="text-2xl font-bold text-emerald-600">{data.currentVisitors}</span>
+          </div>
+          <p className="text-sm text-gray-600">현재 접속자</p>
+        </div>
+        
+        <div className="text-center">
+          <div className="flex items-center justify-center mb-2">
+            <UsersIcon className="w-5 h-5 text-blue-600 mr-1" />
+            <span className="text-2xl font-bold text-blue-600">{data.todayVisitors}</span>
+          </div>
+          <p className="text-sm text-gray-600">오늘 방문자</p>
+        </div>
+        
+        <div className="text-center">
+          <div className="flex items-center justify-center mb-2">
+            <DocumentTextIcon className="w-5 h-5 text-purple-600 mr-1" />
+            <span className="text-2xl font-bold text-purple-600">{data.pageViews}</span>
+          </div>
+          <p className="text-sm text-gray-600">페이지뷰</p>
+        </div>
+        
+        <div className="text-center">
+          <div className="flex items-center justify-center mb-2">
+            <ClockIcon className="w-5 h-5 text-amber-600 mr-1" />
+            <span className="text-2xl font-bold text-amber-600">{data.averageSession}</span>
+          </div>
+          <p className="text-sm text-gray-600">평균 세션</p>
+        </div>
+      </div>
+
+      {/* 디바이스 분포 */}
+      <div className="space-y-3">
+        <h4 className="text-sm font-semibold text-gray-700">디바이스 분포</h4>
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <ComputerDesktopIcon className="w-4 h-4 text-gray-600" />
+              <span className="text-sm text-gray-700">데스크톱</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="w-20 bg-gray-200 rounded-full h-2">
+                <div 
+                  className="bg-blue-500 h-2 rounded-full transition-all duration-1000"
+                  style={{ width: `${data.deviceStats.desktop}%` }}
+                />
+              </div>
+              <span className="text-sm font-medium text-gray-900 w-8">{data.deviceStats.desktop}%</span>
+            </div>
+          </div>
+          
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <DevicePhoneMobileIcon className="w-4 h-4 text-gray-600" />
+              <span className="text-sm text-gray-700">모바일</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="w-20 bg-gray-200 rounded-full h-2">
+                <div 
+                  className="bg-emerald-500 h-2 rounded-full transition-all duration-1000"
+                  style={{ width: `${data.deviceStats.mobile}%` }}
+                />
+              </div>
+              <span className="text-sm font-medium text-gray-900 w-8">{data.deviceStats.mobile}%</span>
+            </div>
+          </div>
+          
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <DocumentTextIcon className="w-4 h-4 text-gray-600" />
+              <span className="text-sm text-gray-700">태블릿</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="w-20 bg-gray-200 rounded-full h-2">
+                <div 
+                  className="bg-purple-500 h-2 rounded-full transition-all duration-1000"
+                  style={{ width: `${data.deviceStats.tablet}%` }}
+                />
+              </div>
+              <span className="text-sm font-medium text-gray-900 w-8">{data.deviceStats.tablet}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// 방문자 차트 컴포넌트 (일별/주간/월별)
+const VisitorAnalyticsChart = ({ 
+  data, 
+  period, 
+  onPeriodChange 
+}: { 
+  data: VisitorChart[], 
+  period: 'daily' | 'weekly' | 'monthly',
+  onPeriodChange: (period: 'daily' | 'weekly' | 'monthly') => void
+}) => {
+  const maxVisitors = Math.max(...data.map(d => d.visitors))
+  const maxPageViews = Math.max(...data.map(d => d.pageViews))
+  
+  const periodLabels = {
+    daily: '일별',
+    weekly: '주간',
+    monthly: '월별'
+  }
+
+  return (
+    <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="text-lg font-semibold text-gray-900">방문자 분석</h3>
+        <div className="flex items-center space-x-2">
+          {(['daily', 'weekly', 'monthly'] as const).map((p) => (
+            <button
+              key={p}
+              onClick={() => onPeriodChange(p)}
+              className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
+                period === p 
+                  ? 'bg-indigo-100 text-indigo-700' 
+                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+              }`}
+            >
+              {periodLabels[p]}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        {data.map((item, index) => {
+          const visitorHeight = maxVisitors > 0 ? (item.visitors / maxVisitors) * 100 : 0
+          const pageViewHeight = maxPageViews > 0 ? (item.pageViews / maxPageViews) * 100 : 0
+          
+          return (
+            <div key={index} className="space-y-2">
+              <div className="flex items-center justify-between text-sm">
+                <span className="font-medium text-gray-700">{item.period}</span>
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-1">
+                    <div className="w-3 h-3 bg-indigo-500 rounded-full" />
+                    <span className="text-gray-600">{item.visitors} 방문자</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <div className="w-3 h-3 bg-emerald-500 rounded-full" />
+                    <span className="text-gray-600">{item.pageViews} 페이지뷰</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="relative">
+                <div className="h-8 bg-gray-100 rounded-lg overflow-hidden">
+                  <div 
+                    className="h-full bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-lg transition-all duration-1000"
+                    style={{ width: `${visitorHeight}%` }}
+                  />
+                </div>
+                <div className="h-6 bg-gray-100 rounded-lg overflow-hidden mt-1">
+                  <div 
+                    className="h-full bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-lg transition-all duration-1000"
+                    style={{ width: `${pageViewHeight}%` }}
+                  />
+                </div>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+      
+      {/* 요약 통계 */}
+      <div className="mt-6 pt-6 border-t border-gray-200">
+        <div className="grid grid-cols-3 gap-4">
+          <div className="text-center">
+            <p className="text-2xl font-bold text-indigo-600">
+              {data.reduce((sum, item) => sum + item.visitors, 0).toLocaleString()}
+            </p>
+            <p className="text-sm text-gray-600">총 방문자</p>
+          </div>
+          <div className="text-center">
+            <p className="text-2xl font-bold text-emerald-600">
+              {data.reduce((sum, item) => sum + item.pageViews, 0).toLocaleString()}
+            </p>
+            <p className="text-sm text-gray-600">총 페이지뷰</p>
+          </div>
+          <div className="text-center">
+            <p className="text-2xl font-bold text-purple-600">
+              {data.reduce((sum, item) => sum + item.uniqueVisitors, 0).toLocaleString()}
+            </p>
+            <p className="text-sm text-gray-600">순 방문자</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// 인기 페이지 및 트래픽 소스 컴포넌트
+const TrafficSourcesAndPages = ({ data }: { data: TrafficData }) => {
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* 인기 페이지 */}
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">인기 페이지</h3>
+        <div className="space-y-3">
+          {data.topPages.map((page, index) => (
+            <div key={index} className="flex items-center justify-between">
+              <div className="flex-1">
+                <p className="text-sm font-medium text-gray-900 truncate">{page.page}</p>
+                <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
+                  <div 
+                    className="bg-indigo-500 h-2 rounded-full transition-all duration-1000"
+                    style={{ width: `${page.percentage}%` }}
+                  />
+                </div>
+              </div>
+              <div className="ml-4 text-right">
+                <p className="text-sm font-semibold text-gray-900">{page.views}</p>
+                <p className="text-xs text-gray-500">{page.percentage.toFixed(1)}%</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 트래픽 소스 */}
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">트래픽 소스</h3>
+        <div className="space-y-3">
+          {data.referralSources.map((source, index) => (
+            <div key={index} className="flex items-center justify-between">
+              <div className="flex items-center space-x-3 flex-1">
+                <GlobeAltIcon className="w-5 h-5 text-gray-600" />
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-900">{source.source}</p>
+                  <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
+                    <div 
+                      className="bg-emerald-500 h-2 rounded-full transition-all duration-1000"
+                      style={{ width: `${source.percentage}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="ml-4 text-right">
+                <p className="text-sm font-semibold text-gray-900">{source.visitors}</p>
+                <p className="text-xs text-gray-500">{source.percentage.toFixed(1)}%</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function AdminDashboard() {
   const [stats, setStats] = useState<DashboardStats>({
     todayBookings: 8,
@@ -294,6 +770,100 @@ export default function AdminDashboard() {
       status: 'accepted'
     }
   ])
+
+  // 주간 매출 데이터
+  const [weeklyRevenue] = useState([
+    { day: '월', revenue: 2100000, bookings: 3 },
+    { day: '화', revenue: 1800000, bookings: 2 },
+    { day: '수', revenue: 3200000, bookings: 4 },
+    { day: '목', revenue: 2600000, bookings: 3 },
+    { day: '금', revenue: 4100000, bookings: 5 },
+    { day: '토', revenue: 1900000, bookings: 2 },
+    { day: '일', revenue: 1200000, bookings: 1 }
+  ])
+
+  // 월간 성과 데이터
+  const [monthlyOverview] = useState({
+    completedProjects: 18,
+    customerSatisfaction: 94.2,
+    averageProjectValue: 2400000,
+    totalCustomers: 87
+  })
+
+  // 서비스 분포 데이터
+  const [serviceDistribution] = useState([
+    { service: '아파트 시공', count: 12, color: '#4F46E5' },
+    { service: '사무실 시공', count: 8, color: '#10B981' },
+    { service: '상가 시공', count: 5, color: '#F59E0B' },
+    { service: 'A/S 서비스', count: 3, color: '#EF4444' }
+  ])
+
+  // 실시간 트래픽 데이터 (실시간 업데이트 시뮬레이션)
+  const [trafficData, setTrafficData] = useState<TrafficData>({
+    currentVisitors: 23,
+    todayVisitors: 387,
+    pageViews: 1254,
+    bounceRate: 32.5,
+    averageSession: '2m 45s',
+    topPages: [
+      { page: '/', views: 428, percentage: 34.1 },
+      { page: '/services', views: 312, percentage: 24.9 },
+      { page: '/gallery', views: 186, percentage: 14.8 },
+      { page: '/contact', views: 153, percentage: 12.2 },
+      { page: '/about', views: 175, percentage: 14.0 }
+    ],
+    deviceStats: { desktop: 45, mobile: 48, tablet: 7 },
+    referralSources: [
+      { source: 'Google 검색', visitors: 198, percentage: 51.2 },
+      { source: '네이버 검색', visitors: 87, percentage: 22.5 },
+      { source: '직접 방문', visitors: 62, percentage: 16.0 },
+      { source: '소셜 미디어', visitors: 25, percentage: 6.5 },
+      { source: '기타', visitors: 15, percentage: 3.8 }
+    ]
+  })
+
+  // 방문자 차트 데이터 (기간별)
+  const [visitorPeriod, setVisitorPeriod] = useState<'daily' | 'weekly' | 'monthly'>('daily')
+  const [visitorChartData] = useState({
+    daily: [
+      { period: '오늘', visitors: 387, pageViews: 1254, uniqueVisitors: 298 },
+      { period: '어제', visitors: 423, pageViews: 1156, uniqueVisitors: 312 },
+      { period: '2일 전', visitors: 356, pageViews: 987, uniqueVisitors: 267 },
+      { period: '3일 전', visitors: 445, pageViews: 1387, uniqueVisitors: 334 },
+      { period: '4일 전', visitors: 398, pageViews: 1201, uniqueVisitors: 289 },
+      { period: '5일 전', visitors: 467, pageViews: 1445, uniqueVisitors: 356 },
+      { period: '6일 전', visitors: 412, pageViews: 1298, uniqueVisitors: 301 }
+    ],
+    weekly: [
+      { period: '이번 주', visitors: 2688, pageViews: 8728, uniqueVisitors: 2157 },
+      { period: '지난 주', visitors: 3012, pageViews: 9456, uniqueVisitors: 2398 },
+      { period: '2주 전', visitors: 2834, pageViews: 8967, uniqueVisitors: 2234 },
+      { period: '3주 전', visitors: 2945, pageViews: 9123, uniqueVisitors: 2345 },
+      { period: '4주 전', visitors: 2756, pageViews: 8634, uniqueVisitors: 2089 }
+    ],
+    monthly: [
+      { period: '이번 달', visitors: 11289, pageViews: 36274, uniqueVisitors: 8934 },
+      { period: '지난 달', visitors: 12456, pageViews: 39821, uniqueVisitors: 9567 },
+      { period: '2개월 전', visitors: 11834, pageViews: 37965, uniqueVisitors: 9123 },
+      { period: '3개월 전', visitors: 10976, pageViews: 35428, uniqueVisitors: 8456 },
+      { period: '4개월 전', visitors: 10234, pageViews: 33156, uniqueVisitors: 7898 },
+      { period: '5개월 전', visitors: 9876, pageViews: 31789, uniqueVisitors: 7567 }
+    ]
+  })
+
+  // 실시간 트래픽 데이터 업데이트 시뮬레이션
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTrafficData(prev => ({
+        ...prev,
+        currentVisitors: Math.max(15, prev.currentVisitors + Math.floor(Math.random() * 5) - 2),
+        todayVisitors: prev.todayVisitors + Math.floor(Math.random() * 3),
+        pageViews: prev.pageViews + Math.floor(Math.random() * 5)
+      }))
+    }, 10000) // 10초마다 업데이트
+    
+    return () => clearInterval(interval)
+  }, [])
 
   // 퀵 액션 핸들러
   const handleQuickAction = (action: string) => {
@@ -359,29 +929,102 @@ export default function AdminDashboard() {
     }
   }
 
-  // 미확인 버튼 핸들러 (내보내기 버튼으로 추정)
+  // 대시보드 데이터 내보내기 핸들러
   const handleExport = () => {
-    // 대시보드 데이터를 CSV로 내보내기
-    const dashboardData = [
-      ['구분', '수량', '상태'],
-      ['오늘 예약', stats.todayBookings, '활성'],
-      ['진행중 시공', stats.ongoingProjects, '진행중'],
-      ['대기 견적', stats.pendingQuotes, '대기'],
-      ['월 매출', `${(stats.monthlyRevenue / 10000).toFixed(0)}만원`, '완료']
+    // UTF-8 BOM을 추가하여 한글 깨짐 방지
+    const BOM = '\uFEFF'
+    
+    // 종합 대시보드 리포트 생성
+    const reportData = [
+      ['=== 인테리어 필름 대시보드 종합 리포트 ==='],
+      [`생성일시: ${new Date().toLocaleString('ko-KR')}`],
+      [''],
+      ['1. 핵심 지표 현황'],
+      ['항목', '수량', '전월 대비', '목표', '달성률'],
+      ['오늘 예약', stats.todayBookings, '+2건', '10건', `${(stats.todayBookings/10*100).toFixed(1)}%`],
+      ['진행중 시공', stats.ongoingProjects, '±0건', '15건', `${(stats.ongoingProjects/15*100).toFixed(1)}%`],
+      ['대기 견적', stats.pendingQuotes, '-1건', '3건', `${stats.pendingQuotes <= 3 ? '목표 달성' : '목표 초과'}`],
+      ['월 매출', `${(stats.monthlyRevenue/10000).toFixed(0)}만원`, '+23.5%', '2000만원', `${(stats.monthlyRevenue/20000000*100).toFixed(1)}%`],
+      [''],
+      ['2. 주간 매출 상세'],
+      ['요일', '매출액(원)', '예약건수', '평균 단가(원)'],
+      ...weeklyRevenue.map(day => [
+        day.day,
+        day.revenue.toLocaleString(),
+        day.bookings,
+        Math.round(day.revenue / day.bookings).toLocaleString()
+      ]),
+      [''],
+      ['3. 월간 성과 분석'],
+      ['지표', '현재값', '목표값', '달성률', '평가'],
+      ['완료된 프로젝트', `${monthlyOverview.completedProjects}개`, '20개', `${(monthlyOverview.completedProjects/20*100).toFixed(1)}%`, monthlyOverview.completedProjects >= 18 ? '우수' : '보통'],
+      ['고객 만족도', `${monthlyOverview.customerSatisfaction}%`, '95%', `${(monthlyOverview.customerSatisfaction/95*100).toFixed(1)}%`, monthlyOverview.customerSatisfaction >= 90 ? '우수' : '개선 필요'],
+      ['평균 프로젝트 가치', `${(monthlyOverview.averageProjectValue/10000).toFixed(0)}만원`, '300만원', `${(monthlyOverview.averageProjectValue/3000000*100).toFixed(1)}%`, monthlyOverview.averageProjectValue >= 2500000 ? '양호' : '개선 필요'],
+      ['누적 고객 수', `${monthlyOverview.totalCustomers}명`, '100명', `${monthlyOverview.totalCustomers}%`, monthlyOverview.totalCustomers >= 80 ? '우수' : '보통'],
+      [''],
+      ['4. 서비스 분포 현황'],
+      ['서비스 유형', '건수', '비율', '매출 기여도'],
+      ...serviceDistribution.map(service => {
+        const total = serviceDistribution.reduce((sum, s) => sum + s.count, 0)
+        const percentage = (service.count / total * 100).toFixed(1)
+        return [service.service, service.count, `${percentage}%`, '높음']
+      }),
+      [''],
+      ['5. 오늘 일정 요약'],
+      ['시간', '고객명', '서비스', '유형', '상태'],
+      ...todaySchedule.map(item => [
+        item.time,
+        item.customerName,
+        item.service,
+        item.type === 'consultation' ? '상담' : 
+        item.type === 'installation' ? '시공' :
+        item.type === 'support' ? '지원' : 'A/S',
+        item.status === 'confirmed' ? '확정' :
+        item.status === 'pending' ? '대기' : '완료'
+      ]),
+      [''],
+      ['6. 최근 견적 현황'],
+      ['고객명', '서비스', '견적금액(원)', '날짜', '상태'],
+      ...recentQuotes.map(quote => [
+        quote.customerName,
+        quote.service,
+        quote.amount.toLocaleString(),
+        quote.date,
+        quote.status === 'pending' ? '대기' :
+        quote.status === 'sent' ? '발송' :
+        quote.status === 'accepted' ? '승인' : '거절'
+      ]),
+      [''],
+      ['7. 주요 인사이트'],
+      ['구분', '내용'],
+      ['매출 성장률', '주간 매출이 전주 대비 12.5% 증가했습니다.'],
+      ['고객 만족도', '고객 만족도 94.2%로 목표 95%에 근접했습니다.'],
+      ['서비스 분포', '아파트 시공이 42.9%로 가장 높은 비중을 차지합니다.'],
+      ['재방문율', '기존 고객의 재방문율이 68%로 높은 충성도를 보입니다.'],
+      ['완료 시간', '평균 프로젝트 완료 시간이 3.2일로 목표를 달성했습니다.']
     ]
     
-    const csvContent = dashboardData.map(row => row.join(',')).join('\n')
+    // CSV 형식으로 변환 (한글 깨짐 방지)
+    const csvContent = BOM + reportData.map(row => 
+      row.map(cell => 
+        typeof cell === 'string' && cell.includes(',') 
+          ? `"${cell}"` 
+          : cell
+      ).join(',')
+    ).join('\n')
+    
+    // 파일 다운로드
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
     const link = document.createElement('a')
     const url = URL.createObjectURL(blob)
     link.setAttribute('href', url)
-    link.setAttribute('download', `대시보드_통계_${new Date().toISOString().split('T')[0]}.csv`)
+    link.setAttribute('download', `대시보드_종합리포트_${new Date().toISOString().split('T')[0]}.csv`)
     link.style.visibility = 'hidden'
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
     
-    alert('대시보드 통계 데이터가 CSV 파일로 다운로드되었습니다.')
+    alert('대시보드 종합 리포트가 CSV 파일로 다운로드되었습니다.\n\n포함 내용:\n• 핵심 지표 및 달성률\n• 주간 매출 상세 분석\n• 월간 성과 데이터\n• 서비스 분포 현황\n• 일정 및 견적 요약\n• 주요 인사이트')
   }
 
   return (
@@ -412,68 +1055,70 @@ export default function AdminDashboard() {
         </div>
 
         {/* 메인 컨텐츠 */}
-        <div className="p-6 space-y-8">
-        {/* 통계 카드 섹션 */}
-        <section>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <StatsCard
-              title="오늘 예약"
-              value={stats.todayBookings}
-              icon={CalendarDaysIcon}
-              color="primary"
-              trend="2"
-              onClick={() => handleStatsClick('today-bookings')}
-            />
-            <StatsCard
-              title="진행중 시공"
-              value={stats.ongoingProjects}
-              icon={WrenchScrewdriverIcon}
-              color="warning"
-              onClick={() => handleStatsClick('ongoing-projects')}
-            />
-            <StatsCard
-              title="대기 견적"
-              value={stats.pendingQuotes}
-              icon={ClockIcon}
-              color="secondary"
-              onClick={() => handleStatsClick('pending-quotes')}
-            />
-            <StatsCard
-              title="월 매출"
-              value={stats.monthlyRevenue}
-              icon={CurrencyDollarIcon}
-              color="success"
-              format="currency"
-              onClick={() => handleStatsClick('monthly-revenue')}
-            />
-          </div>
-        </section>
-
-        {/* 퀵 액션 섹션 */}
-        <section>
-          <h2 className="text-xl font-bold text-gray-900 mb-4">빠른 작업</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <QuickActionCard
-              title="새 견적 등록"
-              icon={DocumentTextIcon}
-              onClick={() => handleQuickAction('new-quote')}
-            />
-            <QuickActionCard
-              title="예약 일정 추가"
-              icon={CalendarDaysIcon}
-              onClick={() => handleQuickAction('new-booking')}
-            />
-            <QuickActionCard
-              title="시공 완료 처리"
-              icon={WrenchScrewdriverIcon}
-              onClick={() => handleQuickAction('complete-project')}
-            />
-          </div>
-        </section>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* 오늘 일정 섹션 */}
+        <div className="p-4 lg:p-6 space-y-6 lg:space-y-8">
+          {/* 상단: 핵심 지표 카드 섹션 */}
           <section>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+              <StatsCard
+                title="오늘 예약"
+                value={stats.todayBookings}
+                icon={CalendarDaysIcon}
+                color="primary"
+                trend="2"
+                onClick={() => handleStatsClick('today-bookings')}
+              />
+              <StatsCard
+                title="진행중 시공"
+                value={stats.ongoingProjects}
+                icon={WrenchScrewdriverIcon}
+                color="warning"
+                onClick={() => handleStatsClick('ongoing-projects')}
+              />
+              <StatsCard
+                title="대기 견적"
+                value={stats.pendingQuotes}
+                icon={ClockIcon}
+                color="secondary"
+                onClick={() => handleStatsClick('pending-quotes')}
+              />
+              <StatsCard
+                title="월 매출"
+                value={stats.monthlyRevenue}
+                icon={CurrencyDollarIcon}
+                color="success"
+                format="currency"
+                onClick={() => handleStatsClick('monthly-revenue')}
+              />
+            </div>
+          </section>
+
+          {/* 퀵 액션 + 오늘 일정 + 최근 견적 */}
+          <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 lg:gap-8">
+            {/* 퀵 액션 섹션 */}
+            <section className="xl:col-span-4">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">빠른 작업</h2>
+              <div className="space-y-4">
+                <QuickActionCard
+                  title="새 견적 등록"
+                  icon={DocumentTextIcon}
+                  onClick={() => handleQuickAction('new-quote')}
+                />
+                <QuickActionCard
+                  title="예약 일정 추가"
+                  icon={CalendarDaysIcon}
+                  onClick={() => handleQuickAction('new-booking')}
+                />
+                <QuickActionCard
+                  title="시공 완료 처리"
+                  icon={WrenchScrewdriverIcon}
+                  onClick={() => handleQuickAction('complete-project')}
+                />
+              </div>
+            </section>
+
+            <div className="xl:col-span-8 grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+              {/* 오늘 일정 섹션 */}
+              <section>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold text-gray-900">오늘 일정</h2>
               <button 
@@ -551,8 +1196,126 @@ export default function AdminDashboard() {
                 </div>
               )}
             </div>
+              </section>
+            </div>
+          </div>
+
+          {/* 성과 분석 섹션 */}
+          <section>
+            <h2 className="text-xl font-bold text-gray-900 mb-6">비즈니스 성과 분석</h2>
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 lg:gap-8">
+              {/* 주간 매출 차트 */}
+              <div className="xl:col-span-2">
+                <WeeklyRevenueChart data={weeklyRevenue} />
+              </div>
+              
+              {/* 서비스 분포 차트 */}
+              <div>
+                <ServiceDistributionChart data={serviceDistribution} />
+              </div>
+            </div>
           </section>
-        </div>
+
+          {/* 트래픽 모니터링 섹션 */}
+          <section>
+            <h2 className="text-xl font-bold text-gray-900 mb-6">웹사이트 트래픽 분석</h2>
+            <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 lg:gap-8">
+              {/* 실시간 트래픽 모니터 */}
+              <div className="xl:col-span-1">
+                <RealTimeTrafficMonitor data={trafficData} />
+              </div>
+              
+              {/* 방문자 분석 차트 */}
+              <div className="xl:col-span-3">
+                <VisitorAnalyticsChart 
+                  data={visitorChartData[visitorPeriod]}
+                  period={visitorPeriod}
+                  onPeriodChange={setVisitorPeriod}
+                />
+              </div>
+            </div>
+          </section>
+
+          {/* 트래픽 소스 및 인기 페이지 */}
+          <section>
+            <TrafficSourcesAndPages data={trafficData} />
+          </section>
+
+          {/* 월간 성과 및 KPI 카드 */}
+          <section>
+            <h2 className="text-xl font-bold text-gray-900 mb-6">월간 성과 및 핵심 지표</h2>
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 lg:gap-8">
+              {/* 월간 성과 개요 */}
+              <div className="xl:col-span-2">
+                <MonthlyOverview data={monthlyOverview} />
+              </div>
+              
+              {/* 추가 KPI 카드들 */}
+              <div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-1 gap-4">
+                  <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center">
+                        <TruckIcon className="w-5 h-5 text-emerald-600" />
+                      </div>
+                      <div className="flex items-center space-x-1 text-emerald-600">
+                        <ArrowTrendingUpIcon className="w-4 h-4" />
+                        <span className="text-sm font-medium">+8.2%</span>
+                      </div>
+                    </div>
+                    <h3 className="text-sm font-medium text-gray-600 mb-1">진행중 배송</h3>
+                    <p className="text-2xl font-bold text-gray-900">6건</p>
+                    <p className="text-xs text-gray-500 mt-1">예상 완료: 내일</p>
+                  </div>
+                  
+                  <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
+                        <HomeIcon className="w-5 h-5 text-blue-600" />
+                      </div>
+                      <div className="flex items-center space-x-1 text-blue-600">
+                        <ArrowTrendingUpIcon className="w-4 h-4" />
+                        <span className="text-sm font-medium">+15.3%</span>
+                      </div>
+                    </div>
+                    <h3 className="text-sm font-medium text-gray-600 mb-1">재방문율</h3>
+                    <p className="text-2xl font-bold text-gray-900">68%</p>
+                    <p className="text-xs text-gray-500 mt-1">전월 대비 증가</p>
+                  </div>
+                  
+                  <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center">
+                        <ClockIcon className="w-5 h-5 text-amber-600" />
+                      </div>
+                      <div className="flex items-center space-x-1 text-amber-600">
+                        <ArrowTrendingDownIcon className="w-4 h-4" />
+                        <span className="text-sm font-medium">-2.1일</span>
+                      </div>
+                    </div>
+                    <h3 className="text-sm font-medium text-gray-600 mb-1">평균 완료시간</h3>
+                    <p className="text-2xl font-bold text-gray-900">3.2일</p>
+                    <p className="text-xs text-gray-500 mt-1">목표: 3.5일</p>
+                  </div>
+                  
+                  <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center">
+                        <UsersIcon className="w-5 h-5 text-purple-600" />
+                      </div>
+                      <div className="flex items-center space-x-1 text-purple-600">
+                        <ArrowTrendingUpIcon className="w-4 h-4" />
+                        <span className="text-sm font-medium">+12명</span>
+                      </div>
+                    </div>
+                    <h3 className="text-sm font-medium text-gray-600 mb-1">신규 고객</h3>
+                    <p className="text-2xl font-bold text-gray-900">25명</p>
+                    <p className="text-xs text-gray-500 mt-1">이번 달</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
     </AdminLayout>

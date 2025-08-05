@@ -141,7 +141,10 @@ export default function Contact() {
               <p className="text-sm text-gray-600 mb-4">
                 카카오톡 채널을 통해 더 빠른 상담을 받아보세요.
               </p>
-              <button className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 py-3 px-4 rounded-lg font-medium hover:from-yellow-500 hover:to-yellow-600 transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg">
+              <button 
+                onClick={() => window.open('https://open.kakao.com/o/sUR8xKPe', '_blank')}
+                className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 py-3 px-4 rounded-lg font-medium hover:from-yellow-500 hover:to-yellow-600 transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg"
+              >
                 카카오톡 상담하기
               </button>
             </div>

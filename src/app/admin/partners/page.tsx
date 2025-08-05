@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import AdminLayout from '@/components/admin/AdminLayout'
+import PartnerModal from './PartnerModal'
 import { 
   BuildingOfficeIcon,
   PhoneIcon,
@@ -273,6 +274,9 @@ export default function PartnersPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [businessTypeFilter, setBusinessTypeFilter] = useState<string>('all')
   const [statusFilter, setStatusFilter] = useState<string>('all')
+  const [selectedPartner, setSelectedPartner] = useState<Partner | null>(null)
+  const [modalOpen, setModalOpen] = useState(false)
+  const [modalMode, setModalMode] = useState<'view' | 'edit' | 'create'>('view')
 
   const handleSearch = (term: string) => {
     setSearchTerm(term)
@@ -289,8 +293,8 @@ export default function PartnersPage() {
     applyFilters(searchTerm, businessTypeFilter, status)
   }
 
-  const applyFilters = (search: string, businessType: string, status: string) => {
-    let filtered = partners
+  const applyFilters = (search: string, businessType: string, status: string, partnersData?: Partner[]) => {
+    let filtered = partnersData || partners
 
     // 검색어 필터
     if (search) {
@@ -318,11 +322,63 @@ export default function PartnersPage() {
   }
 
   const handleViewPartner = (partner: Partner) => {
-    alert(`${partner.companyName} 상세 정보를 확인합니다.`)
+    setSelectedPartner(partner)
+    setModalMode('view')
+    setModalOpen(true)
   }
 
   const handleEditPartner = (partner: Partner) => {
-    alert(`${partner.companyName} 정보를 수정합니다.`)
+    setSelectedPartner(partner)
+    setModalMode('edit')
+    setModalOpen(true)
+  }
+
+  const handleCreatePartner = () => {
+    const newPartner: Partner = {
+      id: '',
+      companyName: '',
+      contactPerson: '',
+      phone: '',
+      email: '',
+      address: '',
+      businessType: 'supplier',
+      specialties: [],
+      partnerSince: new Date().toISOString().split('T')[0],
+      status: 'active',
+      totalProjects: 0,
+      totalRevenue: 0,
+      lastProject: '',
+      lastProjectDate: '',
+      notes: ''
+    }
+    setSelectedPartner(newPartner)
+    setModalMode('create')
+    setModalOpen(true)
+  }
+
+  const handlePartnerSubmit = (partnerData: Partner) => {
+    try {
+      if (modalMode === 'create') {
+        const newPartner = {
+          ...partnerData,
+          id: Date.now().toString()
+        }
+        const updatedPartners = [newPartner, ...partners]
+        setPartners(updatedPartners)
+        applyFilters(searchTerm, businessTypeFilter, statusFilter, updatedPartners)
+        alert(`${partnerData.companyName} 협력업체가 성공적으로 등록되었습니다.`)
+      } else if (modalMode === 'edit') {
+        const updatedPartners = partners.map(p => 
+          p.id === partnerData.id ? partnerData : p
+        )
+        setPartners(updatedPartners)
+        applyFilters(searchTerm, businessTypeFilter, statusFilter, updatedPartners)
+        alert(`${partnerData.companyName} 정보가 성공적으로 수정되었습니다.`)
+      }
+      setModalOpen(false)
+    } catch (error) {
+      alert('협력업체 저장 중 오류가 발생했습니다.')
+    }
   }
 
   const handleContactPartner = (partner: Partner) => {
@@ -348,7 +404,10 @@ export default function PartnersPage() {
                 <h1 className="text-2xl font-bold text-gray-900">협력업체 관리</h1>
                 <p className="text-sm text-gray-600">협력업체 정보 및 관계 관리</p>
               </div>
-              <button className="flex items-center space-x-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+              <button 
+                onClick={handleCreatePartner}
+                className="flex items-center space-x-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+              >
                 <PlusIcon className="w-4 h-4" />
                 <span>새 협력업체</span>
               </button>
@@ -474,6 +533,15 @@ export default function PartnersPage() {
             </div>
           )}
         </div>
+
+        {/* 협력업체 모달 */}
+        <PartnerModal
+          partner={selectedPartner}
+          isOpen={modalOpen}
+          onClose={() => setModalOpen(false)}
+          onSubmit={handlePartnerSubmit}
+          mode={modalMode}
+        />
       </div>
     </AdminLayout>
   )
