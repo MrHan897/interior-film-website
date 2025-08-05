@@ -240,3 +240,8 @@ Import traces:
   syscall: 'open',
   path: '/home/ghostf1/interior-film-website/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'
 }
+ ✓ Compiled middleware in 5ms
+ ✓ Compiled middleware in 4ms
+ ✓ Compiled in 101ms
+ ✓ Compiled middleware in 1ms
+ ✓ Compiled middleware in 1ms

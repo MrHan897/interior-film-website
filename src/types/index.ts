@@ -14,6 +14,9 @@ export interface Portfolio extends BaseEntity {
   tags: string[]
   featured?: boolean
   order_index?: number
+  blogUrl?: string
+  location?: string
+  completedAt?: string
 }
 
 export interface PortfolioFormData {
@@ -23,6 +26,9 @@ export interface PortfolioFormData {
   image_url: string
   tags: string[]
   featured?: boolean
+  blogUrl?: string
+  location?: string
+  completedAt?: string
 }
 
 // Booking 관련 타입

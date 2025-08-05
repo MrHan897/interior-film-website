@@ -11,7 +11,11 @@ const samplePortfolios: Portfolio[] = [
     description: '기존 벽면을 고급 우드 패턴 필름으로 변화시켜 따뜻하고 세련된 분위기를 연출했습니다.',
     image_url: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&h=400&fit=crop',
     tags: ['우드 패턴', '거실', '아파트'],
-    created_at: new Date().toISOString()
+    created_at: new Date().toISOString(),
+    featured: true,
+    location: '서울시 강남구',
+    completedAt: '2024-01-15',
+    blogUrl: 'https://blog.example.com/gangnam-apartment'
   },
   {
     id: '2',
@@ -20,7 +24,10 @@ const samplePortfolios: Portfolio[] = [
     description: '브랜드 아이덴티티에 맞는 컬러와 패턴의 필름으로 독특한 분위기의 카페를 완성했습니다.',
     image_url: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&h=400&fit=crop',
     tags: ['브랜딩', '카페', '상업공간'],
-    created_at: new Date().toISOString()
+    created_at: new Date().toISOString(),
+    featured: false,
+    location: '서울시 마포구 홍대',
+    completedAt: '2024-01-10'
   },
   {
     id: '3',
@@ -29,7 +36,10 @@ const samplePortfolios: Portfolio[] = [
     description: '오래된 주방 가구를 마블 패턴 필름으로 리폼하여 고급스러운 주방으로 변화시켰습니다.',
     image_url: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=400&fit=crop',
     tags: ['마블 패턴', '주방', '가구'],
-    created_at: new Date().toISOString()
+    created_at: new Date().toISOString(),
+    featured: true,
+    location: '서울시 서초구',
+    completedAt: '2024-01-05'
   },
   {
     id: '4',
@@ -38,7 +48,10 @@ const samplePortfolios: Portfolio[] = [
     description: '프라이버시 보호와 동시에 개방감을 유지하는 반투명 필름으로 사무 공간을 구성했습니다.',
     image_url: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&h=400&fit=crop',
     tags: ['프라이버시', '사무실', '파티션'],
-    created_at: new Date().toISOString()
+    created_at: new Date().toISOString(),
+    featured: false,
+    location: '서울시 중구',
+    completedAt: '2023-12-28'
   },
   {
     id: '5',
@@ -47,7 +60,10 @@ const samplePortfolios: Portfolio[] = [
     description: '포인트 벽면에 아트 패턴 필름을 적용하여 개성있는 침실 공간을 완성했습니다.',
     image_url: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600&h=400&fit=crop',
     tags: ['아트 패턴', '침실', '포인트 벽'],
-    created_at: new Date().toISOString()
+    created_at: new Date().toISOString(),
+    featured: false,
+    location: '경기도 성남시',
+    completedAt: '2023-12-20'
   },
   {
     id: '6',
@@ -56,7 +72,11 @@ const samplePortfolios: Portfolio[] = [
     description: '매장 외벽에 브랜드 컬러와 로고를 적용한 필름으로 강력한 브랜딩 효과를 창출했습니다.',
     image_url: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&h=400&fit=crop',
     tags: ['브랜딩', '외벽', '매장'],
-    created_at: new Date().toISOString()
+    created_at: new Date().toISOString(),
+    featured: true,
+    location: '서울시 영등포구',
+    completedAt: '2023-12-15',
+    blogUrl: 'https://blog.example.com/store-branding'
   }
 ]
 
@@ -114,7 +134,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<Portfolio
 
   try {
     const body: PortfolioFormData = await request.json()
-    const { title, category, description, image_url, tags } = body
+    const { title, category, description, image_url, tags, featured, blogUrl, location, completedAt } = body
     
     // 입력 유효성 검사
     if (!title || !category || !description || !image_url) {
@@ -133,6 +153,10 @@ export async function POST(request: NextRequest): Promise<NextResponse<Portfolio
           description,
           image_url,
           tags: Array.isArray(tags) ? tags : [tags],
+          featured: featured || false,
+          blogUrl: blogUrl || null,
+          location: location || null,
+          completedAt: completedAt || null,
           created_at: new Date().toISOString()
         }
       ])

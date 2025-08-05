@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { collectTrafficMiddleware } from './middleware/traffic'
 
 // JWT 토큰 검증을 위한 간단한 구현
 function isValidToken(token: string): boolean {
@@ -21,6 +22,11 @@ function isValidToken(token: string): boolean {
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
+
+  // 트래픽 수집 (관리자 페이지와 API 경로 제외)
+  if (!pathname.startsWith('/admin') && !pathname.startsWith('/api')) {
+    collectTrafficMiddleware(request)
+  }
 
   // 관리자 페이지 보호
   if (pathname.startsWith('/admin')) {

@@ -31,7 +31,7 @@ export async function PUT(
   try {
     const { id } = await params
     const body = await request.json()
-    const { title, category, description, image_url, tags } = body
+    const { title, category, description, image_url, tags, featured, blogUrl, location, completedAt } = body
 
     const { data, error } = await supabase
       .from('portfolio')
@@ -41,6 +41,10 @@ export async function PUT(
         description,
         image_url,
         tags: Array.isArray(tags) ? tags : [tags],
+        featured: featured || false,
+        blogUrl: blogUrl || null,
+        location: location || null,
+        completedAt: completedAt || null,
         updated_at: new Date().toISOString()
       })
       .eq('id', id)
