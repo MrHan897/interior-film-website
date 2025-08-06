@@ -137,7 +137,7 @@ export default function AdminEventForm({ isOpen, onClose, onSubmit, selectedDate
                   required
                   value={formData.event_type}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-600"
                 >
                   {eventTypeOptions.map(option => (
                     <option key={option.value} value={option.value}>
@@ -156,7 +156,7 @@ export default function AdminEventForm({ isOpen, onClose, onSubmit, selectedDate
                   required
                   value={formData.priority}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-600"
                 >
                   {priorityOptions.map(option => (
                     <option key={option.value} value={option.value}>
@@ -177,7 +177,7 @@ export default function AdminEventForm({ isOpen, onClose, onSubmit, selectedDate
                   value={formData.title}
                   onChange={handleChange}
                   placeholder="일정 제목을 입력하세요"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-600"
                 />
               </div>
               <div className="md:col-span-2">
@@ -191,7 +191,7 @@ export default function AdminEventForm({ isOpen, onClose, onSubmit, selectedDate
                   value={formData.description}
                   onChange={handleChange}
                   placeholder="일정에 대한 상세 설명을 입력하세요"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-600"
                 />
               </div>
             </div>
@@ -212,7 +212,7 @@ export default function AdminEventForm({ isOpen, onClose, onSubmit, selectedDate
                   required
                   value={formData.start_date}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-600"
                 />
               </div>
               <div>
@@ -226,7 +226,7 @@ export default function AdminEventForm({ isOpen, onClose, onSubmit, selectedDate
                   required
                   value={formData.start_time}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-600"
                 />
               </div>
               <div>
@@ -240,7 +240,7 @@ export default function AdminEventForm({ isOpen, onClose, onSubmit, selectedDate
                   required
                   value={formData.end_date}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-600"
                 />
               </div>
               <div>
@@ -254,7 +254,7 @@ export default function AdminEventForm({ isOpen, onClose, onSubmit, selectedDate
                   required
                   value={formData.end_time}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-600"
                 />
               </div>
               <div className="md:col-span-2">
@@ -268,7 +268,7 @@ export default function AdminEventForm({ isOpen, onClose, onSubmit, selectedDate
                   value={formData.location}
                   onChange={handleChange}
                   placeholder="일정 장소를 입력하세요"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-600"
                 />
               </div>
             </div>
@@ -290,7 +290,7 @@ export default function AdminEventForm({ isOpen, onClose, onSubmit, selectedDate
                     value={formData.client_company}
                     onChange={handleChange}
                     placeholder="고객 회사명을 입력하세요"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-600"
                   />
                 </div>
                 <div>
@@ -304,7 +304,7 @@ export default function AdminEventForm({ isOpen, onClose, onSubmit, selectedDate
                     value={formData.contact_person}
                     onChange={handleChange}
                     placeholder="담당자명을 입력하세요"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-600"
                   />
                 </div>
                 <div>
@@ -318,7 +318,7 @@ export default function AdminEventForm({ isOpen, onClose, onSubmit, selectedDate
                     value={formData.contact_phone}
                     onChange={handleChange}
                     placeholder="010-0000-0000"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-600"
                   />
                 </div>
               </div>
@@ -340,7 +340,7 @@ export default function AdminEventForm({ isOpen, onClose, onSubmit, selectedDate
                   value={formData.assigned_to}
                   onChange={handleChange}
                   placeholder="담당자명을 입력하세요"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-600"
                 />
               </div>
               
@@ -402,7 +402,7 @@ export default function AdminEventForm({ isOpen, onClose, onSubmit, selectedDate
                   required
                   value={formData.status}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-600"
                 >
                   {statusOptions.map(option => (
                     <option key={option.value} value={option.value}>
@@ -423,7 +423,7 @@ export default function AdminEventForm({ isOpen, onClose, onSubmit, selectedDate
                   value={formData.notes}
                   onChange={handleChange}
                   placeholder="추가 메모나 특이사항을 입력하세요"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-600"
                 />
               </div>
             </div>

@@ -111,7 +111,7 @@ export default function AdminBookingForm({ isOpen, onClose, onSubmit, selectedDa
                   required
                   value={formData.customer_name}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-600"
                 />
               </div>
               <div>
@@ -126,7 +126,7 @@ export default function AdminBookingForm({ isOpen, onClose, onSubmit, selectedDa
                   value={formData.customer_phone}
                   onChange={handleChange}
                   placeholder="010-0000-0000"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-600"
                 />
               </div>
               <div className="md:col-span-2">
@@ -140,7 +140,7 @@ export default function AdminBookingForm({ isOpen, onClose, onSubmit, selectedDa
                   required
                   value={formData.customer_address}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-600"
                 />
               </div>
             </div>
@@ -161,7 +161,7 @@ export default function AdminBookingForm({ isOpen, onClose, onSubmit, selectedDa
                   required
                   value={formData.consult_date}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-600"
                 />
               </div>
               <div>
@@ -174,7 +174,7 @@ export default function AdminBookingForm({ isOpen, onClose, onSubmit, selectedDa
                   required
                   value={formData.consult_time}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-600"
                 >
                   <option value="09:00">오전 9시</option>
                   <option value="10:00">오전 10시</option>
@@ -203,7 +203,7 @@ export default function AdminBookingForm({ isOpen, onClose, onSubmit, selectedDa
                   required
                   value={formData.building_type}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-600"
                 >
                   <option value="apartment">아파트</option>
                   <option value="villa">빌라</option>
@@ -222,7 +222,7 @@ export default function AdminBookingForm({ isOpen, onClose, onSubmit, selectedDa
                   value={formData.area_size}
                   onChange={handleChange}
                   placeholder="예: 30평, 100㎡"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-600"
                 />
               </div>
               <div>
@@ -234,7 +234,7 @@ export default function AdminBookingForm({ isOpen, onClose, onSubmit, selectedDa
                   name="budget"
                   value={formData.budget}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-600"
                 >
                   <option value="">선택해주세요</option>
                   <option value="under-100">100만원 이하</option>
@@ -254,7 +254,7 @@ export default function AdminBookingForm({ isOpen, onClose, onSubmit, selectedDa
                   required
                   value={formData.status}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-600"
                 >
                   <option value="pending">대기</option>
                   <option value="confirmed">확정</option>
@@ -302,7 +302,7 @@ export default function AdminBookingForm({ isOpen, onClose, onSubmit, selectedDa
                   value={formData.home_condition}
                   onChange={handleChange}
                   placeholder="예: 신축, 구축, 리모델링"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-600"
                 />
               </div>
               <div>
@@ -316,7 +316,7 @@ export default function AdminBookingForm({ isOpen, onClose, onSubmit, selectedDa
                   value={formData.reason}
                   onChange={handleChange}
                   placeholder="예: 새집 인테리어, 노후화"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white placeholder-gray-600"
                 />
               </div>
             </div>

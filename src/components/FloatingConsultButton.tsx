@@ -69,7 +69,7 @@ export default function FloatingConsultButton() {
   ]
 
   return (
-    <div className="fixed bottom-6 right-6 z-60">
+    <div className="fixed bottom-17 sm:bottom-24 right-4 sm:right-6 z-60">
       {/* 메뉴 옵션들 */}
       {isOpen && (
         <div className="absolute bottom-20 right-0 mb-2 space-y-3">
@@ -88,15 +88,15 @@ export default function FloatingConsultButton() {
               <button
                 onClick={option.action}
                 className={`
-                  group flex items-center gap-3 px-4 py-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105
+                  group flex items-center gap-2 sm:gap-3 px-3 py-2 sm:px-4 sm:py-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105
                   ${option.bgColor} ${option.textColor}
                   backdrop-blur-sm border border-white/20
                 `}
               >
-                <span className="text-xl">{option.icon}</span>
-                <div className="text-left min-w-[120px]">
-                  <div className="font-semibold text-sm">{option.label}</div>
-                  <div className="text-xs opacity-90">{option.description}</div>
+                <span className="text-lg sm:text-xl">{option.icon}</span>
+                <div className="text-left min-w-[100px] sm:min-w-[120px]">
+                  <div className="font-semibold text-xs sm:text-sm">{option.label}</div>
+                  <div className="text-xs sm:text-xs opacity-90">{option.description}</div>
                 </div>
               </button>
             </div>
@@ -114,7 +114,7 @@ export default function FloatingConsultButton() {
         <button
           onClick={toggleMenu}
           className={`
-            relative w-16 h-16 rounded-full shadow-xl transition-all duration-300 transform hover:scale-110 active:scale-95
+            relative w-12 h-12 sm:w-16 sm:h-16 rounded-full shadow-xl transition-all duration-300 transform hover:scale-110 active:scale-95
             ${isOpen 
               ? 'bg-red-500 hover:bg-red-600 rotate-45' 
               : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'
@@ -124,10 +124,10 @@ export default function FloatingConsultButton() {
           `}
         >
           {isOpen ? (
-            <XMarkIcon className="w-8 h-8 transition-transform duration-200" />
+            <XMarkIcon className="w-6 h-6 sm:w-8 sm:h-8 transition-transform duration-200" />
           ) : (
             <div className="relative">
-              <ChatBubbleLeftRightIcon className="w-8 h-8 transition-transform duration-200" />
+              <ChatBubbleLeftRightIcon className="w-6 h-6 sm:w-8 sm:h-8 transition-transform duration-200" />
               {/* 알림 점 */}
               <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse-dot"></div>
             </div>

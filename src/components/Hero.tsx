@@ -37,7 +37,7 @@ const Hero = memo(function Hero() {
   return (
     <section 
       ref={heroRef}
-      className="relative isolate px-4 sm:px-6 pt-14 lg:px-8 h-[70vh] min-h-[500px] max-h-[800px] flex items-center opacity-0 transform translate-y-10 transition-all duration-1000"
+      className="relative isolate px-4 sm:px-6 lg:px-8 h-[70vh] min-h-[500px] max-h-[800px] flex items-center opacity-0 transform translate-y-10 transition-all duration-1000 -mt-20"
       style={{
         backgroundImage: `
           radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),

@@ -246,19 +246,109 @@ const EventCard = ({
   )
 }
 
+// 날짜별 일정 목록 모달 컴포넌트
+const DayEventsModal = ({
+  isOpen,
+  onClose,
+  selectedDate,
+  events,
+  onEventClick,
+  onAddNewEvent,
+  isMobile = false
+}: {
+  isOpen: boolean
+  onClose: () => void
+  selectedDate: Date
+  events: ScheduleEvent[]
+  onEventClick: (event: ScheduleEvent) => void
+  onAddNewEvent: () => void
+  isMobile?: boolean
+}) => {
+  if (!isOpen) return null
+
+  const dayEvents = events.filter(event => 
+    isSameDay(new Date(event.date), selectedDate)
+  ).sort((a, b) => a.start_time.localeCompare(b.start_time))
+
+  const modalClasses = isMobile 
+    ? "fixed inset-0 bg-white z-50 overflow-hidden" 
+    : "fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+
+  const contentClasses = isMobile
+    ? "h-full flex flex-col"
+    : "bg-white rounded-3xl w-full max-w-lg max-h-[85vh] overflow-hidden shadow-2xl flex flex-col"
+
+  return (
+    <div className={modalClasses}>
+      <div className={contentClasses}>
+        {/* 모달 헤더 */}
+        <div className={`p-4 ${isMobile ? 'pt-safe-top' : 'p-6'} border-b border-gray-200 flex-shrink-0`}>
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className={`font-bold text-gray-900 ${isMobile ? 'text-lg' : 'text-xl'}`}>
+                {format(selectedDate, 'M월 d일 EEEE', { locale: ko })}
+              </h2>
+              <p className={`text-gray-600 ${isMobile ? 'text-xs' : 'text-sm'}`}>
+                {dayEvents.length}개의 일정
+              </p>
+            </div>
+            <button
+              onClick={onClose}
+              className={`flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-full transition-colors ${
+                isMobile ? 'w-8 h-8' : 'w-10 h-10'
+              }`}
+            >
+              <XMarkIcon className={`text-gray-600 ${isMobile ? 'w-4 h-4' : 'w-5 h-5'}`} />
+            </button>
+          </div>
+        </div>
+
+        {/* 일정 목록 */}
+        <div className={`flex-1 overflow-y-auto ${isMobile ? 'p-4' : 'p-6'}`}>
+          <div className="space-y-3">
+            {dayEvents.map((event) => (
+              <EventCard
+                key={event.id}
+                event={event}
+                onClick={onEventClick}
+                isMobile={isMobile}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* 새 일정 추가 버튼 */}
+        <div className={`border-t border-gray-200 flex-shrink-0 ${isMobile ? 'p-4 pb-safe-bottom' : 'p-6'}`}>
+          <button
+            onClick={onAddNewEvent}
+            className={`w-full flex items-center justify-center space-x-2 bg-indigo-500 text-white rounded-2xl hover:bg-indigo-600 transition-colors ${
+              isMobile ? 'py-4 text-base font-medium' : 'px-6 py-3'
+            }`}
+          >
+            <PlusIcon className="w-5 h-5" />
+            <span>새 일정 추가</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // 반응형 새 일정 추가 모달 컴포넌트
 const NewEventModal = ({ 
   isOpen, 
   onClose, 
   onSave,
   selectedDate,
-  isMobile = false
+  isMobile = false,
+  editingEvent = null
 }: {
   isOpen: boolean
   onClose: () => void
   onSave: (event: Omit<ScheduleEvent, 'id'>) => void
   selectedDate: Date
   isMobile?: boolean
+  editingEvent?: ScheduleEvent | null
 }) => {
   const [formData, setFormData] = useState<Omit<ScheduleEvent, 'id'>>({
     title: '',
@@ -274,6 +364,42 @@ const NewEventModal = ({
     worker: '',
     materials: []
   })
+
+  // 편집 모드일 때 기존 데이터로 폼 초기화
+  useEffect(() => {
+    if (editingEvent) {
+      setFormData({
+        title: editingEvent.title,
+        customer_name: editingEvent.customer_name,
+        contact: editingEvent.contact,
+        address: editingEvent.address,
+        service_type: editingEvent.service_type,
+        start_time: editingEvent.start_time,
+        end_time: editingEvent.end_time,
+        date: editingEvent.date,
+        status: editingEvent.status,
+        notes: editingEvent.notes || '',
+        worker: editingEvent.worker || '',
+        materials: editingEvent.materials || []
+      })
+    } else {
+      // 새 일정 추가 모드일 때 초기화
+      setFormData({
+        title: '',
+        customer_name: '',
+        contact: '',
+        address: '',
+        service_type: 'consultation',
+        start_time: '09:00',
+        end_time: '10:00',
+        date: format(selectedDate, 'yyyy-MM-dd'),
+        status: 'pending',
+        notes: '',
+        worker: '',
+        materials: []
+      })
+    }
+  }, [editingEvent, selectedDate])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -304,7 +430,7 @@ const NewEventModal = ({
 
   const contentClasses = isMobile
     ? "h-full flex flex-col"
-    : "bg-white rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-2xl"
+    : "bg-white rounded-3xl w-full max-w-2xl max-h-[85vh] overflow-hidden shadow-2xl flex flex-col"
 
   return (
     <div className={modalClasses}>
@@ -312,7 +438,9 @@ const NewEventModal = ({
         {/* 모달 헤더 */}
         <div className={`p-4 ${isMobile ? 'pt-safe-top' : 'p-6'} border-b border-gray-200 ${isMobile ? 'flex-shrink-0' : ''}`}>
           <div className="flex items-center justify-between">
-            <h2 className={`font-bold text-gray-900 ${isMobile ? 'text-lg' : 'text-2xl'}`}>새 일정 추가</h2>
+            <h2 className={`font-bold text-gray-900 ${isMobile ? 'text-lg' : 'text-2xl'}`}>
+              {editingEvent ? '일정 수정' : '새 일정 추가'}
+            </h2>
             <button
               onClick={onClose}
               className={`flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-full transition-colors ${
@@ -325,8 +453,8 @@ const NewEventModal = ({
         </div>
 
         {/* 모달 컨텐츠 */}
-        <div className={`${isMobile ? 'flex-1 overflow-y-auto' : ''}`}>
-          <form onSubmit={handleSubmit} className={`space-y-6 ${isMobile ? 'p-4' : 'p-6'} ${isMobile ? '' : 'overflow-y-auto max-h-[calc(90vh-140px)]'}`}>
+        <div className={`flex-1 overflow-y-auto ${isMobile ? '' : 'min-h-0'}`}>
+          <form onSubmit={handleSubmit} className={`space-y-6 ${isMobile ? 'p-4' : 'p-6'}`}>
             {/* 기본 정보 섹션 */}
             <div className="space-y-4">
               <h3 className={`font-semibold text-gray-900 ${isMobile ? 'text-base' : 'text-lg'}`}>기본 정보</h3>
@@ -341,7 +469,7 @@ const NewEventModal = ({
                   className={`w-full bg-gray-50 border-2 border-gray-400 rounded-2xl transition-all duration-200 
                     hover:border-gray-500 hover:bg-white
                     focus:ring-3 focus:ring-indigo-200 focus:border-indigo-500 focus:bg-white
-                    placeholder:text-gray-500 text-gray-900 ${
+                    placeholder:text-gray-600 text-gray-900 ${
                     isMobile ? 'px-4 py-4 text-base' : 'px-4 py-3'
                   }`}
                   placeholder="일정 제목을 입력하세요"
@@ -394,7 +522,7 @@ const NewEventModal = ({
                   className={`w-full bg-gray-50 border-2 border-gray-400 rounded-2xl transition-all duration-200 
                     hover:border-gray-500 hover:bg-white
                     focus:ring-3 focus:ring-indigo-200 focus:border-indigo-500 focus:bg-white
-                    placeholder:text-gray-500 text-gray-900 ${
+                    placeholder:text-gray-600 text-gray-900 ${
                     isMobile ? 'px-4 py-4 text-base' : 'px-4 py-3'
                   }`}
                   placeholder="시공 주소를 입력하세요"
@@ -406,6 +534,24 @@ const NewEventModal = ({
             <div className="space-y-4">
               <h3 className={`font-semibold text-gray-900 ${isMobile ? 'text-base' : 'text-lg'}`}>일정 정보</h3>
               
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">날짜</label>
+                <input
+                  type="date"
+                  required
+                  value={formData.date}
+                  min={format(new Date(), 'yyyy-MM-dd')} // 오늘 이후만 선택 가능
+                  onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                  className={`w-full bg-gray-50 border-2 border-gray-400 rounded-2xl transition-all duration-200 
+                    hover:border-gray-500 hover:bg-white
+                    focus:ring-3 focus:ring-indigo-200 focus:border-indigo-500 focus:bg-white
+                    text-gray-900 ${
+                    isMobile ? 'px-4 py-4 text-base' : 'px-4 py-3'
+                  }`}
+                />
+                <p className="text-xs text-gray-500 mt-1">오늘 이후의 날짜를 선택해주세요</p>
+              </div>
+
               <div className={`grid gap-4 ${isMobile ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-3'}`}>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">서비스 유형</label>
@@ -503,7 +649,7 @@ const NewEventModal = ({
                   className={`w-full bg-gray-50 border-2 border-gray-400 rounded-2xl transition-all duration-200 
                     hover:border-gray-500 hover:bg-white
                     focus:ring-3 focus:ring-indigo-200 focus:border-indigo-500 focus:bg-white
-                    placeholder:text-gray-500 text-gray-900 ${
+                    placeholder:text-gray-600 text-gray-900 ${
                     isMobile ? 'px-4 py-4 text-base' : 'px-4 py-3'
                   }`}
                   placeholder="추가 메모나 특이사항을 입력하세요"
@@ -514,7 +660,7 @@ const NewEventModal = ({
         </div>
 
         {/* 버튼 */}
-        <div className={`border-t border-gray-200 ${isMobile ? 'p-4 flex-shrink-0 pb-safe-bottom' : 'p-6'}`}>
+        <div className={`border-t border-gray-200 flex-shrink-0 ${isMobile ? 'p-4 pb-safe-bottom' : 'p-6'}`}>
           <div className={`flex space-x-4 ${isMobile ? '' : 'pt-0'}`}>
             <button
               type="button"
@@ -532,7 +678,7 @@ const NewEventModal = ({
                 isMobile ? 'py-4 text-base font-medium' : 'px-6 py-3'
               }`}
             >
-              저장
+              {editingEvent ? '수정' : '저장'}
             </button>
           </div>
         </div>
@@ -549,6 +695,8 @@ export default function SchedulePage() {
   const [showNewEventModal, setShowNewEventModal] = useState(false)
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [isMobile, setIsMobile] = useState(false)
+  const [editingEvent, setEditingEvent] = useState<ScheduleEvent | null>(null)
+  const [showDayEventsModal, setShowDayEventsModal] = useState(false)
 
   // 모바일 감지
   useEffect(() => {
@@ -569,6 +717,44 @@ export default function SchedulePage() {
       id: Date.now().toString()
     }
     setEvents([...events, newEvent])
+  }
+
+  // 이벤트 수정
+  const handleEditEvent = (eventData: Omit<ScheduleEvent, 'id'>) => {
+    if (!editingEvent) return
+    const updatedEvents = events.map(event => 
+      event.id === editingEvent.id ? { ...eventData, id: editingEvent.id } : event
+    )
+    setEvents(updatedEvents)
+    setEditingEvent(null)
+  }
+
+  // 이벤트 삭제
+  const handleDeleteEvent = (eventId: string) => {
+    if (confirm('정말 삭제하시겠습니까?')) {
+      setEvents(events.filter(event => event.id !== eventId))
+      setSelectedEvent(null)
+    }
+  }
+
+  // 수정 모드 시작
+  const startEditing = (event: ScheduleEvent) => {
+    setEditingEvent(event)
+    setSelectedEvent(null)
+    setShowNewEventModal(true)
+  }
+
+  // 날짜 클릭 핸들러 (조건부 동작)
+  const handleDayClick = (day: Date, dayEvents: ScheduleEvent[]) => {
+    setSelectedDate(day)
+    
+    if (dayEvents.length > 0) {
+      // 일정이 있는 날짜: 일정 목록 모달 표시
+      setShowDayEventsModal(true)
+    } else {
+      // 일정이 없는 날짜: 새 일정 추가 모달 표시
+      setShowNewEventModal(true)
+    }
   }
 
   // 월 뷰 렌더링
@@ -620,10 +806,7 @@ export default function SchedulePage() {
                     className={`min-h-[60px] p-1 border-r border-gray-100 last:border-r-0 ${
                       !isCurrentMonth ? 'bg-gray-50' : 'bg-white'
                     } active:bg-gray-100 transition-colors touch-manipulation`}
-                    onClick={() => {
-                      setSelectedDate(day)
-                      setView('day')
-                    }}
+                    onClick={() => handleDayClick(day, dayEvents)}
                   >
                     <div className="flex flex-col h-full">
                       <div className={`text-xs font-medium mb-1 ${
@@ -692,10 +875,7 @@ export default function SchedulePage() {
                   className={`min-h-[120px] p-2 border-r border-gray-100 last:border-r-0 ${
                     !isCurrentMonth ? 'bg-gray-50' : 'bg-white'
                   } hover:bg-gray-50 transition-colors cursor-pointer`}
-                  onClick={() => {
-                    setSelectedDate(day)
-                    setShowNewEventModal(true)
-                  }}
+                  onClick={() => handleDayClick(day, dayEvents)}
                 >
                   <div className="flex flex-col h-full">
                     <div className={`text-sm font-medium mb-2 ${
@@ -979,13 +1159,34 @@ export default function SchedulePage() {
           {view === 'day' && renderDayView()}
         </div>
 
+        {/* 날짜별 일정 목록 모달 */}
+        <DayEventsModal
+          isOpen={showDayEventsModal}
+          onClose={() => setShowDayEventsModal(false)}
+          selectedDate={selectedDate}
+          events={events}
+          onEventClick={(event) => {
+            setSelectedEvent(event)
+            setShowDayEventsModal(false)
+          }}
+          onAddNewEvent={() => {
+            setShowDayEventsModal(false)
+            setShowNewEventModal(true)
+          }}
+          isMobile={isMobile}
+        />
+
         {/* 새 일정 추가 모달 */}
         <NewEventModal
           isOpen={showNewEventModal}
-          onClose={() => setShowNewEventModal(false)}
-          onSave={handleAddEvent}
+          onClose={() => {
+            setShowNewEventModal(false)
+            setEditingEvent(null)
+          }}
+          onSave={editingEvent ? handleEditEvent : handleAddEvent}
           selectedDate={selectedDate}
           isMobile={isMobile}
+          editingEvent={editingEvent}
         />
 
         {/* 이벤트 상세 모달 */}
@@ -1065,14 +1266,20 @@ export default function SchedulePage() {
 
               {/* 모달 액션 */}
               <div className={`bg-gray-50 flex space-x-3 ${isMobile ? 'p-4 pb-safe-bottom' : 'p-6'}`}>
-                <button className={`flex-1 bg-indigo-500 text-white rounded-2xl hover:bg-indigo-600 transition-colors ${
-                  isMobile ? 'py-3 text-base font-medium' : 'px-4 py-2'
-                }`}>
+                <button 
+                  onClick={() => startEditing(selectedEvent)}
+                  className={`flex-1 bg-indigo-500 text-white rounded-2xl hover:bg-indigo-600 transition-colors ${
+                    isMobile ? 'py-3 text-base font-medium' : 'px-4 py-2'
+                  }`}
+                >
                   수정
                 </button>
-                <button className={`flex-1 bg-red-500 text-white rounded-2xl hover:bg-red-600 transition-colors ${
-                  isMobile ? 'py-3 text-base font-medium' : 'px-4 py-2'
-                }`}>
+                <button 
+                  onClick={() => handleDeleteEvent(selectedEvent.id)}
+                  className={`flex-1 bg-red-500 text-white rounded-2xl hover:bg-red-600 transition-colors ${
+                    isMobile ? 'py-3 text-base font-medium' : 'px-4 py-2'
+                  }`}
+                >
                   삭제
                 </button>
               </div>

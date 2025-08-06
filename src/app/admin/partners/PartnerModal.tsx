@@ -132,9 +132,9 @@ const PartnerModal = ({
                       disabled={!isEditable}
                       className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                         !isEditable 
-                          ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                          ? 'bg-gray-50 text-gray-600 border-gray-300' 
                           : mode === 'create' 
-                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                             : 'bg-white border-gray-300 text-gray-900'
                       }`}
                       placeholder={mode === 'create' ? '예: (주)프리미엄 필름' : ''}
@@ -149,9 +149,9 @@ const PartnerModal = ({
                       disabled={!isEditable}
                       className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                         !isEditable 
-                          ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                          ? 'bg-gray-50 text-gray-600 border-gray-300' 
                           : mode === 'create' 
-                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                             : 'bg-white border-gray-300 text-gray-900'
                       }`}
                       placeholder={mode === 'create' ? '예: 이재호 이사' : ''}
@@ -166,9 +166,9 @@ const PartnerModal = ({
                       disabled={!isEditable}
                       className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                         !isEditable 
-                          ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                          ? 'bg-gray-50 text-gray-600 border-gray-300' 
                           : mode === 'create' 
-                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                             : 'bg-white border-gray-300 text-gray-900'
                       }`}
                       placeholder={mode === 'create' ? '02-1234-5678' : ''}
@@ -183,9 +183,9 @@ const PartnerModal = ({
                       disabled={!isEditable}
                       className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                         !isEditable 
-                          ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                          ? 'bg-gray-50 text-gray-600 border-gray-300' 
                           : mode === 'create' 
-                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                             : 'bg-white border-gray-300 text-gray-900'
                       }`}
                       placeholder={mode === 'create' ? 'contact@company.co.kr' : ''}
@@ -200,9 +200,9 @@ const PartnerModal = ({
                       disabled={!isEditable}
                       className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                         !isEditable 
-                          ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                          ? 'bg-gray-50 text-gray-600 border-gray-300' 
                           : mode === 'create' 
-                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                             : 'bg-white border-gray-300 text-gray-900'
                       }`}
                       placeholder={mode === 'create' ? '서울시 강남구 테헤란로 123' : ''}
@@ -223,9 +223,9 @@ const PartnerModal = ({
                       disabled={!isEditable}
                       className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                         !isEditable 
-                          ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                          ? 'bg-gray-50 text-gray-600 border-gray-300' 
                           : mode === 'create' 
-                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                             : 'bg-white border-gray-300 text-gray-900'
                       }`}
                     >
@@ -243,9 +243,9 @@ const PartnerModal = ({
                       disabled={!isEditable}
                       className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                         !isEditable 
-                          ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                          ? 'bg-gray-50 text-gray-600 border-gray-300' 
                           : mode === 'create' 
-                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                             : 'bg-white border-gray-300 text-gray-900'
                       }`}
                     >
@@ -267,9 +267,9 @@ const PartnerModal = ({
                   rows={3}
                   className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                     !isEditable 
-                      ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                      ? 'bg-gray-50 text-gray-600 border-gray-300' 
                       : mode === 'create' 
-                        ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                        ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                         : 'bg-white border-gray-300 text-gray-900'
                   }`}
                   placeholder={mode === 'create' ? '업체 특징이나 참고사항을 입력하세요' : ''}

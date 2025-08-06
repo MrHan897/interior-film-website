@@ -446,9 +446,9 @@ const ProjectModal = ({
                   disabled={!isEditable}
                   className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                     !isEditable 
-                      ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                      ? 'bg-gray-50 text-gray-600 border-gray-300' 
                       : mode === 'create' 
-                        ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                        ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                         : 'bg-white border-gray-300 text-gray-900'
                   }`}
                   placeholder={mode === 'create' ? '고객명을 입력하세요' : ''}
@@ -463,9 +463,9 @@ const ProjectModal = ({
                   disabled={!isEditable}
                   className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                     !isEditable 
-                      ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                      ? 'bg-gray-50 text-gray-600 border-gray-300' 
                       : mode === 'create' 
-                        ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                        ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                         : 'bg-white border-gray-300 text-gray-900'
                   }`}
                   placeholder={mode === 'create' ? '010-0000-0000' : ''}
@@ -480,9 +480,9 @@ const ProjectModal = ({
                   disabled={!isEditable}
                   className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                     !isEditable 
-                      ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                      ? 'bg-gray-50 text-gray-600 border-gray-300' 
                       : mode === 'create' 
-                        ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                        ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                         : 'bg-white border-gray-300 text-gray-900'
                   }`}
                   placeholder={mode === 'create' ? '시공 주소를 입력하세요' : ''}
@@ -497,9 +497,9 @@ const ProjectModal = ({
                   disabled={!isEditable}
                   className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                     !isEditable 
-                      ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                      ? 'bg-gray-50 text-gray-600 border-gray-300' 
                       : mode === 'create' 
-                        ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                        ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                         : 'bg-white border-gray-300 text-gray-900'
                   }`}
                   placeholder={mode === 'create' ? '시공 서비스를 입력하세요 (예: 아파트 거실 필름 시공)' : ''}
@@ -521,9 +521,9 @@ const ProjectModal = ({
                   disabled={!isEditable}
                   className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                     !isEditable 
-                      ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                      ? 'bg-gray-50 text-gray-600 border-gray-300' 
                       : mode === 'create' 
-                        ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                        ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                         : 'bg-white border-gray-300 text-gray-900'
                   }`}
                 />
@@ -537,9 +537,9 @@ const ProjectModal = ({
                   disabled={!isEditable}
                   className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                     !isEditable 
-                      ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                      ? 'bg-gray-50 text-gray-600 border-gray-300' 
                       : mode === 'create' 
-                        ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                        ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                         : 'bg-white border-gray-300 text-gray-900'
                   }`}
                   placeholder={mode === 'create' ? '담당 시공팀을 입력하세요 (예: 시공팀 A)' : '담당 시공팀'}
@@ -553,9 +553,9 @@ const ProjectModal = ({
                   disabled={!isEditable}
                   className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                     !isEditable 
-                      ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                      ? 'bg-gray-50 text-gray-600 border-gray-300' 
                       : mode === 'create' 
-                        ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                        ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                         : 'bg-white border-gray-300 text-gray-900'
                   }`}
                 >
@@ -575,9 +575,9 @@ const ProjectModal = ({
                   disabled={!isEditable}
                   className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                     !isEditable 
-                      ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                      ? 'bg-gray-50 text-gray-600 border-gray-300' 
                       : mode === 'create' 
-                        ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                        ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                         : 'bg-white border-gray-300 text-gray-900'
                   }`}
                 />
@@ -617,7 +617,7 @@ const ProjectModal = ({
                   onChange={(e) => handleInputChange('totalAmount', parseInt(e.target.value) || 0)}
                   className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                     mode === 'create' 
-                      ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                      ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                       : 'bg-white border-gray-300 text-gray-900'
                   }`}
                   placeholder={mode === 'create' ? '프로젝트 금액을 입력하세요' : ''}
@@ -645,9 +645,9 @@ const ProjectModal = ({
               rows={3}
               className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                 !isEditable 
-                  ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                  ? 'bg-gray-50 text-gray-600 border-gray-300' 
                   : mode === 'create' 
-                    ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                    ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                     : 'bg-white border-gray-300 text-gray-900'
               }`}
               placeholder="프로젝트 특이사항이나 고객 요청사항을 입력하세요"

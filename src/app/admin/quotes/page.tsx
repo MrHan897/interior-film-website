@@ -655,9 +655,9 @@ const QuoteModal = ({
                       disabled={!isEditable}
                       className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                         !isEditable 
-                          ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                          ? 'bg-gray-50 text-gray-600 border-gray-300' 
                           : mode === 'create' 
-                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                             : 'bg-white border-gray-300 text-gray-900'
                       }`}
                       placeholder={mode === 'create' ? '고객명을 입력하세요' : ''}
@@ -672,9 +672,9 @@ const QuoteModal = ({
                       disabled={!isEditable}
                       className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                         !isEditable 
-                          ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                          ? 'bg-gray-50 text-gray-600 border-gray-300' 
                           : mode === 'create' 
-                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                             : 'bg-white border-gray-300 text-gray-900'
                       }`}
                       placeholder={mode === 'create' ? '010-0000-0000' : ''}
@@ -689,9 +689,9 @@ const QuoteModal = ({
                       disabled={!isEditable}
                       className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                         !isEditable 
-                          ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                          ? 'bg-gray-50 text-gray-600 border-gray-300' 
                           : mode === 'create' 
-                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                             : 'bg-white border-gray-300 text-gray-900'
                       }`}
                       placeholder={mode === 'create' ? '예: 서울시 강남구 역삼동 123-456' : ''}
@@ -712,9 +712,9 @@ const QuoteModal = ({
                       disabled={!isEditable}
                       className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                         !isEditable 
-                          ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                          ? 'bg-gray-50 text-gray-600 border-gray-300' 
                           : mode === 'create' 
-                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                             : 'bg-white border-gray-300 text-gray-900'
                       }`}
                     >
@@ -733,9 +733,9 @@ const QuoteModal = ({
                       disabled={!isEditable}
                       className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                         !isEditable 
-                          ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                          ? 'bg-gray-50 text-gray-600 border-gray-300' 
                           : mode === 'create' 
-                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                             : 'bg-white border-gray-300 text-gray-900'
                       }`}
                       placeholder={mode === 'create' ? '예: 거실, 침실 2개' : ''}
@@ -750,9 +750,9 @@ const QuoteModal = ({
                       disabled={!isEditable}
                       className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                         !isEditable 
-                          ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                          ? 'bg-gray-50 text-gray-600 border-gray-300' 
                           : mode === 'create' 
-                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                             : 'bg-white border-gray-300 text-gray-900'
                       }`}
                       placeholder={mode === 'create' ? '예: 85' : ''}
@@ -767,9 +767,9 @@ const QuoteModal = ({
                       disabled={!isEditable}
                       className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                         !isEditable 
-                          ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                          ? 'bg-gray-50 text-gray-600 border-gray-300' 
                           : mode === 'create' 
-                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                             : 'bg-white border-gray-300 text-gray-900'
                       }`}
                       placeholder={mode === 'create' ? '예: 우드그레인 필름, 메탈릭 필름' : ''}
@@ -783,9 +783,9 @@ const QuoteModal = ({
                       disabled={!isEditable}
                       className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                         !isEditable 
-                          ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                          ? 'bg-gray-50 text-gray-600 border-gray-300' 
                           : mode === 'create' 
-                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                             : 'bg-white border-gray-300 text-gray-900'
                       }`}
                     >
@@ -809,9 +809,9 @@ const QuoteModal = ({
                       disabled={!isEditable}
                       className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                         !isEditable 
-                          ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                          ? 'bg-gray-50 text-gray-600 border-gray-300' 
                           : mode === 'create' 
-                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                             : 'bg-white border-gray-300 text-gray-900'
                       }`}
                     >
@@ -833,9 +833,9 @@ const QuoteModal = ({
                       disabled={!isEditable}
                       className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                         !isEditable 
-                          ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                          ? 'bg-gray-50 text-gray-600 border-gray-300' 
                           : mode === 'create' 
-                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                             : 'bg-white border-gray-300 text-gray-900'
                       }`}
                     >
@@ -873,9 +873,9 @@ const QuoteModal = ({
                         disabled={!isEditable}
                         className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                         !isEditable 
-                          ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                          ? 'bg-gray-50 text-gray-600 border-gray-300' 
                           : mode === 'create' 
-                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                             : 'bg-white border-gray-300 text-gray-900'
                       }`}
                         placeholder={mode === 'create' ? '예: 1200000' : ''}
@@ -890,9 +890,9 @@ const QuoteModal = ({
                         disabled={!isEditable}
                         className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                         !isEditable 
-                          ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                          ? 'bg-gray-50 text-gray-600 border-gray-300' 
                           : mode === 'create' 
-                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                             : 'bg-white border-gray-300 text-gray-900'
                       }`}
                         placeholder={mode === 'create' ? '예: 800000' : ''}
@@ -907,9 +907,9 @@ const QuoteModal = ({
                         disabled={!isEditable}
                         className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                         !isEditable 
-                          ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                          ? 'bg-gray-50 text-gray-600 border-gray-300' 
                           : mode === 'create' 
-                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                            ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                             : 'bg-white border-gray-300 text-gray-900'
                       }`}
                         placeholder={mode === 'create' ? '예: 100000 (운반비, 야간작업비 등)' : ''}
@@ -937,9 +937,9 @@ const QuoteModal = ({
                   rows={3}
                   className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
                     !isEditable 
-                      ? 'bg-gray-50 text-gray-500 border-gray-300' 
+                      ? 'bg-gray-50 text-gray-600 border-gray-300' 
                       : mode === 'create' 
-                        ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-500' 
+                        ? 'bg-blue-50 border-blue-300 text-gray-900 placeholder-gray-600' 
                         : 'bg-white border-gray-300 text-gray-900'
                   }`}
                   placeholder="특이사항이나 고객 요청사항을 입력하세요"

@@ -83,7 +83,7 @@ function AdminLoginForm() {
                 className="mt-1 appearance-none relative block w-full px-4 py-3 bg-gray-50 border-2 border-gray-400 rounded-2xl 
                   transition-all duration-200 hover:border-gray-500 hover:bg-white
                   focus:outline-none focus:ring-3 focus:ring-blue-200 focus:border-blue-500 focus:bg-white focus:z-10
-                  placeholder:text-gray-500 text-gray-900 sm:text-sm"
+                  placeholder:text-gray-600 text-gray-900 sm:text-sm"
                 placeholder="사용자명을 입력하세요"
                 value={credentials.username}
                 onChange={(e) => setCredentials(prev => ({ ...prev, username: e.target.value }))}
@@ -103,7 +103,7 @@ function AdminLoginForm() {
                   className="appearance-none relative block w-full px-4 py-3 pr-12 bg-gray-50 border-2 border-gray-400 rounded-2xl 
                     transition-all duration-200 hover:border-gray-500 hover:bg-white
                     focus:outline-none focus:ring-3 focus:ring-blue-200 focus:border-blue-500 focus:bg-white focus:z-10
-                    placeholder:text-gray-500 text-gray-900 sm:text-sm"
+                    placeholder:text-gray-600 text-gray-900 sm:text-sm"
                   placeholder="비밀번호를 입력하세요"
                   value={credentials.password}
                   onChange={(e) => setCredentials(prev => ({ ...prev, password: e.target.value }))}
