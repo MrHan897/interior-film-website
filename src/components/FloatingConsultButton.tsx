@@ -69,7 +69,7 @@ export default function FloatingConsultButton() {
   ]
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-6 right-6 z-60">
       {/* 메뉴 옵션들 */}
       {isOpen && (
         <div className="absolute bottom-20 right-0 mb-2 space-y-3">

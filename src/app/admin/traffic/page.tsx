@@ -12,7 +12,7 @@ import {
   ClockIcon,
   UserGroupIcon,
   ArrowTrendingUpIcon,
-  ArrowRefreshIcon
+  ArrowPathIcon
 } from '@heroicons/react/24/outline'
 
 interface TrafficStats {
@@ -158,7 +158,7 @@ export default function TrafficManagement() {
               disabled={refreshing}
               className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50"
             >
-              <ArrowRefreshIcon className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
+              <ArrowPathIcon className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
               새로고침
             </button>
           </div>

@@ -15,7 +15,9 @@ import {
   Bars3Icon,
   XMarkIcon,
   BellIcon,
-  UserCircleIcon
+  UserCircleIcon,
+  EyeIcon,
+  BriefcaseIcon
 } from '@heroicons/react/24/outline'
 
 interface NavigationItem {
@@ -69,6 +71,18 @@ const desktopNavigation: NavigationItem[] = [
     title: '협력업체',
     icon: HandRaisedIcon,
     path: '/admin/partners'
+  },
+  {
+    id: 'portfolio',
+    title: '포트폴리오',
+    icon: BriefcaseIcon,
+    path: '/admin/portfolio'
+  },
+  {
+    id: 'traffic',
+    title: '트래픽분석',
+    icon: EyeIcon,
+    path: '/admin/traffic'
   },
   {
     id: 'reports',

@@ -1,28 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import React from 'react'
 import { ChevronUpIcon } from '@heroicons/react/24/outline'
 
 export default function ScrollToTopButton() {
-  const [isVisible, setIsVisible] = useState(false)
-
-  // 스크롤 위치에 따라 버튼 표시/숨김
-  useEffect(() => {
-    const toggleVisibility = () => {
-      if (window.pageYOffset > 300) {
-        setIsVisible(true)
-      } else {
-        setIsVisible(false)
-      }
-    }
-
-    window.addEventListener('scroll', toggleVisibility)
-
-    return () => {
-      window.removeEventListener('scroll', toggleVisibility)
-    }
-  }, [])
-
   // 페이지 상단으로 스크롤
   const scrollToTop = () => {
     window.scrollTo({
@@ -31,22 +12,18 @@ export default function ScrollToTopButton() {
     })
   }
 
-  if (!isVisible) {
-    return null
-  }
-
   return (
     <button
       onClick={scrollToTop}
-      className="fixed bottom-24 right-6 z-40 group"
+      className="fixed bottom-24 left-6 z-50 group"
       aria-label="페이지 상단으로 이동"
     >
       {/* 배경 그림자 효과 */}
       <div className="absolute inset-0 rounded-full bg-gray-900 opacity-20 scale-110 animate-pulse"></div>
       
       {/* 메인 버튼 */}
-      <div className="relative w-12 h-12 bg-white border-2 border-gray-200 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 active:scale-95 flex items-center justify-center group-hover:border-blue-500">
-        <ChevronUpIcon className="w-6 h-6 text-gray-600 group-hover:text-blue-600 transition-colors duration-200" />
+      <div className="relative w-16 h-16 bg-white border-2 border-gray-200 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 active:scale-95 flex items-center justify-center group-hover:border-blue-500">
+        <ChevronUpIcon className="w-8 h-8 text-gray-600 group-hover:text-blue-600 transition-colors duration-200" />
       </div>
 
       {/* 툴팁 */}
