@@ -1242,7 +1242,7 @@ export default function QuotesPage() {
                 placeholder="고객명, 연락처, 주소로 검색..."
                 value={searchTerm}
                 onChange={(e) => handleSearch(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 placeholder-gray-900 text-gray-900"
               />
             </div>
             <div className="flex items-center space-x-3">
@@ -1250,13 +1250,13 @@ export default function QuotesPage() {
               <select
                 value={statusFilter}
                 onChange={(e) => handleStatusFilter(e.target.value)}
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900"
               >
-                <option value="all">전체 상태</option>
-                <option value="quote_requested">견적요청</option>
-                <option value="quote_sent">견적발송</option>
-                <option value="confirmed">예약확정</option>
-                <option value="rejected">거절</option>
+                <option value="all" className="text-gray-900">전체 상태</option>
+                <option value="quote_requested" className="text-gray-900">견적요청</option>
+                <option value="quote_sent" className="text-gray-900">견적발송</option>
+                <option value="confirmed" className="text-gray-900">예약확정</option>
+                <option value="rejected" className="text-gray-900">거절</option>
               </select>
             </div>
           </div>

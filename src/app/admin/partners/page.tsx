@@ -427,7 +427,7 @@ export default function PartnersPage() {
                   placeholder="업체명, 담당자, 연락처, 전문분야로 검색..."
                   value={searchTerm}
                   onChange={(e) => handleSearch(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 placeholder-gray-900 text-gray-900"
                 />
               </div>
             </div>

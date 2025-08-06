@@ -251,14 +251,14 @@ const PeriodSelector = ({
     <select
       value={selectedPeriod}
       onChange={(e) => onPeriodChange(e.target.value)}
-      className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+      className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900"
     >
-      <option value="this-month">이번 달</option>
-      <option value="last-month">지난 달</option>
-      <option value="last-3-months">최근 3개월</option>
-      <option value="last-6-months">최근 6개월</option>
-      <option value="this-year">올해</option>
-      <option value="last-year">작년</option>
+      <option value="this-month" className="text-gray-900">이번 달</option>
+      <option value="last-month" className="text-gray-900">지난 달</option>
+      <option value="last-3-months" className="text-gray-900">최근 3개월</option>
+      <option value="last-6-months" className="text-gray-900">최근 6개월</option>
+      <option value="this-year" className="text-gray-900">올해</option>
+      <option value="last-year" className="text-gray-900">작년</option>
     </select>
   </div>
 )

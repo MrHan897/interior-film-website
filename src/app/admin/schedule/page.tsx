@@ -180,7 +180,7 @@ const EventCard = ({
           </span>
         </div>
         
-        <div className="space-y-2 text-xs text-gray-600">
+        <div className="space-y-2 text-xs text-gray-900">
           <div className="flex items-center space-x-2">
             <UserIcon className="w-3 h-3 flex-shrink-0" />
             <span className="truncate">{event.customer_name}</span>
@@ -217,7 +217,7 @@ const EventCard = ({
             </span>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 text-sm text-gray-600 mb-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 text-sm text-gray-900 mb-4">
             <div className="flex items-center space-x-2">
               <ClockIcon className="w-4 h-4" />
               <span>{event.start_time} - {event.end_time}</span>
@@ -237,7 +237,7 @@ const EventCard = ({
               {config.label}
             </span>
             {event.worker && (
-              <span className="text-sm text-gray-500">담당: {event.worker}</span>
+              <span className="text-sm text-gray-900">담당: {event.worker}</span>
             )}
           </div>
         </div>
@@ -1230,7 +1230,7 @@ export default function SchedulePage() {
                   </div>
                 </div>
                 
-                <div className={`space-y-3 ${isMobile ? 'text-sm' : 'text-sm'}`}>
+                <div className={`space-y-3 text-gray-900 ${isMobile ? 'text-sm' : 'text-sm'}`}>
                   <div className="flex items-center space-x-3">
                     <ClockIcon className="w-4 h-4 text-gray-400" />
                     <span>{selectedEvent.start_time} - {selectedEvent.end_time}</span>

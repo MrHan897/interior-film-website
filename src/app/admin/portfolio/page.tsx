@@ -361,7 +361,7 @@ export default function PortfolioAdmin() {
                 placeholder="제목, 설명, 태그, 위치로 검색..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-900 text-gray-900"
               />
             </div>
             
@@ -371,11 +371,11 @@ export default function PortfolioAdmin() {
               <select
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
-                className="appearance-none bg-white border border-gray-300 rounded-lg pl-10 pr-8 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent min-w-[150px]"
+                className="appearance-none bg-white border border-gray-300 rounded-lg pl-10 pr-8 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent min-w-[150px] text-gray-900"
               >
-                <option value="all">모든 카테고리</option>
+                <option value="all" className="text-gray-900">모든 카테고리</option>
                 {categories.map((category) => (
-                  <option key={category} value={category}>{category}</option>
+                  <option key={category} value={category} className="text-gray-900">{category}</option>
                 ))}
               </select>
             </div>
@@ -386,11 +386,11 @@ export default function PortfolioAdmin() {
               <select
                 value={featuredFilter}
                 onChange={(e) => setFeaturedFilter(e.target.value)}
-                className="appearance-none bg-white border border-gray-300 rounded-lg pl-10 pr-8 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent min-w-[120px]"
+                className="appearance-none bg-white border border-gray-300 rounded-lg pl-10 pr-8 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent min-w-[120px] text-gray-900"
               >
-                <option value="all">전체</option>
-                <option value="featured">추천만</option>
-                <option value="normal">일반만</option>
+                <option value="all" className="text-gray-900">전체</option>
+                <option value="featured" className="text-gray-900">추천만</option>
+                <option value="normal" className="text-gray-900">일반만</option>
               </select>
             </div>
           </div>
@@ -429,7 +429,7 @@ export default function PortfolioAdmin() {
                       required
                       value={formData.title}
                       onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-900 text-gray-900"
                       placeholder="프로젝트 제목을 입력하세요"
                     />
                   </div>
@@ -442,11 +442,11 @@ export default function PortfolioAdmin() {
                       required
                       value={formData.category}
                       onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                     >
-                      <option value="">카테고리 선택</option>
+                      <option value="" className="text-gray-900">카테고리 선택</option>
                       {categories.map((category) => (
-                        <option key={category} value={category}>
+                        <option key={category} value={category} className="text-gray-900">
                           {category}
                         </option>
                       ))}
@@ -461,7 +461,7 @@ export default function PortfolioAdmin() {
                       type="text"
                       value={formData.location}
                       onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-900 text-gray-900"
                       placeholder="예: 서울시 강남구"
                     />
                   </div>
@@ -474,7 +474,7 @@ export default function PortfolioAdmin() {
                       type="date"
                       value={formData.completedAt}
                       onChange={(e) => setFormData({ ...formData, completedAt: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                     />
                   </div>
 
@@ -490,7 +490,7 @@ export default function PortfolioAdmin() {
                         type="url"
                         value={formData.blogUrl}
                         onChange={(e) => setFormData({ ...formData, blogUrl: e.target.value })}
-                        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-900 text-gray-900"
                         placeholder="https://blog.example.com/project"
                       />
                     </div>
@@ -522,7 +522,7 @@ export default function PortfolioAdmin() {
                       value={formData.description}
                       onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                       rows={4}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-900 text-gray-900"
                       placeholder="프로젝트에 대한 상세한 설명을 입력하세요"
                     />
                   </div>
@@ -566,7 +566,7 @@ export default function PortfolioAdmin() {
                         type="url"
                         value={formData.image_url}
                         onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-900 text-gray-900"
                         placeholder="이미지 URL 직접 입력"
                       />
                       
@@ -593,7 +593,7 @@ export default function PortfolioAdmin() {
                       type="text"
                       value={formData.tags}
                       onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-900 text-gray-900"
                       placeholder="우드 패턴, 거실, 아파트"
                     />
                     <p className="text-xs text-gray-500 mt-1">검색에 도움이 되는 키워드를 입력하세요</p>
