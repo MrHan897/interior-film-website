@@ -987,17 +987,45 @@ const QuoteModal = ({
 }
 
 export default function QuotesPage() {
-  const [quotes, setQuotes] = useState<Quote[]>(sampleQuotes)
-  const [filteredQuotes, setFilteredQuotes] = useState<Quote[]>(sampleQuotes)
+  const [quotes, setQuotes] = useState<Quote[]>([])
+  const [filteredQuotes, setFilteredQuotes] = useState<Quote[]>([])
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState<string>('all')
   const [selectedQuote, setSelectedQuote] = useState<Quote | null>(null)
   const [modalOpen, setModalOpen] = useState(false)
   const [modalMode, setModalMode] = useState<'view' | 'edit' | 'create'>('view')
+  const [isLoading, setIsLoading] = useState(true)
   
   // 커뮤니케이션 모달 상태
   const [communicationModalOpen, setCommunicationModalOpen] = useState(false)
   const [communicationQuote, setCommunicationQuote] = useState<Quote | null>(null)
+
+  // 견적 목록 조회 함수
+  const fetchQuotes = async () => {
+    try {
+      setIsLoading(true)
+      const response = await fetch('/api/admin/quotes')
+      const data = await response.json()
+      
+      if (data.success) {
+        setQuotes(data.quotes)
+        applyFilters(searchTerm, statusFilter, data.quotes)
+      } else {
+        console.error('견적 목록 조회 실패:', data.error)
+        alert('견적 목록을 불러오는데 실패했습니다.')
+      }
+    } catch (error) {
+      console.error('견적 목록 조회 에러:', error)
+      alert('견적 목록을 불러오는 중 오류가 발생했습니다.')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  // 컴포넌트 마운트 시 데이터 로드
+  useEffect(() => {
+    fetchQuotes()
+  }, [])
 
   const handleSearch = (term: string) => {
     setSearchTerm(term)
@@ -1039,27 +1067,26 @@ export default function QuotesPage() {
     setModalOpen(true)
   }
 
-  const handleDeleteQuote = (quote: Quote) => {
+  const handleDeleteQuote = async (quote: Quote) => {
     if (confirm(`${quote.customerName}님의 견적을 완전히 삭제하시겠습니까?\n\n견적금액: ${(quote.totalAmount / 10000).toFixed(0)}만원\n이 작업은 되돌릴 수 없습니다.`)) {
-      // 견적 목록에서 제거
-      const updatedQuotes = quotes.filter(q => q.id !== quote.id)
-      setQuotes(updatedQuotes)
-      
-      // 필터링된 목록도 업데이트  
-      const filteredUpdated = updatedQuotes.filter(q => {
-        const matchesSearch = searchTerm === '' || 
-          q.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          q.phone.includes(searchTerm) ||
-          q.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          q.filmType.toLowerCase().includes(searchTerm.toLowerCase())
+      try {
+        const response = await fetch(`/api/admin/quotes/${quote.id}`, {
+          method: 'DELETE'
+        })
         
-        const matchesStatus = statusFilter === 'all' || q.status === statusFilter
+        const data = await response.json()
         
-        return matchesSearch && matchesStatus
-      })
-      setFilteredQuotes(filteredUpdated)
-      
-      alert(`${quote.customerName}님의 견적이 삭제되었습니다.`)
+        if (data.success) {
+          // 성공 시 목록 새로고침
+          await fetchQuotes()
+          alert(`${quote.customerName}님의 견적이 삭제되었습니다.`)
+        } else {
+          throw new Error(data.error || '견적 삭제에 실패했습니다.')
+        }
+      } catch (error) {
+        console.error('견적 삭제 에러:', error)
+        alert('견적 삭제 중 오류가 발생했습니다.')
+      }
     }
   }
 
@@ -1091,27 +1118,46 @@ export default function QuotesPage() {
   const handleQuoteSubmit = async (quoteData: Quote) => {
     try {
       if (modalMode === 'create') {
-        // 새 견적 추가
-        const newQuote = {
-          ...quoteData,
-          id: Date.now().toString() // 실제로는 서버에서 생성
+        // 새 견적 추가 - API 호출
+        const response = await fetch('/api/admin/quotes', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(quoteData)
+        })
+        
+        const data = await response.json()
+        
+        if (data.success) {
+          // 성공 시 목록 새로고침
+          await fetchQuotes()
+          alert(`${quoteData.customerName}님의 견적이 성공적으로 등록되었습니다.\n총 금액: ${(quoteData.totalAmount / 10000).toFixed(0)}만원`)
+        } else {
+          throw new Error(data.error || '견적 등록에 실패했습니다.')
         }
-        const updatedQuotes = [newQuote, ...quotes]
-        setQuotes(updatedQuotes)
-        applyFilters(searchTerm, statusFilter, updatedQuotes)
-        
-        alert(`${quoteData.customerName}님의 견적이 성공적으로 등록되었습니다.\n총 금액: ${(quoteData.totalAmount / 10000).toFixed(0)}만원`)
       } else if (modalMode === 'edit') {
-        // 기존 견적 수정
-        const updatedQuotes = quotes.map(q => 
-          q.id === quoteData.id ? quoteData : q
-        )
-        setQuotes(updatedQuotes)
-        applyFilters(searchTerm, statusFilter, updatedQuotes)
+        // 기존 견적 수정 - API 호출
+        const response = await fetch(`/api/admin/quotes/${quoteData.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(quoteData)
+        })
         
-        alert(`${quoteData.customerName}님의 견적이 성공적으로 수정되었습니다.`)
+        const data = await response.json()
+        
+        if (data.success) {
+          // 성공 시 목록 새로고침
+          await fetchQuotes()
+          alert(`${quoteData.customerName}님의 견적이 성공적으로 수정되었습니다.`)
+        } else {
+          throw new Error(data.error || '견적 수정에 실패했습니다.')
+        }
       }
     } catch (error) {
+      console.error('견적 저장 에러:', error)
       throw error // 모달에서 에러 처리
     }
   }
@@ -1188,13 +1234,26 @@ export default function QuotesPage() {
 
       // 견적 상태 업데이트 (견적 발송됨으로 변경)
       if (communicationQuote.status === 'quote_requested') {
-        const updatedQuotes = quotes.map(q => 
-          q.id === communicationQuote.id 
-            ? { ...q, status: 'quote_sent' as const, sentAt: new Date().toISOString().split('T')[0] }
-            : q
-        )
-        setQuotes(updatedQuotes)
-        applyFilters(searchTerm, statusFilter, updatedQuotes)
+        try {
+          const updateResponse = await fetch(`/api/admin/quotes/${communicationQuote.id}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              ...communicationQuote,
+              status: 'quote_sent',
+              sentAt: new Date().toISOString().split('T')[0]
+            })
+          })
+          
+          if (updateResponse.ok) {
+            // 목록 새로고침
+            await fetchQuotes()
+          }
+        } catch (error) {
+          console.error('견적 상태 업데이트 에러:', error)
+        }
       }
 
       alert(`${communicationQuote.customerName}님에게 ${
@@ -1264,37 +1323,46 @@ export default function QuotesPage() {
 
         {/* 견적 목록 */}
         <div className="p-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {filteredQuotes.map((quote) => (
-              <QuoteCard
-                key={quote.id}
-                quote={quote}
-                onView={handleViewQuote}
-                onEdit={handleEditQuote}
-                onDelete={handleDeleteQuote}
-                onCommunicate={handleCommunicate}
-              />
-            ))}
-          </div>
-
-          {filteredQuotes.length === 0 && (
+          {isLoading ? (
             <div className="text-center py-12">
-              <DocumentTextIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">견적이 없습니다</h3>
-              <p className="text-gray-600 mb-4">
-                {searchTerm || statusFilter !== 'all' 
-                  ? '검색 조건에 맞는 견적이 없습니다.' 
-                  : '아직 등록된 견적이 없습니다.'}
-              </p>
-              {(!searchTerm && statusFilter === 'all') && (
-                <button
-                  onClick={handleCreateQuote}
-                  className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
-                >
-                  첫 견적 등록하기
-                </button>
-              )}
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+              <p className="text-gray-600">견적 목록을 불러오는 중...</p>
             </div>
+          ) : (
+            <>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {filteredQuotes.map((quote) => (
+                  <QuoteCard
+                    key={quote.id}
+                    quote={quote}
+                    onView={handleViewQuote}
+                    onEdit={handleEditQuote}
+                    onDelete={handleDeleteQuote}
+                    onCommunicate={handleCommunicate}
+                  />
+                ))}
+              </div>
+
+              {filteredQuotes.length === 0 && (
+                <div className="text-center py-12">
+                  <DocumentTextIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">견적이 없습니다</h3>
+                  <p className="text-gray-600 mb-4">
+                    {searchTerm || statusFilter !== 'all' 
+                      ? '검색 조건에 맞는 견적이 없습니다.' 
+                      : '아직 등록된 견적이 없습니다.'}
+                  </p>
+                  {(!searchTerm && statusFilter === 'all') && (
+                    <button
+                      onClick={handleCreateQuote}
+                      className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+                    >
+                      첫 견적 등록하기
+                    </button>
+                  )}
+                </div>
+              )}
+            </>
           )}
         </div>
 
